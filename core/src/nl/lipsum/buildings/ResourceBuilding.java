@@ -15,7 +15,7 @@ public class ResourceBuilding extends Building{
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2);
+        batch.draw(tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
     }
 
     public void dispose(){

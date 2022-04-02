@@ -2,7 +2,6 @@ package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
-import nl.lipsum.Tile;
 
 public class BuildingGrid implements Drawable{
     public final int SIZE_X;

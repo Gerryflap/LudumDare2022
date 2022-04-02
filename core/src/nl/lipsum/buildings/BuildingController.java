@@ -4,15 +4,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
-import static nl.lipsum.Config.HEIGHT;
-import static nl.lipsum.Config.WIDTH;
+import static nl.lipsum.Config.HEIGHT_IN_TILES;
+import static nl.lipsum.Config.WIDTH_IN_TILES;
 
 public class BuildingController implements GenericController {
     BuildingGrid buildingGrid;
     BuildingBuilder buildingBuilder;
 
     public BuildingController(CameraController cameraController){
-        buildingGrid = new BuildingGrid(WIDTH, HEIGHT);
+        buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         buildingBuilder = new BuildingBuilder(cameraController);
         buildingBuilder.start("resource");
     }
