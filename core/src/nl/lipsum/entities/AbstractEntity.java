@@ -54,6 +54,7 @@ public class AbstractEntity implements Drawable {
     private List<Bullet> bullets = new ArrayList<>();
 
     // Unit status
+    private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
 
     public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
@@ -84,7 +85,10 @@ public class AbstractEntity implements Drawable {
 
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
+        this.previousEntityStatus = EntityStatus.COMBAT;
         LudumDare2022.entityController.addEntity(this);
+
+        emitSound(EntitySoundType.SPAWN);
     }
 
     @Override
@@ -104,7 +108,6 @@ public class AbstractEntity implements Drawable {
         for (Bullet _bullet :
                 bullets) {
             _bullet.draw(batch);
-
         }
     }
 
@@ -123,13 +126,21 @@ public class AbstractEntity implements Drawable {
             return ;
         }
 
-        float volume = 1 * zoomDistance;
+        float volume = 1 * zoomDistance * entitySoundType.getLoudness();
 //        System.out.printf("%s %s\n", volume, zoomDistance);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal(entityType.getPath() + entitySoundType.getPath()));
         long id = sound.play();
         sound.setVolume(id, volume);
     }
 
+    public EntityStatus getEntityStatus() {
+        return entityStatus;
+    }
+
+    public void setEntityStatus(EntityStatus entityStatus) {
+        previousEntityStatus = this.entityStatus;
+        this.entityStatus = entityStatus;
+    }
 
     public void step() {
         List<Bullet> bulletsToRemove = new ArrayList<>();
@@ -142,6 +153,16 @@ public class AbstractEntity implements Drawable {
 
         for (Bullet _bullet : bulletsToRemove) {
             bullets.remove(_bullet);
+        }
+
+        if (health <= 0) {
+            setEntityStatus(EntityStatus.DEAD);
+
+            if (previousEntityStatus != EntityStatus.DEAD) {
+                emitSound(EntitySoundType.DEATH);
+            }
+
+            return;
         }
 
         if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
