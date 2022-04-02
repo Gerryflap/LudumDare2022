@@ -3,6 +3,7 @@ package nl.lipsum.gameLogic;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.entities.AbstractEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,16 @@ public class GameController implements GenericController {
     TileGrid tileGrid;
     List<PlayerController> playerControllers;
     List<Base> bases;
+    AbstractEntity exampleEntity;
 
     public GameController(){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH,HEIGHT);
+        try {
+            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         tileGrid.setTile(0, 0, new Tile(0, 0, "orange", textureStore));
         tileGrid.setTile(20, 0, new Tile(20, 0, "orange", textureStore));
         tileGrid.setTile(0, 20, new Tile(0, 20, "orange", textureStore));
@@ -41,7 +48,7 @@ public class GameController implements GenericController {
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         tileGrid.draw(batch);
-
+        exampleEntity.draw(batch);
     }
 
     @Override
