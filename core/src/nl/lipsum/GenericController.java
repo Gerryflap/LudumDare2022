@@ -12,7 +12,7 @@ public interface GenericController {
     /**
      * Handles rendering of everything that falls under this controller
      */
-    void render(SpriteBatch batch, Camera camera);
+    void render(SpriteBatch batch, CameraController cameraController);
 
     /**
      * Disposes everything that needs disposing under this controller
