@@ -1,6 +1,7 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -56,11 +57,15 @@ public class LudumDare2022 extends ApplicationAdapter {
 		switch (gameState) {
 			case MAIN_MENU:
 				mainMenuController.render(batch, null);
+				break;
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
-
+				break;
+			case EXITING:
+				System.exit(0);
+				break;
 		}
 		batch.end();
 	}

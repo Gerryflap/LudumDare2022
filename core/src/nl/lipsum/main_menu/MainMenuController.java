@@ -1,15 +1,12 @@
 package nl.lipsum.main_menu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.CameraController;
-import nl.lipsum.GameState;
 import nl.lipsum.GenericController;
-import nl.lipsum.LudumDare2022;
+import nl.lipsum.main_menu.buttons.ExitButton;
 import nl.lipsum.main_menu.buttons.MainMenuButton;
 import nl.lipsum.main_menu.buttons.PlayButton;
 
@@ -41,9 +38,9 @@ public class MainMenuController implements GenericController {
 //                400, 400, 20, 100, "Options"
 //        ));
 //
-//        mainMenuButtons.add(new MainMenuButton(
-//                300, 300, 20, 100, "Exit"
-//        ));
+        mainMenuButtons.add(new ExitButton(
+                this, 200, 100, 20, 100, "Exit"
+        ));
     }
 
     @Override
@@ -74,11 +71,10 @@ public class MainMenuController implements GenericController {
 
         switch (mainMenuState) {
             case MAIN_SCREEN:
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
                 for (MainMenuButton _mainMenuButton :
                         mainMenuButtons) {
-                    _mainMenuButton.render(shapeRenderer);
+                    _mainMenuButton.render(shapeRenderer, batch);
                 }
 
 
@@ -92,5 +88,13 @@ public class MainMenuController implements GenericController {
     @Override
     public void dispose() {
         this.batch.dispose();
+    }
+
+    public MainMenuState getMainMenuState() {
+        return mainMenuState;
+    }
+
+    public void setMainMenuState(MainMenuState mainMenuState) {
+        this.mainMenuState = mainMenuState;
     }
 }
