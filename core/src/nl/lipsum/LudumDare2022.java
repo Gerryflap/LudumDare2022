@@ -1,14 +1,12 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.gameLogic.GameController;
-
-import static nl.lipsum.Config.*;
+import nl.lipsum.main_menu.MainMenuController;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
