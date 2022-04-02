@@ -1,27 +1,33 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import nl.lipsum.gameLogic.GameController;
+
+import static nl.lipsum.Config.*;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
 	SpriteBatch batch;
 	Texture img;
-	Camera camera;
+	CameraController cameraController;
+	GameController gameController;
 
 	private MainMenuController mainMenuController;
 
 	private static GameState gameState;
-
+	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		camera = new OrthographicCamera(1280, 720);
+		//todo: magic constants vervangen voor viewport width/height
+		cameraController = new CameraController(new OrthographicCamera(1280, 720));
+		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
 
@@ -35,21 +41,22 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case MAIN_MENU:
 				mainMenuController.step();
 			case PLAYING:
-				// gameController.step();
+				this.cameraController.step();
+				this.gameController.step();
 		}
 
-		camera.update();
 
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
-
 		// Render methods called here for controllers
 		switch (gameState) {
 			case MAIN_MENU:
 				mainMenuController.render(batch, camera);
 			case PLAYING:
-				// gameController.render();
+				this.cameraController.render(batch, null);
+				this.gameController.render(batch, this.cameraController);
+
 		}
 		batch.end();
 	}
@@ -57,7 +64,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		img.dispose();
+		this.gameController.dispose();
 	}
 
 	public static GameState getGameState() {
