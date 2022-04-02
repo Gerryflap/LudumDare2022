@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 
 import java.lang.reflect.Array;
@@ -55,7 +56,7 @@ public class BuildingBuilder implements Drawable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, CameraController cameraController) {
         if(active){
             Texture tex = null;
             switch (this.type) {
@@ -66,7 +67,7 @@ public class BuildingBuilder implements Drawable {
             int[] tileCoords = camCon.screenToTile(Gdx.input.getX(), Gdx.input.getY());
             batch.enableBlending();
             batch.setColor(1,1,1,(float)0.5);
-            batch.draw(tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+            StaticUtils.smartDraw(batch, cameraController, tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
             batch.setColor(1,1,1,1);
         }
     }

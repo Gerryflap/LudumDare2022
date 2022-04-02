@@ -31,7 +31,7 @@ public class Army implements GenericController {
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         for(AbstractEntity e:entities){
-            e.draw(batch);
+            e.draw(batch, cameraController);
         }
     }
 

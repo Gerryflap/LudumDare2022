@@ -33,6 +33,9 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+
 		humanPlayerModel = new HumanPlayerModel();
 
 		batch = new SpriteBatch();
