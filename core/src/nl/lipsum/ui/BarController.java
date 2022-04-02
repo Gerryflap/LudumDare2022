@@ -20,6 +20,8 @@ public class BarController {
     private TextureStore textureStore;
     private UiItem[] uiItems = new UiItem[]{null, null, null, null, null, null, null, null, null, null};
     private HumanPlayerModel humanPlayerModel;
+    private BitmapFont font = new BitmapFont();
+    private SpriteBatch fontSpriteBatch = new SpriteBatch();
 
     public BarController(GameController gameController, HumanPlayerModel humanPlayerModel) {
         this.gameController = gameController;
@@ -53,8 +55,7 @@ public class BarController {
         shapeRenderer.end();
 
         // draw resource counter
-        BitmapFont font = new BitmapFont();
-        SpriteBatch fontSpriteBatch = new SpriteBatch();
+
         font.setColor(UI_FONT_COLOR);
 
         fontSpriteBatch.begin();
@@ -105,6 +106,7 @@ public class BarController {
     }
 
     public void dispose() {
-
+        font.dispose();
+        fontSpriteBatch.dispose();
     }
 }

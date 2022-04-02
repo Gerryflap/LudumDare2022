@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.StaticUtils;
+import nl.lipsum.controllers.CameraController;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
@@ -79,8 +81,8 @@ public class AbstractEntity implements Drawable {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        batch.draw(texture, this.xPosition - (this.xSize/2), this.yPosition - (this.ySize/2), this.xSize, this.ySize);
+    public void draw(SpriteBatch batch, CameraController cameraController) {
+        StaticUtils.smartDraw(batch, cameraController, texture, this.xPosition - (this.xSize/2), this.yPosition - (this.ySize/2), this.xSize, this.ySize);
 
         if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
             if (bulletReloadProgress <= 0) {
@@ -121,7 +123,6 @@ public class AbstractEntity implements Drawable {
                 nextBase = path.get(0);
                 path.remove(0);
             }
-            System.out.println("hoi" + nextBase + previousBase);
         }
         if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
             float diffX = nextBase.getX()*TILE_SIZE - xPosition;

@@ -15,7 +15,7 @@ import static nl.lipsum.Config.WIDTH_IN_TILES;
 public class GameController implements GenericController {
     TextureStore textureStore;
     TileGrid tileGrid;
-    PlayerController playerController;
+    public static PlayerController playerController;
 //    AbstractEntity exampleEntity;
     BaseGraph baseGraph;
 
@@ -51,7 +51,7 @@ public class GameController implements GenericController {
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        tileGrid.draw(batch);
+        tileGrid.draw(batch, cameraController);
 //        exampleEntity.draw(batch);
         baseGraph.render(batch, cameraController);
         playerController.render(batch, cameraController);

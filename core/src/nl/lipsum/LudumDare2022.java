@@ -18,10 +18,10 @@ import nl.lipsum.ui.UiController;
 public class LudumDare2022 extends ApplicationAdapter {
 
 	SpriteBatch batch;
-	CameraController cameraController;
-	GameController gameController;
-	InputController inputController;
-	BuildingController buildingController;
+	public static CameraController cameraController;
+	public static GameController gameController;
+	public static InputController inputController;
+	public static BuildingController buildingController;
 	HumanPlayerModel humanPlayerModel;
 
 	private MainMenuController mainMenuController;
@@ -35,12 +35,15 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
+
 		humanPlayerModel = new HumanPlayerModel();
 
 		batch = new SpriteBatch();
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		buildingController = new BuildingController(cameraController);
+		buildingController = new BuildingController(cameraController, humanPlayerModel);
 		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController();
 
@@ -67,6 +70,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 				this.gameController.step();
 				entityController.step();
 				this.uiController.step();
+				this.buildingController.step();
 		}
 
 

@@ -2,6 +2,7 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
@@ -51,7 +52,7 @@ public class Base implements GenericController {
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        batch.draw(texture, x*TILE_SIZE-BASE_SIZE/2, y*TILE_SIZE-BASE_SIZE/2, BASE_SIZE, BASE_SIZE);
+        StaticUtils.smartDraw(batch, cameraController, texture, x*TILE_SIZE-BASE_SIZE/2, y*TILE_SIZE-BASE_SIZE/2, BASE_SIZE, BASE_SIZE);
     }
 
     @Override

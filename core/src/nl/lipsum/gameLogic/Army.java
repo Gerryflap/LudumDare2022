@@ -10,12 +10,12 @@ import java.util.Set;
 import static nl.lipsum.Config.TILE_SIZE;
 
 public class Army {
-    Set<AbstractEntity> entities;
+    public Set<AbstractEntity> entities;
 
     public Army(Base startBase){
         entities = new HashSet<>();
         AbstractEntity entity = new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
-                100, 100, 150, 10, 10, 100, AttackType.RANGED);
+                100, 100, 300, 10, 25, 100, AttackType.RANGED);
         entity.setArmy(this);
     }
 

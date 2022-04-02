@@ -2,8 +2,8 @@ package nl.lipsum.gameLogic.grid;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.Drawable;
-import nl.lipsum.TextureStore;
+import nl.lipsum.StaticUtils;
+import nl.lipsum.controllers.CameraController;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -21,8 +21,8 @@ public enum Tile {
     }
 
 
-    public void draw(SpriteBatch batch, int gx, int gy) {
-        batch.draw(this.tileTexture, TILE_SIZE * gx - TILE_SIZE/2, TILE_SIZE * gy- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+    public void draw(SpriteBatch batch, CameraController cameraController, int gx, int gy) {
+        StaticUtils.smartDraw(batch, cameraController, this.tileTexture, TILE_SIZE * gx - TILE_SIZE/2, TILE_SIZE * gy- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
     }
 
     public void dispose() {

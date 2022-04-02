@@ -11,4 +11,8 @@ public abstract class PlayerModel {
     public int getAmountResources() {
         return amountResources;
     }
+
+    public void addResources(int amount){
+        this.amountResources += amount;
+    }
 }

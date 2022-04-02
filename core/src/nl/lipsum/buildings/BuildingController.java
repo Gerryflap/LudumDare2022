@@ -3,6 +3,8 @@ package nl.lipsum.buildings;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
@@ -10,26 +12,29 @@ import static nl.lipsum.Config.WIDTH_IN_TILES;
 public class BuildingController implements GenericController {
     BuildingGrid buildingGrid;
     BuildingBuilder buildingBuilder;
+    HumanPlayerModel humanPlayer;
+    GameController gameController;
 
-    public BuildingController(CameraController cameraController){
+    public BuildingController(CameraController cameraController, HumanPlayerModel humanPlayer){
         buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         buildingBuilder = new BuildingBuilder(cameraController);
-        buildingBuilder.start("resource");
+        this.humanPlayer = humanPlayer;
+        buildingBuilder.start(BuildingType.UNIT);
     }
 
     public void onClick(int x, int y){
-        buildingBuilder.placeBuilding(x,y, buildingGrid);
+        buildingBuilder.buildBuilding(x,y, buildingGrid, this.humanPlayer);
     }
 
     @Override
     public void step() {
-
+        buildingGrid.step();
     }
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        buildingGrid.draw(batch);
-        buildingBuilder.draw(batch);
+        buildingGrid.draw(batch, cameraController);
+        buildingBuilder.draw(batch, cameraController);
     }
 
     @Override
