@@ -8,9 +8,11 @@ import nl.lipsum.TextureStore;
 import static nl.lipsum.Config.TILE_SIZE;
 
 public enum Tile {
-    GRASS(new Texture("orangeTile.jpg")),
-    DIRT(new Texture("blueTile.jpg")),
-    SAND(new Texture("whiteTile.jpg"));
+    GRASS_1(new Texture("grass_1.png")),
+    GRASS_2(new Texture("grass_2.png")),
+    GRASS_3(new Texture("grass_3.png")),
+    DIRT(new Texture("dirt_1.png")),
+    SAND(new Texture("sand_1.png"));
 
     private final Texture tileTexture;
 
