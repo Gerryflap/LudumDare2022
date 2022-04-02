@@ -1,45 +1,23 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.controllers.CameraController;
-import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.entities.EntityType;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public class Army implements GenericController {
-
-    public List<AbstractEntity> entities;
+public class Army {
+    public Set<AbstractEntity> entities;
 
     public Army(Base startBase){
-        entities = new ArrayList<>();
-        entities.add(new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
-                100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY));
-    }
-
-    @Override
-    public void step() {
-        for(AbstractEntity e:entities){
-            e.step();
-        }
-    }
-
-    @Override
-    public void render(SpriteBatch batch, CameraController cameraController) {
-        for(AbstractEntity e:entities){
-            e.draw(batch, cameraController);
-        }
-    }
-
-    @Override
-    public void dispose() {
-
+        entities = new HashSet<>();
+        AbstractEntity entity = new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
+                100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
+        entity.setArmy(this);
     }
 
     public void goTo(Base b, BaseGraph baseGraph){
@@ -48,4 +26,11 @@ public class Army implements GenericController {
         }
     }
 
+    public void addEntity(AbstractEntity entity) {
+        entities.add(entity);
+    }
+
+    public void removeEntity(AbstractEntity entity) {
+        entities.remove(entity);
+    }
 }

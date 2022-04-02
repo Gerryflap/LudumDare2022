@@ -3,8 +3,6 @@ package nl.lipsum.controllers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import nl.lipsum.buildings.Building;
-import nl.lipsum.buildings.BuildingBuilder;
 import nl.lipsum.buildings.BuildingController;
 
 public class InputController implements InputProcessor {
@@ -37,22 +35,35 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        buildingController.onClick(screenX, screenY);
+        if (button == Input.Buttons.LEFT) {
+            buildingController.onClick(screenX, screenY);
+        } else if (button == Input.Buttons.RIGHT) {
+            this.cameraController.setKeyActive(button);
+        }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if (button == Input.Buttons.RIGHT) {
+            this.cameraController.setKeyInactive(button);
+        }
         return false;
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
+        if (this.cameraController.isKeyActive(Input.Buttons.RIGHT)) {
+            this.cameraController.pan(screenX, screenY);
+        } else {
+            return this.mouseMoved(screenX, screenY);
+        }
         return false;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        this.cameraController.updateCursor(screenX, screenY);
         return false;
     }
 
