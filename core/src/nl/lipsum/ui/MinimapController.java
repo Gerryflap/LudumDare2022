@@ -1,6 +1,7 @@
 package nl.lipsum.ui;
 
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import static nl.lipsum.ui.UiConstants.*;
@@ -9,6 +10,7 @@ import static nl.lipsum.ui.UiConstants.*;
  * This class is in control of the minimap
  */
 public class MinimapController {
+
     public void step() {
 
     }

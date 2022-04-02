@@ -1,4 +1,4 @@
-package nl.lipsum.gameLogic;
+package nl.lipsum.gameLogic.player;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;

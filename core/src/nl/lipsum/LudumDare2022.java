@@ -3,11 +3,11 @@ package nl.lipsum;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.gameLogic.player.HumanPlayerModel;
 import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
@@ -15,10 +15,10 @@ import nl.lipsum.ui.UiController;
 public class LudumDare2022 extends ApplicationAdapter {
 
 	SpriteBatch batch;
-	Texture img;
 	CameraController cameraController;
 	GameController gameController;
 	InputController inputController;
+	HumanPlayerModel humanPlayerModel;
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
@@ -27,15 +27,16 @@ public class LudumDare2022 extends ApplicationAdapter {
 	
 	@Override
 	public void create () {
+		humanPlayerModel = new HumanPlayerModel();
+
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		inputController = new InputController(cameraController);
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
-		uiController = new UiController();
+		uiController = new UiController(humanPlayerModel);
 
 		gameState = GameState.MAIN_MENU;
 	}

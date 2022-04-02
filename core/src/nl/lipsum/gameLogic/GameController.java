@@ -5,6 +5,7 @@ import nl.lipsum.*;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
+import nl.lipsum.gameLogic.player.PlayerController;
 
 import java.util.ArrayList;
 import java.util.List;
