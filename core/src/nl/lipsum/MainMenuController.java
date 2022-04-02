@@ -36,7 +36,7 @@ public class MainMenuController implements GenericController {
     }
 
     @Override
-    public void render(SpriteBatch batch, Camera camera) {
+    public void render(SpriteBatch batch, CameraController camera) {
         this.batch.begin();
 
         switch (mainMenuState) {

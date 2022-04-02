@@ -47,12 +47,11 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 
 		ScreenUtils.clear(1, 0, 0, 1);
-		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		// Render methods called here for controllers
 		switch (gameState) {
 			case MAIN_MENU:
-				mainMenuController.render(batch, camera);
+				mainMenuController.render(batch, null);
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
