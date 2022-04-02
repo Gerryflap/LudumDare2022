@@ -29,7 +29,7 @@ public class Tile implements Drawable {
 
     @Override
     public void draw(SpriteBatch batch) {
-        batch.draw(this.tileTexture, TILE_SIZE * this.x, TILE_SIZE * this.y);
+        batch.draw(this.tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2);
     }
 
     public void dispose() {
