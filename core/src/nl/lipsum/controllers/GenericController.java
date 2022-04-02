@@ -1,7 +1,7 @@
-package nl.lipsum;
+package nl.lipsum.controllers;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.controllers.CameraController;
 
 public interface GenericController {
     /**

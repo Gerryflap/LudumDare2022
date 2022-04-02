@@ -1,4 +1,4 @@
-package nl.lipsum;
+package nl.lipsum.main_menu;
 
 public enum MainMenuState {
 
