@@ -14,6 +14,7 @@ import java.util.Arrays;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static nl.lipsum.Config.TILE_SIZE;
+import static nl.lipsum.ui.UiConstants.*;
 
 public class BuildingBuilder implements Drawable {
     private boolean active;
@@ -36,8 +37,10 @@ public class BuildingBuilder implements Drawable {
         this.active = false;
     }
 
-    public void placeBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
-        if(active){
+    public void buildBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
+        Gdx.graphics.getHeight();
+        boolean notOnUi = y < Gdx.graphics.getHeight() - MINIMAP_HEIGHT || (x < Gdx.graphics.getWidth() - MINIMAP_WIDTH && y < Gdx.graphics.getHeight() - BAR_HEIGHT);
+        if(active && notOnUi){
             int[] tileCoords = camCon.screenToTile(x, y);
             int tx = tileCoords[0];
             int ty = tileCoords[1];
