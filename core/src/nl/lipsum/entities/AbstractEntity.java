@@ -1,10 +1,12 @@
 package nl.lipsum.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Base;
@@ -26,6 +28,8 @@ public class AbstractEntity implements Drawable {
     private Base previousBase;
     private Base nextBase;
     private List<Base> path;
+
+    private EntityType entityType;
 
     // Movement information
     private float speed;
@@ -49,12 +53,12 @@ public class AbstractEntity implements Drawable {
     private EntityStatus entityStatus;
 
     public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
-        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType);
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
+        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType, entityType);
     }
 
     public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = xSize;
@@ -72,6 +76,8 @@ public class AbstractEntity implements Drawable {
         this.maxSpeed = maxSpeed;
         this.attackType = attackType;
 
+        this.entityType = entityType;
+
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
     }
@@ -82,9 +88,10 @@ public class AbstractEntity implements Drawable {
 
         if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
             if (bulletReloadProgress <= 0) {
+                // fire bullet
                 bulletReloadProgress = bulletReloadSpeed;
                 bullets.add(new Bullet(this.xPosition, this.yPosition, 100, 50, this.bulletSpeed));
-                // fire bullet
+                emitSound(EntitySoundType.FIRE);
             }
             bulletReloadProgress -= 1;
         }
@@ -94,10 +101,20 @@ public class AbstractEntity implements Drawable {
             _bullet.draw(batch);
 
         }
-
-
     }
 
+    private float calculateDistanceToCenterCamera() {
+        return 1;
+    }
+
+    public void emitSound(EntitySoundType entitySoundType) {
+        float volume = 1 * calculateDistanceToCenterCamera() * (1/(LudumDare2022.cameraController.getCamera().zoom * 10));
+        System.out.printf("%s %s %s %s\n", volume, 1, calculateDistanceToCenterCamera(), LudumDare2022.cameraController.getCamera().zoom);
+        Sound sound = Gdx.audio.newSound(Gdx.files.internal(entityType.getPath() + entitySoundType.getPath()));
+        long id = sound.play();
+        sound.setVolume(id, volume);
+//        System.out.println(volume);
+    }
 
 
     public void step() {
@@ -159,7 +176,6 @@ public class AbstractEntity implements Drawable {
             startBases.add(nextBase);
         }
         path = baseGraph.findPath(startBases, b);
-        System.out.println(path);
         nextBase = path.get(0);
         path.remove(0);
     }

@@ -8,6 +8,7 @@ import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
+import nl.lipsum.entities.EntityType;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
@@ -40,7 +41,7 @@ public abstract class UnitBuilding extends Building {
             } else {
                 trainingProgress = 0;
                 AbstractEntity unit = new AbstractEntity(0, 0, new Texture("greenTile.jpg"), GameController.playerController.base,
-                        100, 100, 300, 10, 25, 100, AttackType.RANGED);
+                        100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
                 GameController.playerController.army.entities.add(unit);
                 this.units[unitPointer] = unit;
                 unitPointer += 1;
