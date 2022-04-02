@@ -1,12 +1,14 @@
-package nl.lipsum;
+package nl.lipsum.controllers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.GameState;
+import nl.lipsum.LudumDare2022;
+import nl.lipsum.MainMenuState;
 
 public class MainMenuController implements GenericController {
 
