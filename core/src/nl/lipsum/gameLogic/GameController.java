@@ -8,6 +8,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.ui.UiArmySelect;
 
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
@@ -20,7 +21,7 @@ public class GameController implements GenericController {
 //    AbstractEntity exampleEntity;
     BaseGraph baseGraph;
 
-    public GameController(){
+    public GameController(HumanPlayerModel humanPlayerModel){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         WorldGen.generateWorld(tileGrid);
@@ -40,7 +41,7 @@ public class GameController implements GenericController {
 //        tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 
         baseGraph = new BaseGraph();
-        playerController = new PlayerController(baseGraph.getBases().get(0), baseGraph);
+        playerController = new PlayerController(baseGraph, humanPlayerModel);
 
     }
 
@@ -74,11 +75,11 @@ public class GameController implements GenericController {
     }
 
     public void setSelectedArmy(int selectedArmy, UiArmySelect uiArmySelect){
-        this.playerController.setSelectedArmy(selectedArmy);
-        this.playerController.setUiArmySelect(uiArmySelect);
+        this.playerController.humanPlayerModel.setSelectedArmy(selectedArmy);
+        this.playerController.humanPlayerModel.setUiArmySelect(uiArmySelect);
     }
 
     public UiArmySelect getUiArmySelect(){
-        return this.playerController.getUiArmySelect();
+        return this.playerController.humanPlayerModel.getUiArmySelect();
     }
 }
