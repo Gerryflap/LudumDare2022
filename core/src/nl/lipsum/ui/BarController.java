@@ -43,7 +43,6 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            System.out.println("set 0");
                             LudumDare2022.gameController.setSelectedArmy(0, (UiArmySelect) uiItem);
                             return null;
                         }
@@ -54,7 +53,6 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            System.out.println("set 1");
                             LudumDare2022.gameController.setSelectedArmy(1, (UiArmySelect) uiItem);
                             return null;
                         }
@@ -63,7 +61,6 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            System.out.println("set 2");
                             LudumDare2022.gameController.setSelectedArmy(2, (UiArmySelect) uiItem);
                             return null;
                         }
