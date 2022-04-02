@@ -21,4 +21,12 @@ public class Base {
     public List<Base> getConnections() {
         return connections;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
 }

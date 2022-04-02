@@ -32,7 +32,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
-		uiController = new UiController();
+		uiController = new UiController(gameController);
 
 		gameState = GameState.MAIN_MENU;
 	}

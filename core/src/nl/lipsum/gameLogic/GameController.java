@@ -1,26 +1,22 @@
 package nl.lipsum.gameLogic;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
 import nl.lipsum.entities.AbstractEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static nl.lipsum.Config.HEIGHT;
-import static nl.lipsum.Config.WIDTH;
+import static nl.lipsum.Config.HEIGHT_IN_TILES;
+import static nl.lipsum.Config.WIDTH_IN_TILES;
 
 public class GameController implements GenericController {
     TextureStore textureStore;
     TileGrid tileGrid;
-    List<PlayerController> playerControllers;
+    PlayerController playerController;
     AbstractEntity exampleEntity;
     BaseGraph baseGraph;
 
     public GameController(){
         textureStore = new TextureStore();
-        tileGrid = new TileGrid(WIDTH,HEIGHT);
+        tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         try {
             exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"));
         } catch (Exception e) {
@@ -36,26 +32,30 @@ public class GameController implements GenericController {
         tileGrid.setTile(10, 20, new Tile(10, 20, "white", textureStore));
         tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 
-        playerControllers = new ArrayList<>();
-        playerControllers.add(new PlayerController());
+        playerController = new PlayerController();
 
         baseGraph = new BaseGraph();
     }
 
     @Override
     public void step() {
-
+        playerController.step();
     }
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         tileGrid.draw(batch);
         exampleEntity.draw(batch);
+        playerController.render(batch, cameraController);
     }
 
     @Override
     public void dispose() {
         tileGrid.dispose();
+        playerController.dispose();
+    }
 
+    public BaseGraph getBaseGraph() {
+        return baseGraph;
     }
 }
