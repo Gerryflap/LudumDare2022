@@ -8,6 +8,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
+import nl.lipsum.ui.UiArmySelect;
 
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
@@ -70,5 +71,14 @@ public class GameController implements GenericController {
 
     public void goTo(Base base){
         playerController.goTo(base);
+    }
+
+    public void setSelectedArmy(int selectedArmy, UiArmySelect uiArmySelect){
+        this.playerController.setSelectedArmy(selectedArmy);
+        this.playerController.setUiArmySelect(uiArmySelect);
+    }
+
+    public UiArmySelect getUiArmySelect(){
+        return this.playerController.getUiArmySelect();
     }
 }

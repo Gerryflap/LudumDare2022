@@ -6,9 +6,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.TextureStore;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+
+import java.util.function.Function;
 
 import static nl.lipsum.ui.UiConstants.*;
 
@@ -35,13 +38,58 @@ public class BarController {
 
             this.uiItems[0] = exampleHaveEnough;
             this.uiItems[1] = exampleDontHaveEnough;
+
+            UiArmySelect uiArmySelect7 = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+                    new Function<UiItem, Object>() {
+                        @Override
+                        public Object apply(UiItem uiItem) {
+                            System.out.println("set 0");
+                            LudumDare2022.gameController.setSelectedArmy(0, (UiArmySelect) uiItem);
+                            return null;
+                        }
+                    });
+            this.uiItems[7] = uiArmySelect7;
+            gameController.setSelectedArmy(0, uiArmySelect7);
+            this.uiItems[8] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+                    new Function<UiItem, Object>() {
+                        @Override
+                        public Object apply(UiItem uiItem) {
+                            System.out.println("set 1");
+                            LudumDare2022.gameController.setSelectedArmy(1, (UiArmySelect) uiItem);
+                            return null;
+                        }
+                    });
+            this.uiItems[9] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+                    new Function<UiItem, Object>() {
+                        @Override
+                        public Object apply(UiItem uiItem) {
+                            System.out.println("set 2");
+                            LudumDare2022.gameController.setSelectedArmy(2, (UiArmySelect) uiItem);
+                            return null;
+                        }
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void step() {
-
+        if (Gdx.input.justTouched()){
+            if (Gdx.graphics.getHeight() - BAR_HEIGHT < Gdx.input.getY() && Gdx.input.getY() < Gdx.graphics.getHeight()){
+                float uiItemY = 3;
+                if (Gdx.graphics.getHeight() - uiItemY > Gdx.input.getY() && Gdx.graphics.getHeight() - uiItemY - ICON_HEIGHT < Gdx.input.getY()) {
+                    float uiItemX = 5;
+                    for (UiItem uiItem : uiItems) {
+                        if (uiItem != null && uiItem.getRequiredResources() < humanPlayerModel.getAmountResources()) {
+                            if (uiItemX < Gdx.input.getX() && uiItemX + ICON_WIDTH > Gdx.input.getX()) {
+                                uiItem.getFunction().apply(uiItem);
+                            }
+                        }
+                        uiItemX = uiItemX + 5 + ICON_WIDTH;
+                    }
+                }
+            }
+        }
     }
 
     public void render(ShapeRenderer shapeRenderer, Camera camera) {
@@ -69,7 +117,15 @@ public class BarController {
         float uiItemY = 3;
         for (UiItem uiItem : uiItems) {
             if (uiItem != null) {
-                spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
+                if (uiItem instanceof UiArmySelect){
+                    if (gameController.getUiArmySelect() == uiItem){
+                        spriteBatch.draw(((UiArmySelect) uiItem).getTextureSelected(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
+                    } else {
+                        spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
+                    }
+                } else {
+                    spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
+                }
             }
             uiItemX = uiItemX + 5 + ICON_WIDTH;
         }
