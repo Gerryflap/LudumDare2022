@@ -8,6 +8,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.main_menu.buttons.ExitButton;
 import nl.lipsum.main_menu.buttons.MainMenuButton;
+import nl.lipsum.main_menu.buttons.MainMenuSound;
 import nl.lipsum.main_menu.buttons.PlayButton;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -24,6 +25,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private MainMenuController mainMenuController;
 	private UiController uiController;
 
+	private static GameState previousGameState;
 	private static GameState gameState;
 
 	private static Music mainMenuMusic;
@@ -109,7 +111,11 @@ public class LudumDare2022 extends ApplicationAdapter {
 	}
 
 	public static void setGameState(GameState gameState) {
+		LudumDare2022.previousGameState = LudumDare2022.gameState;
 		LudumDare2022.gameState = gameState;
 	}
 
+	public static GameState getPreviousGameState() {
+		return previousGameState;
+	}
 }
