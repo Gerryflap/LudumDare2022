@@ -33,8 +33,8 @@ public class BuildingController implements GenericController {
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        buildingGrid.draw(batch);
-        buildingBuilder.draw(batch);
+        buildingGrid.draw(batch, cameraController);
+        buildingBuilder.draw(batch, cameraController);
     }
 
     @Override

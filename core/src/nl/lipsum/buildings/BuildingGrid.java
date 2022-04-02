@@ -2,6 +2,7 @@ package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.controllers.CameraController;
 
 public class BuildingGrid implements Drawable{
     public final int SIZE_X;
@@ -25,11 +26,11 @@ public class BuildingGrid implements Drawable{
 
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, CameraController cameraController) {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if(this.buildings[x][y] != null){
-                    this.buildings[x][y].draw(batch);
+                    this.buildings[x][y].draw(batch, cameraController);
                 }
             }
         }

@@ -51,7 +51,7 @@ public class GameController implements GenericController {
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        tileGrid.draw(batch);
+        tileGrid.draw(batch, cameraController);
 //        exampleEntity.draw(batch);
         baseGraph.render(batch, cameraController);
         playerController.render(batch, cameraController);

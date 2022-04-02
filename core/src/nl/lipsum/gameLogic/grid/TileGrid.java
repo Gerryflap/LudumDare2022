@@ -1,7 +1,9 @@
 package nl.lipsum.gameLogic.grid;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.controllers.CameraController;
 
 /**
  * Holds and draws the tile grid
@@ -28,11 +30,11 @@ public class TileGrid implements Drawable {
 
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch, CameraController cameraController) {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if(this.tiles[x][y] != null){
-                    this.tiles[x][y].draw(batch, x, y);
+                    this.tiles[x][y].draw(batch, cameraController, x, y);
                 }
             }
         }

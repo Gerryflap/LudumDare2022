@@ -5,11 +5,11 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import nl.lipsum.Config;
 
 import java.util.ArrayList;
 
 import static java.lang.Math.floor;
-import static nl.lipsum.Config.TILE_SIZE;
 
 public class CameraController implements GenericController {
 
@@ -21,8 +21,8 @@ public class CameraController implements GenericController {
 
     private static final float CAMERA_MIN_X = 0;
     private static final float CAMERA_MIN_Y = 0;
-    private static final float CAMERA_MAX_X = 2500;
-    private static final float CAMERA_MAX_Y = 2500;
+    private static final float CAMERA_MAX_X = Config.TILE_SIZE * Config.WIDTH_IN_TILES;
+    private static final float CAMERA_MAX_Y = Config.TILE_SIZE * Config.HEIGHT_IN_TILES;
 
 
 
@@ -107,7 +107,7 @@ public class CameraController implements GenericController {
         Vector3 worldPos = camera.unproject(touchPos);
 //        return new int[] {(int) worldPos.x,(int) worldPos.y};
 
-        return new int[] {((int) (floor(worldPos.x + TILE_SIZE/2))) / TILE_SIZE,((int) floor(worldPos.y + TILE_SIZE/2) ) / TILE_SIZE};
+        return new int[] {((int) (floor(worldPos.x + Config.TILE_SIZE/2))) / Config.TILE_SIZE,((int) floor(worldPos.y + Config.TILE_SIZE/2) ) / Config.TILE_SIZE};
     }
 
     @Override
