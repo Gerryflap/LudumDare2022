@@ -8,6 +8,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.main_menu.buttons.ExitButton;
 import nl.lipsum.main_menu.buttons.MainMenuButton;
+import nl.lipsum.main_menu.buttons.MainMenuSound;
 import nl.lipsum.main_menu.buttons.PlayButton;
 
 import java.util.ArrayList;
@@ -49,15 +50,13 @@ public class MainMenuController implements GenericController {
 //            LudumDare2022.setGameState(GameState.PLAYING);
 //        }
 
-        if (Gdx.input.isTouched()) {
-            switch (mainMenuState) {
-                case MAIN_SCREEN:
+        switch (mainMenuState) {
+            case MAIN_SCREEN:
 
-                    for (MainMenuButton _mainMenuButton :
-                            mainMenuButtons) {
-                        _mainMenuButton.step(Gdx.input.getX(), Gdx.input.getY());
-                    }
-            }
+                for (MainMenuButton _mainMenuButton :
+                        mainMenuButtons) {
+                    _mainMenuButton.step(Gdx.input.getX(), Gdx.input.getY());
+                }
 //            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
         }
 
@@ -76,9 +75,6 @@ public class MainMenuController implements GenericController {
                         mainMenuButtons) {
                     _mainMenuButton.render(shapeRenderer, batch);
                 }
-
-
-                shapeRenderer.end();
         }
 
 //        this.batch.draw(testTexture, 0, 0);
@@ -88,6 +84,10 @@ public class MainMenuController implements GenericController {
     @Override
     public void dispose() {
         this.batch.dispose();
+        for (MainMenuButton _mainMenuButton :
+                mainMenuButtons) {
+            _mainMenuButton.dispose();
+        }
     }
 
     public MainMenuState getMainMenuState() {

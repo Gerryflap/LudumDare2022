@@ -1,5 +1,6 @@
 package nl.lipsum.main_menu.buttons;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,23 +20,15 @@ public class PlayButton extends MainMenuButton {
     }
 
     @Override
-    public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        Color color = new Color(125, 0, 125, 125);
-        shapeRenderer.setColor(color);
-        shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
-        shapeRenderer.end();
-
-        font.draw(spriteBatch, getButtonText(), getX(), getY() + font.getLineHeight());
-    }
-
-    @Override
     public void step(int x, int y) {
-        Coordinate locationPressed = convertCringeTopLeftCoordinateToNormalBottomLeftCoordinateForButtonPressed(x, y);
+        super.step(x, y);
+
+        Coordinate locationCursor = convertCringeTopLeftCoordinateToNormalBottomLeftCoordinateForButtonPressed(x, y);
 
         // Check if button is pressed
-        if (isCoordinateInButtonBox(locationPressed)) {
+        if (isCoordinateInButtonBox(locationCursor) && Gdx.input.isTouched()) {
             LudumDare2022.setGameState(GameState.PLAYING);
+            emitSound(MainMenuSound.GAME_START);
         }
     }
 

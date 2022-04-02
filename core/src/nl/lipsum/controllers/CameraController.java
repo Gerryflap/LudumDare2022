@@ -11,6 +11,16 @@ public class CameraController implements GenericController {
     private OrthographicCamera camera;
     public float zoomedAmount = 0;
 
+    private static final float MIN_ZOOM = 0.1f;
+    private static final float MAX_ZOOM = 6f;
+
+    private static final float CAMERA_MIN_X = 0;
+    private static final float CAMERA_MIN_Y = 0;
+    private static final float CAMERA_MAX_X = 2500;
+    private static final float CAMERA_MAX_Y = 2500;
+
+
+
     public int cameraMovementSpeed = 15;
     private ArrayList<Integer> activeKeys;
 
@@ -54,10 +64,34 @@ public class CameraController implements GenericController {
             // zoom out
             this.camera.zoom = this.camera.zoom * 1.2f;
             this.zoomedAmount = 0;
+
+            if (this.camera.zoom > MAX_ZOOM) {
+                this.camera.zoom = MAX_ZOOM;
+            }
         } else if (this.zoomedAmount < 0) {
             // zoom in
             this.camera.zoom = this.camera.zoom * 0.83333333333f;
             this.zoomedAmount = 0;
+
+            if (this.camera.zoom < MIN_ZOOM) {
+                this.camera.zoom = MIN_ZOOM;
+            }
+        }
+
+        // Lock camera to place where all the action takes place
+        if (this.camera.position.x < CAMERA_MIN_X) {
+            this.camera.position.x = CAMERA_MIN_X;
+        }
+        if (this.camera.position.x > CAMERA_MAX_X) {
+            this.camera.position.x = CAMERA_MAX_X;
+        }
+
+        if (this.camera.position.y < CAMERA_MIN_Y) {
+            this.camera.position.y = CAMERA_MIN_Y;
+        }
+
+        if (this.camera.position.y > CAMERA_MAX_Y) {
+            this.camera.position.y = CAMERA_MAX_Y;
         }
 
         this.camera.update();

@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.TextureStore;
 import nl.lipsum.gameLogic.player.HumanPlayerModel;
 
@@ -14,12 +15,13 @@ import static nl.lipsum.ui.UiConstants.*;
  * Controls the main UI bar
  */
 public class BarController {
-
+    private final GameController gameController;
     private TextureStore textureStore;
     private UiItem[] uiItems = new UiItem[]{null, null, null, null, null, null, null, null, null, null};
     private HumanPlayerModel humanPlayerModel;
 
-    public BarController(HumanPlayerModel humanPlayerModel) {
+    public BarController(GameController gameController, HumanPlayerModel humanPlayerModel) {
+        this.gameController = gameController;
         this.humanPlayerModel = humanPlayerModel;
         this.textureStore = new TextureStore();
 

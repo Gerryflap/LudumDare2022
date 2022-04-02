@@ -6,6 +6,7 @@ import nl.lipsum.TextureStore;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.player.HumanPlayerModel;
+import nl.lipsum.gameLogic.GameController;
 
 /**
  * Controller of the static user interface (minimap and top/bottom bars)
@@ -15,9 +16,9 @@ public class UiController implements GenericController {
     private final BarController barController;
     private final MinimapController minimapController;
 
-    public UiController(HumanPlayerModel humanPlayerModel) {
-        this.barController = new BarController(humanPlayerModel);
-        this.minimapController = new MinimapController();
+    public UiController(GameController gameController, HumanPlayerModel humanPlayerModel){
+        this.barController = new BarController(gameController, humanPlayerModel);
+        this.minimapController = new MinimapController(gameController);
     }
 
     @Override
@@ -29,10 +30,8 @@ public class UiController implements GenericController {
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         batch.end();
-
         barController.render(shapeRenderer, cameraController.getCamera());
         minimapController.render(shapeRenderer, cameraController.getCamera());
-
         batch.begin();
     }
 

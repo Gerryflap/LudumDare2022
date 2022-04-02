@@ -8,6 +8,8 @@ public class UiConstants {
     public static final int MINIMAP_BORDER_SIZE = 4;
     public static final int BAR_HEIGHT = 50;
 
+    public static final int MINIMAP_BASE_SIZE = 5;
+
     public static final int ICON_WIDTH = 42;
     public static final int ICON_HEIGHT = 42;
     public static final Color ICON_BORDER_COLOR = new Color(0.1f, 0.1f, 0.1f, 1.0f);
