@@ -13,7 +13,8 @@ import java.util.List;
 import static nl.lipsum.Config.TILE_SIZE;
 
 public class Army implements GenericController {
-    List<AbstractEntity> entities;
+
+    public List<AbstractEntity> entities;
 
     public Army(Base startBase){
         entities = new ArrayList<>();

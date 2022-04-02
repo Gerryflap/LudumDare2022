@@ -17,8 +17,9 @@ import static nl.lipsum.Config.TILE_SIZE;
 
 public class BuildingBuilder implements Drawable {
     private boolean active;
-    private String type;
+    private BuildingType type;
     public static final Texture resourceTexture = new Texture("whiteTile.jpg");
+    public static final Texture unitTexture = new Texture("greenTile.jpg");
     private CameraController camCon;
 
 
@@ -27,7 +28,7 @@ public class BuildingBuilder implements Drawable {
         this.camCon = camCon;
     }
 
-    public void start(String type){
+    public void start(BuildingType type){
         this.active = true;
         this.type = type;
     }
@@ -43,8 +44,11 @@ public class BuildingBuilder implements Drawable {
             int ty = tileCoords[1];
             Building nb = null;
             switch (this.type) {
-                case "resource":
-                    nb = new ResourceBuilding(tx, ty, player);
+                case RESOURCE:
+                    nb = new ResourceBuilding(tx, ty, player, 10);
+                    break;
+                case UNIT:
+                    nb = new InfantryBuilding(tx, ty, player, 10, 10, 10);
                     break;
             }
             try {
@@ -60,8 +64,11 @@ public class BuildingBuilder implements Drawable {
         if(active){
             Texture tex = null;
             switch (this.type) {
-                case "resource":
+                case RESOURCE:
                     tex = resourceTexture;
+                    break;
+                case UNIT:
+                    tex = unitTexture;
                     break;
             }
             int[] tileCoords = camCon.screenToTile(Gdx.input.getX(), Gdx.input.getY());
