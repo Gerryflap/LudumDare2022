@@ -23,7 +23,7 @@ public class BuildingController implements GenericController {
     }
 
     public void onClick(int x, int y){
-        buildingBuilder.buildBuilding(x,y, buildingGrid, this.humanPlayer);
+        buildingBuilder.buildBuildingClick(x,y, buildingGrid, this.humanPlayer);
     }
 
     @Override

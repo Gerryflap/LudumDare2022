@@ -1,15 +1,13 @@
 package nl.lipsum.buildings;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -38,27 +36,40 @@ public class BuildingBuilder implements Drawable {
         this.active = false;
     }
 
-    public void buildBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
+    public void buildBuildingClick(int x, int y, BuildingGrid bg, PlayerModel player){
         Gdx.graphics.getHeight();
         boolean notOnUi = y < Gdx.graphics.getHeight() - MINIMAP_HEIGHT || (x < Gdx.graphics.getWidth() - MINIMAP_WIDTH && y < Gdx.graphics.getHeight() - BAR_HEIGHT);
         if(active && notOnUi){
             int[] tileCoords = camCon.screenToTile(x, y);
             int tx = tileCoords[0];
             int ty = tileCoords[1];
-            Building nb = null;
-            switch (this.type) {
-                case RESOURCE:
-                    nb = new ResourceBuilding(tx, ty, player, 10);
-                    break;
-                case UNIT:
-                    nb = new InfantryBuilding(tx, ty, player, 10, 10, 10);
-                    break;
+            buildBuilding(tx, ty, bg, player);
+        }
+    }
+
+    public void buildBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
+        boolean canbuild = false;
+
+        for (Base base: LudumDare2022.gameController.getBaseGraph().getBases()) {
+            if(base.getOwner() == player && x < base.getX() + base.getBuildrange() && x > base.getX() - base.getBuildrange() && y < base.getY() + base.getBuildrange() && y > base.getY() - base.getBuildrange()){
+                canbuild = true;
             }
-            try {
-                bg.setBuilding(tx, ty, nb);
-            } catch (Exception e){
-                System.out.println("wie dit leest trekt een ad");
+        }
+        Building nb = null;
+        switch (this.type) {
+            case RESOURCE:
+                nb = new ResourceBuilding(x, y, player, 10);
+                break;
+            case UNIT:
+                nb = new InfantryBuilding(x, y, player, 10, 10, 10);
+                break;
+        }
+        try {
+            if (canbuild){
+                bg.setBuilding(x, y, nb);
             }
+        } catch (Exception e){
+            System.out.println("wie dit leest trekt een ad");
         }
     }
 

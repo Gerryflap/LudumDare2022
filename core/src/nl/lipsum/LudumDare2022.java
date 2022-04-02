@@ -21,7 +21,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public static GameController gameController;
 	public static InputController inputController;
 	public static BuildingController buildingController;
-	HumanPlayerModel humanPlayerModel;
+	public static HumanPlayerModel humanPlayerModel;
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
