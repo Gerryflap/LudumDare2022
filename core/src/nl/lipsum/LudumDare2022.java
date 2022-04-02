@@ -38,7 +38,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		buildingController = new BuildingController(cameraController);
+		buildingController = new BuildingController(cameraController, humanPlayerModel);
 		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController();
 
@@ -63,6 +63,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 				this.cameraController.step();
 				this.gameController.step();
 				this.uiController.step();
+				this.buildingController.step();
 		}
 
 
