@@ -24,7 +24,7 @@ public class AbstractEntity implements Drawable {
     List<Base> path;
 
     public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base) {
-        this(xPosition, yPosition, 10, 10, texture, base);
+        this(xPosition, yPosition, 75, 75, texture, base);
     }
 
     public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base) {
@@ -55,10 +55,10 @@ public class AbstractEntity implements Drawable {
 //                System.out.println(nextBase);
                 System.out.println("hoi" + nextBase + previousBase);
             }
-            if (nextBase != previousBase){
+            if (nextBase != previousBase || !path.isEmpty()){
                 float diffX = nextBase.getX()*TILE_SIZE - xPosition;
                 float diffY = nextBase.getY()*TILE_SIZE - yPosition;
-                double factor = Gdx.graphics.getDeltaTime()*100/(Math.sqrt(diffX*diffX + diffY*diffY));
+                double factor = Gdx.graphics.getDeltaTime()*1000/(Math.sqrt(diffX*diffX + diffY*diffY));
                 float updateX = (float) (diffX*factor);
                 float updateY = (float) (diffY*factor);
 

@@ -1,23 +1,30 @@
 package nl.lipsum.gameLogic;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
+
 import java.util.*;
 
-public class BaseGraph {
+import static nl.lipsum.Config.WIDTH_IN_TILES;
+import static nl.lipsum.Config.HEIGHT_IN_TILES;
+
+public class BaseGraph implements GenericController {
     List<Base> bases;
 
 
     public BaseGraph(){
         bases = new ArrayList<>();
 
-        Base base00 = new Base(0,0);
-        Base base10 = new Base(10,0);
-        Base base20 = new Base(20,0);
-        Base base01 = new Base(0,10);
-        Base base11 = new Base(10,10);
-        Base base21 = new Base(20,10);
-        Base base02 = new Base(0,20);
-        Base base12 = new Base(10,20);
-        Base base22 = new Base(20,20);
+        Base base00 = new Base(3,3);
+        Base base10 = new Base((WIDTH_IN_TILES-1)/2,3);
+        Base base20 = new Base((WIDTH_IN_TILES-1)-3,3);
+        Base base01 = new Base(3,(HEIGHT_IN_TILES-1)/2);
+        Base base11 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)/2);
+        Base base21 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)/2);
+        Base base02 = new Base(3,(HEIGHT_IN_TILES-1)-3);
+        Base base12 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)-3);
+        Base base22 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)-3);
         bases.add(base00);
         bases.add(base01);
         bases.add(base02);
@@ -66,20 +73,23 @@ public class BaseGraph {
     public List<Base> findPath(List<Base> start, Base dest){
         Map<Base, ArrayList<Base>> paths = new HashMap<Base, ArrayList<Base>>();
         Set<Base> visited = new LinkedHashSet<Base>();
-        Stack<Base> stack = new Stack<Base>();
+        Queue<Base> stack = new LinkedList<Base>();
+        boolean continue_ = true;
         for(Base b: start){
-            stack.push(b);
+            stack.add(b);
             ArrayList<Base> path = new ArrayList<>();
             path.add(b);
             paths.put(b, path);
+            if (b == dest){
+                continue_ = false;
+            }
         }
-        boolean continue_ = true;
         while (continue_ && !stack.isEmpty()) {
-            Base vertex = stack.pop();
+            Base vertex = stack.remove();
             if (!visited.contains(vertex)) {
                 visited.add(vertex);
                 for (Base neighbour : vertex.getConnections()) {
-                    stack.push(neighbour);
+                    stack.add(neighbour);
                     ArrayList<Base> path = (ArrayList<Base>) paths.get(vertex).clone();
                     path.add(neighbour);
                     paths.put(neighbour, path);
@@ -95,5 +105,27 @@ public class BaseGraph {
 
     public List<Base> getBases() {
         return bases;
+    }
+
+
+    @Override
+    public void step() {
+        for(Base b:bases){
+            b.step();
+        }
+    }
+
+    @Override
+    public void render(SpriteBatch batch, CameraController cameraController) {
+        for(Base b:bases){
+            b.render(batch, cameraController);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        for(Base b:bases){
+            b.dispose();
+        }
     }
 }
