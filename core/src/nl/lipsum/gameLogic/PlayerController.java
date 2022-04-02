@@ -3,27 +3,34 @@ package nl.lipsum.gameLogic;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.ui.UiArmySelect;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerController implements GenericController {
-
-    public Army army;
+    public List<Army> armies;
+    int selectedArmy = 0;
     BaseGraph baseGraph;
+    UiArmySelect uiArmySelect;
+
     public Base base;
 
     public PlayerController(Base base, BaseGraph baseGraph){
         this.base = base;
-        this.army = new Army(base);
+        armies = new ArrayList<>();
+        armies.add(new Army(base));
+        armies.add(new Army(base));
+        armies.add(new Army(base));
         this.baseGraph = baseGraph;
     }
 
     @Override
     public void step() {
-        army.step();
     }
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        army.render(batch, cameraController);
     }
 
     @Override
@@ -33,6 +40,19 @@ public class PlayerController implements GenericController {
 
     public void goTo(Base base){
         //TODO: actually make sure the right army is selected
-        army.goTo(base, baseGraph);
+        armies.get(selectedArmy).goTo(base, baseGraph);
     }
+
+    public void setSelectedArmy(int selectedArmy){
+        this.selectedArmy = selectedArmy;
+    }
+
+    public void setUiArmySelect(UiArmySelect uiArmySelect) {
+        this.uiArmySelect = uiArmySelect;
+    }
+
+    public UiArmySelect getUiArmySelect() {
+        return uiArmySelect;
+    }
+
 }

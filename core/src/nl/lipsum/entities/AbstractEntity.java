@@ -1,18 +1,20 @@
 package nl.lipsum.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.LudumDare2022;
+import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
+import java.util.Optional;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -26,6 +28,7 @@ public class AbstractEntity implements Drawable {
     private Base previousBase;
     private Base nextBase;
     private List<Base> path;
+    private Army army;
 
     // Movement information
     private float speed;
@@ -74,6 +77,7 @@ public class AbstractEntity implements Drawable {
 
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
+        LudumDare2022.entityController.addEntity(this);
     }
 
     @Override
@@ -113,43 +117,30 @@ public class AbstractEntity implements Drawable {
             bullets.remove(_bullet);
         }
 
-        if (nextBase != previousBase || !path.isEmpty()){
-            if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
-                previousBase = nextBase;
-//                System.out.println(nextBase);
-                if (!path.isEmpty()){
-                    nextBase = path.get(0);
-                    path.remove(0);
-                }
-            }
-            if (nextBase != previousBase || !path.isEmpty()){
-                float diffX = nextBase.getX()*TILE_SIZE - xPosition;
-                float diffY = nextBase.getY()*TILE_SIZE - yPosition;
-                double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
-                float updateX = (float) (diffX*factor);
-                float updateY = (float) (diffY*factor);
-
-//                System.out.println("udpate pos");
-//                System.out.println(xPosition);
-//                System.out.println(yPosition);
-//                System.out.println(diffX);
-//                System.out.println(updateX);
-//                System.out.println(diffY);
-//                System.out.println(updateX);
-                if (Math.abs(updateX) < Math.abs(diffX)){
-                    this.xPosition += updateX;
-                } else {
-                    this.xPosition = nextBase.getX()*TILE_SIZE;
-                }
-                if (Math.abs(updateY) < Math.abs(diffY)){
-                    this.yPosition += updateY;
-                } else {
-                    this.yPosition = nextBase.getY()*TILE_SIZE;
-//                    System.out.println("At ypos " + this.yPosition);
-                }
+        if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
+            previousBase = nextBase;
+            if (!path.isEmpty()){
+                nextBase = path.get(0);
+                path.remove(0);
             }
         }
-
+        if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
+            float diffX = nextBase.getX()*TILE_SIZE - xPosition;
+            float diffY = nextBase.getY()*TILE_SIZE - yPosition;
+            double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
+            float updateX = (float) (diffX*factor);
+            float updateY = (float) (diffY*factor);
+            if (Math.abs(updateX) < Math.abs(diffX)){
+                this.xPosition += updateX;
+            } else {
+                this.xPosition = nextBase.getX()*TILE_SIZE;
+            }
+            if (Math.abs(updateY) < Math.abs(diffY)){
+                this.yPosition += updateY;
+            } else {
+                this.yPosition = nextBase.getY()*TILE_SIZE;
+            }
+        }
     }
 
     public void goTo(Base b, BaseGraph baseGraph){
@@ -159,8 +150,23 @@ public class AbstractEntity implements Drawable {
             startBases.add(nextBase);
         }
         path = baseGraph.findPath(startBases, b);
-        System.out.println(path);
         nextBase = path.get(0);
         path.remove(0);
+    }
+
+    public void kill() {
+        Optional.ofNullable(army).ifPresent(army -> army.removeEntity(this));
+
+        LudumDare2022.entityController.removeEntity(this);
+    }
+
+    public Army getArmy() {
+        return army;
+    }
+
+    public void setArmy(Army army) {
+        Optional.ofNullable(this.army).ifPresent(a -> a.removeEntity(this));
+        Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
+        this.army = army;
     }
 }
