@@ -78,8 +78,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
-				this.uiController.render(batch, this.cameraController);
 				this.buildingController.render(batch, this.cameraController);
+				this.uiController.render(batch, this.cameraController);
 				break;
 			case EXITING:
 				System.exit(0);
