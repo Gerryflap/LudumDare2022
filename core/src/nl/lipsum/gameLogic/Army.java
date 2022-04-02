@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
+import nl.lipsum.entities.AttackType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,8 @@ public class Army implements GenericController {
 
     public Army(Base startBase){
         entities = new ArrayList<>();
-        entities.add(new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("blueTile.jpg"), startBase));
+        entities.add(new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
+                100, 100, 150, 10, 10, 100, AttackType.RANGED));
     }
 
     @Override

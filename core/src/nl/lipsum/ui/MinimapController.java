@@ -24,14 +24,9 @@ public class MinimapController {
             if (Gdx.graphics.getWidth() - MINIMAP_WIDTH < Gdx.input.getX() && Gdx.input.getX() < Gdx.graphics.getWidth()){
                 if (Gdx.graphics.getHeight() - MINIMAP_HEIGHT < Gdx.input.getY() && Gdx.input.getY() < Gdx.graphics.getHeight()){
                     for(Base b:gameController.getBaseGraph().getBases()){
-
-                        float xDist = (Gdx.graphics.getWidth() - MINIMAP_WIDTH +  2*MINIMAP_BORDER_SIZE + ((MINIMAP_WIDTH-4*MINIMAP_BORDER_SIZE)/WIDTH_IN_TILES)* (b.getX()+1) - MINIMAP_BASE_SIZE/2)-Gdx.input.getX();
-                        float yDist = (Gdx.graphics.getHeight() - (2*MINIMAP_BORDER_SIZE + ((MINIMAP_HEIGHT-4*MINIMAP_BORDER_SIZE)/HEIGHT_IN_TILES)* (b.getY()+1) - MINIMAP_BASE_SIZE/2))-Gdx.input.getY();
+                        float xDist = (Gdx.graphics.getWidth() - MINIMAP_WIDTH +  2*MINIMAP_BORDER_SIZE + (b.getX()*(MINIMAP_WIDTH-4*MINIMAP_BORDER_SIZE)/WIDTH_IN_TILES) - MINIMAP_BASE_SIZE/2)-Gdx.input.getX();
+                        float yDist = (Gdx.graphics.getHeight() - (2*MINIMAP_BORDER_SIZE + (b.getY()*(MINIMAP_HEIGHT-4*MINIMAP_BORDER_SIZE)/HEIGHT_IN_TILES) - MINIMAP_BASE_SIZE/2))-Gdx.input.getY();
                         if(xDist*xDist + yDist*yDist <= (MINIMAP_BASE_SIZE*3)*(MINIMAP_BASE_SIZE*3)){
-//                            System.out.println("Base Clicked");
-//                            System.out.println(b.getX());
-//                            System.out.println(b.getY());
-//                            System.out.println(b);
                             gameController.goTo(b);
                         }
 
@@ -49,8 +44,8 @@ public class MinimapController {
         shapeRenderer.setColor(NODE_COLOR);
         for(Base b:gameController.getBaseGraph().getBases()){
             shapeRenderer.rect(
-                    camera.viewportWidth - MINIMAP_WIDTH +  2*MINIMAP_BORDER_SIZE + ((MINIMAP_WIDTH-4*MINIMAP_BORDER_SIZE)/WIDTH_IN_TILES)* (b.getX()+1) - MINIMAP_BASE_SIZE/2,
-                    2*MINIMAP_BORDER_SIZE + ((MINIMAP_HEIGHT - 4*MINIMAP_BORDER_SIZE)/HEIGHT_IN_TILES)* (b.getY()+1) - MINIMAP_BASE_SIZE/2,
+                    camera.viewportWidth - MINIMAP_WIDTH +  2*MINIMAP_BORDER_SIZE + (b.getX()*(MINIMAP_WIDTH-4*MINIMAP_BORDER_SIZE)/WIDTH_IN_TILES) - MINIMAP_BASE_SIZE/2,
+                    2*MINIMAP_BORDER_SIZE + (b.getY()*(MINIMAP_HEIGHT - 4*MINIMAP_BORDER_SIZE)/HEIGHT_IN_TILES) - MINIMAP_BASE_SIZE/2,
                     MINIMAP_BASE_SIZE,
                     MINIMAP_BASE_SIZE
             );

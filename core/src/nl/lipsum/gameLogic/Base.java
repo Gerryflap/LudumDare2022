@@ -1,17 +1,27 @@
 package nl.lipsum.gameLogic;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Base {
+import static nl.lipsum.Config.BASE_SIZE;
+import static nl.lipsum.Config.TILE_SIZE;
+
+public class Base implements GenericController {
     int x;
     int y;
     List<Base> connections;
+    Texture texture;
 
     public Base(int x, int y){
         this.x = x;
         this.y = y;
         this.connections = new ArrayList<>();
+        texture = new Texture("greenTile.jpg");
     }
 
     public void addConnection(Base b){
@@ -32,5 +42,20 @@ public class Base {
 
     public String toString(){
         return "Base x:" + Integer.toString(x) + " y:" + Integer.toString(y);
+    }
+
+    @Override
+    public void step() {
+        //TODO: check if base has switched sides
+    }
+
+    @Override
+    public void render(SpriteBatch batch, CameraController cameraController) {
+        batch.draw(texture, x*TILE_SIZE-BASE_SIZE/2, y*TILE_SIZE-BASE_SIZE/2, BASE_SIZE, BASE_SIZE);
+    }
+
+    @Override
+    public void dispose() {
+        texture.dispose();
     }
 }
