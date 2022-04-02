@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.ui.UiController;
 
 import static nl.lipsum.Config.*;
 
@@ -18,6 +19,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	GameController gameController;
 
 	private MainMenuController mainMenuController;
+	private UiController uiController;
 
 	private static GameState gameState;
 	
@@ -26,10 +28,11 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
-		cameraController = new CameraController(new OrthographicCamera(1280, 720));
+		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
+		uiController = new UiController();
 
 		gameState = GameState.MAIN_MENU;
 	}
@@ -43,6 +46,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.step();
 				this.gameController.step();
+				this.uiController.step();
 		}
 
 
@@ -55,6 +59,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
+				this.uiController.render(batch, this.cameraController);
 
 		}
 		batch.end();
@@ -64,6 +69,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		this.gameController.dispose();
+		this.uiController.dispose();
 	}
 
 	public static GameState getGameState() {
