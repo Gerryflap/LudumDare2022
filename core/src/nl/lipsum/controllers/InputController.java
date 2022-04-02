@@ -3,14 +3,19 @@ package nl.lipsum.controllers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import nl.lipsum.buildings.Building;
+import nl.lipsum.buildings.BuildingBuilder;
+import nl.lipsum.buildings.BuildingController;
 
 public class InputController implements InputProcessor {
 
     CameraController cameraController;
+    BuildingController buildingController;
 
-    public InputController(CameraController cameraController) {
+    public InputController(CameraController cameraController, BuildingController buildingController) {
         this.cameraController = cameraController;
         Gdx.input.setInputProcessor(this);
+        this.buildingController = buildingController;
     }
 
     @Override
@@ -32,6 +37,7 @@ public class InputController implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        buildingController.onClick(screenX, screenY);
         return false;
     }
 

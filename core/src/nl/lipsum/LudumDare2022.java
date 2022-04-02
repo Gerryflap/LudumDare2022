@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
@@ -19,6 +20,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	CameraController cameraController;
 	GameController gameController;
 	InputController inputController;
+	BuildingController buildingController;
 	HumanPlayerModel humanPlayerModel;
 
 	private MainMenuController mainMenuController;
@@ -36,7 +38,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		inputController = new InputController(cameraController);
+		buildingController = new BuildingController(cameraController);
+		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
@@ -73,6 +76,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
+				this.buildingController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
 				break;
 			case EXITING:

@@ -2,6 +2,8 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.buildings.BuildingBuilder;
+import nl.lipsum.buildings.BuildingGrid;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
