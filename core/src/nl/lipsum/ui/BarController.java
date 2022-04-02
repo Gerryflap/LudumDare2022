@@ -2,6 +2,7 @@ package nl.lipsum.ui;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.gameLogic.GameController;
 
 import static nl.lipsum.ui.UiConstants.*;
 
@@ -9,6 +10,11 @@ import static nl.lipsum.ui.UiConstants.*;
  * Controls the main UI bar
  */
 public class BarController {
+    private final GameController gameController;
+
+    public BarController(GameController gameController) {
+        this.gameController = gameController;
+    }
 
     public void step() {
 
