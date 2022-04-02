@@ -30,7 +30,7 @@ public class CameraController implements GenericController {
     }
 
     @Override
-    public void render(SpriteBatch batch, Camera camera) {
+    public void render(SpriteBatch batch, CameraController cameraController) {
         batch.setProjectionMatrix(this.camera.combined);
     }
 

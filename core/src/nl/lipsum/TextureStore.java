@@ -12,6 +12,7 @@ public class TextureStore {
         this.textures.put("background", new Texture("favorieteAfbeelding.jpg"));
         this.textures.put("orange", new Texture("orangeTile.jpg"));
         this.textures.put("white", new Texture("whiteTile.jpg"));
+        this.textures.put("blue", new Texture("blueTile.jpg"));
     }
 
     public Texture getTileTextureByName(String name) throws Exception {
