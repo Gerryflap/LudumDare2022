@@ -40,6 +40,7 @@ public abstract class MainMenuButton {
     }
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
+        spriteBatch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         Color color = new Color(125, 0, 125, 125);
@@ -47,6 +48,7 @@ public abstract class MainMenuButton {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
 
+        spriteBatch.begin();
         font.setColor(Color.BLACK);
 
         font.draw(spriteBatch, getButtonText(), getX(), getY() + font.getLineHeight());
