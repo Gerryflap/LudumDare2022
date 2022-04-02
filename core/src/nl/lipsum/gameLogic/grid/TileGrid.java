@@ -1,6 +1,7 @@
-package nl.lipsum;
+package nl.lipsum.gameLogic.grid;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.Drawable;
 
 public class TileGrid implements Drawable {
     public final int SIZE_X;

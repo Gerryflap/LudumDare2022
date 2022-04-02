@@ -1,7 +1,9 @@
-package nl.lipsum;
+package nl.lipsum.gameLogic.grid;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.Drawable;
+import nl.lipsum.TextureStore;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
