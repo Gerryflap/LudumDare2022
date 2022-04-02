@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import nl.lipsum.buildings.BuildingBuilder;
 import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
@@ -14,7 +13,6 @@ import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
-import sun.awt.image.BufferedImageDevice;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
