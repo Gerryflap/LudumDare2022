@@ -1,7 +1,6 @@
 package nl.lipsum.gameLogic;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class BaseGraph {
     List<Base> bases;
@@ -64,6 +63,32 @@ public class BaseGraph {
     }
 
     public List<Base> findPath(List<Base> start, Base dest){
-        return null;
+        Map<Base, ArrayList<Base>> paths = new HashMap<Base, ArrayList<Base>>();
+        Set<Base> visited = new LinkedHashSet<Base>();
+        Stack<Base> stack = new Stack<Base>();
+        for(Base b: start){
+            stack.push(b);
+            ArrayList<Base> path = new ArrayList<>();
+            path.add(b);
+            paths.put(b, path);
+        }
+        boolean continue_ = true;
+        while (continue_ && !stack.isEmpty()) {
+            Base vertex = stack.pop();
+            if (!visited.contains(vertex)) {
+                visited.add(vertex);
+                for (Base neighbour : vertex.getConnections()) {
+                    stack.push(neighbour);
+                    ArrayList<Base> path = (ArrayList<Base>) paths.get(vertex).clone();
+                    path.add(neighbour);
+                    paths.put(neighbour, path);
+                    if (neighbour == dest){
+                        continue_ = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return paths.get(dest);
     }
 }

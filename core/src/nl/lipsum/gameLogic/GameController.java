@@ -14,7 +14,7 @@ public class GameController implements GenericController {
     TextureStore textureStore;
     TileGrid tileGrid;
     List<PlayerController> playerControllers;
-    List<Base> bases;
+    BaseGraph baseGraph;
 
     public GameController(){
         textureStore = new TextureStore();
@@ -31,6 +31,8 @@ public class GameController implements GenericController {
 
         playerControllers = new ArrayList<>();
         playerControllers.add(new PlayerController());
+
+        baseGraph = new BaseGraph();
     }
 
     @Override
