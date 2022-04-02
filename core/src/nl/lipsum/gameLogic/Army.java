@@ -2,8 +2,8 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.CameraController;
-import nl.lipsum.GenericController;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
 
 import java.util.ArrayList;
