@@ -11,12 +11,12 @@ import static nl.lipsum.Config.TILE_SIZE;
 public class ResourceBuilding extends Building{
     public static final Texture tileTexture = new Texture("whiteTile.jpg");
 
-    public ResourceBuilding(int x, int y, PlayerModel owner) {
-        super(x, y, owner);
+    public ResourceBuilding(int x, int y, PlayerModel owner, int cost) {
+        super(x, y, owner, cost);
     }
 
     public void step(){
-        this.ownder.addResources(1);
+        this.owner.addResources(1);
     }
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {

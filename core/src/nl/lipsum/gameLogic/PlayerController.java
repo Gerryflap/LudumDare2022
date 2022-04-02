@@ -5,10 +5,13 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
 public class PlayerController implements GenericController {
-    Army army;
+
+    public Army army;
     BaseGraph baseGraph;
+    public Base base;
 
     public PlayerController(Base base, BaseGraph baseGraph){
+        this.base = base;
         this.army = new Army(base);
         this.baseGraph = baseGraph;
     }

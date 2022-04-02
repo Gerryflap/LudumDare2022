@@ -17,10 +17,10 @@ import nl.lipsum.ui.UiController;
 public class LudumDare2022 extends ApplicationAdapter {
 
 	SpriteBatch batch;
-	CameraController cameraController;
-	GameController gameController;
-	InputController inputController;
-	BuildingController buildingController;
+	public static CameraController cameraController;
+	public static GameController gameController;
+	public static InputController inputController;
+	public static BuildingController buildingController;
 	HumanPlayerModel humanPlayerModel;
 
 	private MainMenuController mainMenuController;
