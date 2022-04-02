@@ -2,14 +2,16 @@ package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.main_menu.MainMenuController;
+import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
-
-import static nl.lipsum.Config.*;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
@@ -17,11 +19,14 @@ public class LudumDare2022 extends ApplicationAdapter {
 	Texture img;
 	CameraController cameraController;
 	GameController gameController;
+	InputController inputController;
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
 
 	private static GameState gameState;
+
+	private static Music mainMenuMusic;
 	
 	@Override
 	public void create () {
@@ -29,16 +34,22 @@ public class LudumDare2022 extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		inputController = new InputController(cameraController);
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
 		uiController = new UiController(gameController);
 
 		gameState = GameState.MAIN_MENU;
+
+		mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/main_menu.wav"));
 	}
 
 	@Override
 	public void render () {
+		// Manage music
+		manageMainMenuMusic();
+
 		// Step Methods called here for controllers
 		switch (gameState) {
 			case MAIN_MENU:
@@ -56,13 +67,31 @@ public class LudumDare2022 extends ApplicationAdapter {
 		switch (gameState) {
 			case MAIN_MENU:
 				mainMenuController.render(batch, null);
+				break;
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
-
+				break;
+			case EXITING:
+				System.exit(0);
+				break;
 		}
 		batch.end();
+	}
+
+	private static void manageMainMenuMusic() {
+		if (gameState == GameState.MAIN_MENU) {
+			if (!mainMenuMusic.isPlaying()) {
+				mainMenuMusic.play();
+				mainMenuMusic.setVolume(0.1f);
+				mainMenuMusic.setLooping(true);
+			}
+		} else {
+			if (mainMenuMusic.isPlaying()) {
+				mainMenuMusic.stop();
+			}
+		}
 	}
 
 	@Override
@@ -70,6 +99,9 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch.dispose();
 		this.gameController.dispose();
 		this.uiController.dispose();
+		this.mainMenuController.dispose();
+
+		mainMenuMusic.dispose();
 	}
 
 	public static GameState getGameState() {

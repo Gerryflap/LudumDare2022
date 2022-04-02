@@ -2,7 +2,12 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
+import nl.lipsum.gameLogic.grid.Tile;
+import nl.lipsum.gameLogic.grid.TileGrid;
+import nl.lipsum.gameLogic.grid.WorldGen;
 
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
@@ -17,6 +22,7 @@ public class GameController implements GenericController {
     public GameController(){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
+        WorldGen.generateWorld(tileGrid);
 //        try {
 //            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"), );
 //        } catch (Exception e) {

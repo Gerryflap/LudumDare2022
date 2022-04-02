@@ -1,8 +1,8 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.CameraController;
-import nl.lipsum.GenericController;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
 
 public class PlayerController implements GenericController {
     Army army;
