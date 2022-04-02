@@ -3,6 +3,7 @@ package nl.lipsum.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.gameLogic.GameController;
@@ -46,8 +47,19 @@ public class BarController {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(BAR_COLOR);
         shapeRenderer.rect(0, 0, camera.viewportWidth, BAR_HEIGHT);
+        shapeRenderer.rect(0, BAR_HEIGHT, RESOURCE_COUNTER_WIDTH, RESOURCE_COUNTER_HEIGHT);
+        shapeRenderer.circle(RESOURCE_COUNTER_WIDTH, BAR_HEIGHT, RESOURCE_COUNTER_HEIGHT);
         shapeRenderer.rect(camera.viewportWidth - MINIMAP_WIDTH, 0, camera.viewportWidth, MINIMAP_HEIGHT);
         shapeRenderer.end();
+
+        // draw resource counter
+        BitmapFont font = new BitmapFont();
+        SpriteBatch fontSpriteBatch = new SpriteBatch();
+        font.setColor(UI_FONT_COLOR);
+
+        fontSpriteBatch.begin();
+        font.draw(fontSpriteBatch, String.format("Resources: %s", humanPlayerModel.getAmountResources()), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+        fontSpriteBatch.end();
 
         //draw item icons
         SpriteBatch spriteBatch = new SpriteBatch();
