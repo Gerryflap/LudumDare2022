@@ -1,7 +1,11 @@
-package nl.lipsum;
+package nl.lipsum.gameLogic.grid;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.Drawable;
 
+/**
+ * Holds and draws the tile grid
+ */
 public class TileGrid implements Drawable {
     public final int SIZE_X;
     public final int SIZE_Y;
@@ -12,7 +16,6 @@ public class TileGrid implements Drawable {
         this.SIZE_X = sizeX;
         this.SIZE_Y = sizeY;
         this.tiles = new Tile[this.SIZE_X][this.SIZE_Y];
-
     }
 
     public Tile getTile(int x, int y) {
@@ -29,7 +32,7 @@ public class TileGrid implements Drawable {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
                 if(this.tiles[x][y] != null){
-                    this.tiles[x][y].draw(batch);
+                    this.tiles[x][y].draw(batch, x, y);
                 }
             }
         }
