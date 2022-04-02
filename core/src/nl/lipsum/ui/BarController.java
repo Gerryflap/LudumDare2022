@@ -19,7 +19,6 @@ public class BarController {
         shapeRenderer.setColor(BAR_COLOR);
         shapeRenderer.rect(0, 0, camera.viewportWidth, BAR_HEIGHT);
         shapeRenderer.rect(camera.viewportWidth - MINIMAP_WIDTH, 0, camera.viewportWidth, MINIMAP_HEIGHT);
-
         shapeRenderer.end();
     }
 

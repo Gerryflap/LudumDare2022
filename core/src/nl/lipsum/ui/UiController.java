@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.CameraController;
 import nl.lipsum.GenericController;
 
 /**
@@ -22,10 +23,11 @@ public class UiController implements GenericController {
     }
 
     @Override
-    public void render(SpriteBatch batch, Camera camera) {
-        barController.render(shapeRenderer, camera);
-        minimapController.render(shapeRenderer, camera);
-
+    public void render(SpriteBatch batch, CameraController cameraController) {
+        batch.end();
+        barController.render(shapeRenderer, cameraController.getCamera());
+        minimapController.render(shapeRenderer, cameraController.getCamera());
+        batch.begin();
     }
 
     public void dispose() {

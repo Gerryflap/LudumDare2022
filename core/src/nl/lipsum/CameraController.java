@@ -38,4 +38,8 @@ public class CameraController implements GenericController {
     public void dispose() {
 
     }
+
+    public Camera getCamera() {
+        return camera;
+    }
 }

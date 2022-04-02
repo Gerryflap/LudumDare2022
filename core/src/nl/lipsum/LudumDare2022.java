@@ -24,7 +24,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
-		cameraController = new CameraController(new OrthographicCamera(1280, 720));
+		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		gameController = new GameController();
 //		img = new Texture("badlogic.jpg");
 
@@ -38,8 +38,6 @@ public class LudumDare2022 extends ApplicationAdapter {
 		this.cameraController.step();
 		this.gameController.step();
 		uiController.step();
-
-		camera.update();
 
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
