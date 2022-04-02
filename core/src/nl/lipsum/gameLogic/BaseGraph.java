@@ -38,36 +38,40 @@ public class BaseGraph implements GenericController {
         base00.addConnection(base01);
         base00.addConnection(base10);
         //Center needs to be last otherwise breadth first search doesn't work as pathfinding
-        base00.addConnection(base11);
+//        base00.addConnection(base11);
 
         base02.addConnection(base01);
         base02.addConnection(base12);
-        base02.addConnection(base11);
+//        base02.addConnection(base11);
 
         base20.addConnection(base21);
         base20.addConnection(base10);
-        base20.addConnection(base11);
+//        base20.addConnection(base11);
 
         base22.addConnection(base21);
         base22.addConnection(base12);
-        base22.addConnection(base11);
+//        base22.addConnection(base11);
 
         base01.addConnection(base00);
         base01.addConnection(base02);
+        base01.addConnection(base11);
 
         base10.addConnection(base00);
         base10.addConnection(base20);
+        base10.addConnection(base11);
 
         base21.addConnection(base22);
         base21.addConnection(base20);
+        base21.addConnection(base11);
 
         base12.addConnection(base22);
         base12.addConnection(base02);
+        base12.addConnection(base11);
 
-        base11.addConnection(base00);
-        base11.addConnection(base02);
-        base11.addConnection(base20);
-        base11.addConnection(base22);
+        base11.addConnection(base01);
+        base11.addConnection(base12);
+        base11.addConnection(base21);
+        base11.addConnection(base10);
     }
 
     public List<Base> findPath(List<Base> start, Base dest){
@@ -92,7 +96,9 @@ public class BaseGraph implements GenericController {
                     stack.add(neighbour);
                     ArrayList<Base> path = (ArrayList<Base>) paths.get(vertex).clone();
                     path.add(neighbour);
-                    paths.put(neighbour, path);
+                    if(!paths.containsKey(neighbour)){
+                        paths.put(neighbour, path);
+                    }
                     if (neighbour == dest){
                         continue_ = false;
                         break;
