@@ -1,8 +1,11 @@
 package nl.lipsum.buildings;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.LudumDare2022;
+import nl.lipsum.StaticUtils;
+import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.gameLogic.GameController;
@@ -47,8 +50,8 @@ public abstract class UnitBuilding extends Building {
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
-        batch.draw(tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+    public void draw(SpriteBatch batch, CameraController cameraController) {
+        StaticUtils.smartDraw(batch, cameraController, tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
     }
 
     @Override
