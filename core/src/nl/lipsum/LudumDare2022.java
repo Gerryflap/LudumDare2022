@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
-import nl.lipsum.controllers.MainMenuController;
 import nl.lipsum.ui.UiController;
 
 public class LudumDare2022 extends ApplicationAdapter {
@@ -59,11 +59,15 @@ public class LudumDare2022 extends ApplicationAdapter {
 		switch (gameState) {
 			case MAIN_MENU:
 				mainMenuController.render(batch, null);
+				break;
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
-
+				break;
+			case EXITING:
+				System.exit(0);
+				break;
 		}
 		batch.end();
 	}
