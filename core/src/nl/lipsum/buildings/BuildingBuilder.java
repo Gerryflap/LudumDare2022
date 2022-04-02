@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -36,7 +37,7 @@ public class BuildingBuilder implements Drawable {
         this.active = false;
     }
 
-    public void placeBuilding(int x, int y, BuildingGrid bg){
+    public void placeBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
         if(active){
             int[] tileCoords = camCon.screenToTile(x, y);
             int tx = tileCoords[0];
@@ -44,7 +45,7 @@ public class BuildingBuilder implements Drawable {
             Building nb = null;
             switch (this.type) {
                 case "resource":
-                    nb = new ResourceBuilding(tx, ty);
+                    nb = new ResourceBuilding(tx, ty, player);
                     break;
             }
             try {

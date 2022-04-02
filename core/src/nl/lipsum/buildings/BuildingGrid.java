@@ -36,6 +36,16 @@ public class BuildingGrid implements Drawable{
         }
     }
 
+    public void step(){
+        for (int x = 0; x < SIZE_X; x++) {
+            for (int y = 0; y < SIZE_Y; y++) {
+                if(this.buildings[x][y] != null) {
+                    this.buildings[x][y].step();
+                }
+            }
+        }
+    }
+
     public void dispose() {
         for (int x = 0; x < SIZE_X; x++) {
             for (int y = 0; y < SIZE_Y; y++) {
