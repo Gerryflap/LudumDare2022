@@ -29,4 +29,8 @@ public class Base {
     public int getY() {
         return y;
     }
+
+    public String toString(){
+        return "Base x:" + Integer.toString(x) + " y:" + Integer.toString(y);
+    }
 }

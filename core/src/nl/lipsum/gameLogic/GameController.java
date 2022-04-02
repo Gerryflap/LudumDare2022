@@ -11,17 +11,17 @@ public class GameController implements GenericController {
     TextureStore textureStore;
     TileGrid tileGrid;
     PlayerController playerController;
-    AbstractEntity exampleEntity;
+//    AbstractEntity exampleEntity;
     BaseGraph baseGraph;
 
     public GameController(){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
-        try {
-            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"), );
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
         tileGrid.setTile(0, 0, new Tile(0, 0, "orange", textureStore));
         tileGrid.setTile(20, 0, new Tile(20, 0, "orange", textureStore));
         tileGrid.setTile(0, 20, new Tile(0, 20, "orange", textureStore));
@@ -32,9 +32,9 @@ public class GameController implements GenericController {
         tileGrid.setTile(10, 20, new Tile(10, 20, "white", textureStore));
         tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 
-        playerController = new PlayerController();
-
         baseGraph = new BaseGraph();
+        playerController = new PlayerController(baseGraph.getBases().get(0), baseGraph);
+
     }
 
     @Override
@@ -45,7 +45,7 @@ public class GameController implements GenericController {
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         tileGrid.draw(batch);
-        exampleEntity.draw(batch);
+//        exampleEntity.draw(batch);
         playerController.render(batch, cameraController);
     }
 
@@ -57,5 +57,9 @@ public class GameController implements GenericController {
 
     public BaseGraph getBaseGraph() {
         return baseGraph;
+    }
+
+    public void goTo(Base base){
+        playerController.goTo(base);
     }
 }
