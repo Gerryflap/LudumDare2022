@@ -28,6 +28,7 @@ public class PlayButton extends MainMenuButton {
         // Check if button is pressed
         if (isCoordinateInButtonBox(locationCursor) && Gdx.input.isTouched()) {
             LudumDare2022.setGameState(GameState.PLAYING);
+            emitSound(MainMenuSound.GAME_START);
         }
     }
 

@@ -20,6 +20,7 @@ public abstract class MainMenuButton {
     private BitmapFont font;
 
     private Sound hoverSound;
+    private Sound gameStartSound;
 
     private boolean cursorInButtonBox;
 
@@ -33,11 +34,13 @@ public abstract class MainMenuButton {
         this.font = new BitmapFont();
 
         hoverSound = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/select_hover.wav"));
+        gameStartSound = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/start_sound.wav"));
 
         this.cursorInButtonBox = false;
     }
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
+        spriteBatch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         Color color = new Color(125, 0, 125, 125);
@@ -45,6 +48,7 @@ public abstract class MainMenuButton {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
 
+        spriteBatch.begin();
         font.setColor(Color.BLACK);
 
         font.draw(spriteBatch, getButtonText(), getX(), getY() + font.getLineHeight());
@@ -84,11 +88,15 @@ public abstract class MainMenuButton {
             case HOVER:
                 hoverSound.play();
                 break;
+            case GAME_START:
+                gameStartSound.play();
+                break;
         }
     }
 
     public void dispose() {
         hoverSound.dispose();
+        gameStartSound.dispose();
     }
 
     public int getX() {
