@@ -118,8 +118,6 @@ public class AbstractEntity implements Drawable {
                     nextBase = path.get(0);
                     path.remove(0);
                 }
-//                System.out.println(nextBase);
-                System.out.println("hoi" + nextBase + previousBase);
             }
             if (nextBase != previousBase || !path.isEmpty()){
                 float diffX = nextBase.getX()*TILE_SIZE - xPosition;

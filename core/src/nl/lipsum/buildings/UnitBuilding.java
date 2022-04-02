@@ -30,7 +30,6 @@ public abstract class UnitBuilding extends Building {
 
     @Override
     public void step() {
-        System.out.println(units[0] + " " + units[9]);
         trainingProgress += 1;
         if (trainingProgress > trainingTime) {
             if (unitPointer >= unitCap) {
@@ -38,7 +37,7 @@ public abstract class UnitBuilding extends Building {
             } else {
                 trainingProgress = 0;
                 AbstractEntity unit = new AbstractEntity(0, 0, new Texture("greenTile.jpg"), GameController.playerController.base,
-                        10, 10, 10, 10, 10, 10, AttackType.RANGED);
+                        100, 100, 300, 10, 25, 100, AttackType.RANGED);
                 GameController.playerController.army.entities.add(unit);
                 this.units[unitPointer] = unit;
                 unitPointer += 1;

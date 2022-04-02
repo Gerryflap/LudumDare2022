@@ -19,7 +19,7 @@ public class Army implements GenericController {
     public Army(Base startBase){
         entities = new ArrayList<>();
         entities.add(new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
-                100, 100, 150, 10, 10, 100, AttackType.RANGED));
+                100, 100, 300, 10, 25, 100, AttackType.RANGED));
     }
 
     @Override
