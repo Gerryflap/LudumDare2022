@@ -2,6 +2,8 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.buildings.BuildingBuilder;
+import nl.lipsum.buildings.BuildingGrid;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
@@ -18,7 +20,6 @@ public class GameController implements GenericController {
     List<PlayerController> playerControllers;
     AbstractEntity exampleEntity;
     BaseGraph baseGraph;
-
     public GameController(){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH,HEIGHT);
@@ -57,6 +58,5 @@ public class GameController implements GenericController {
     @Override
     public void dispose() {
         tileGrid.dispose();
-
     }
 }

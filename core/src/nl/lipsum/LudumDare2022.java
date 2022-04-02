@@ -6,11 +6,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import nl.lipsum.buildings.BuildingBuilder;
+import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.controllers.MainMenuController;
 import nl.lipsum.ui.UiController;
+import sun.awt.image.BufferedImageDevice;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
@@ -19,6 +22,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	CameraController cameraController;
 	GameController gameController;
 	InputController inputController;
+	BuildingController buildingController;
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
@@ -31,7 +35,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
-		inputController = new InputController(cameraController);
+		buildingController = new BuildingController(cameraController);
+		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
@@ -63,6 +68,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
+				this.buildingController.render(batch, this.cameraController);
 
 		}
 		batch.end();

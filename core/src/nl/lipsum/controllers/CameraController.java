@@ -1,10 +1,15 @@
 package nl.lipsum.controllers;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
+
+import static java.lang.Math.floor;
+import static nl.lipsum.Config.TILE_SIZE;
 
 public class CameraController implements GenericController {
 
@@ -61,6 +66,14 @@ public class CameraController implements GenericController {
         }
 
         this.camera.update();
+    }
+
+    public int[] screenToTile(int x, int y){
+        Vector3 touchPos = new Vector3(x, y, 0);
+        Vector3 worldPos = camera.unproject(touchPos);
+//        return new int[] {(int) worldPos.x,(int) worldPos.y};
+
+        return new int[] {((int) (floor(worldPos.x + TILE_SIZE/2))) / TILE_SIZE,((int) floor(worldPos.y + TILE_SIZE/2) ) / TILE_SIZE};
     }
 
     @Override
