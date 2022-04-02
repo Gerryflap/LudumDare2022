@@ -1,14 +1,14 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import nl.lipsum.controllers.CameraController;
-import nl.lipsum.controllers.InputController;
-import nl.lipsum.controllers.MainMenuController;
-import nl.lipsum.controllers.GameController;
+import nl.lipsum.gameLogic.GameController;
+
+import static nl.lipsum.Config.*;
 
 public class LudumDare2022 extends ApplicationAdapter {
 
@@ -19,6 +19,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	InputController inputController;
 
 	private MainMenuController mainMenuController;
+	private UiController uiController;
 
 	private static GameState gameState;
 	
@@ -27,11 +28,12 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		//todo: magic constants vervangen voor viewport width/height
-		cameraController = new CameraController(new OrthographicCamera(1280, 720));
+		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		inputController = new InputController(cameraController);
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
+		uiController = new UiController();
 
 		gameState = GameState.MAIN_MENU;
 	}
@@ -45,6 +47,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.step();
 				this.gameController.step();
+				this.uiController.step();
 		}
 
 
@@ -57,6 +60,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
+				this.uiController.render(batch, this.cameraController);
 
 		}
 		batch.end();
@@ -66,6 +70,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		this.gameController.dispose();
+		this.uiController.dispose();
 	}
 
 	public static GameState getGameState() {
