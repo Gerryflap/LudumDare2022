@@ -14,20 +14,44 @@ import java.lang.Math;
 import static nl.lipsum.Config.TILE_SIZE;
 
 public class AbstractEntity implements Drawable {
-    float xPosition;
-    float yPosition;
-    float xSize;
-    float ySize;
-    Texture texture;
-    Base previousBase;
-    Base nextBase;
-    List<Base> path;
 
-    public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base) {
-        this(xPosition, yPosition, 75, 75, texture, base);
+    private float xPosition;
+    private float yPosition;
+    private float xSize;
+    private float ySize;
+    private Texture texture;
+    private Base previousBase;
+    private Base nextBase;
+    private List<Base> path;
+
+    // Movement information
+    private float speed;
+    private float maxSpeed;
+
+    // Defense information
+    private int health;
+    private int maxHealth;
+
+    // Offense information
+    private AttackType attackType;
+    private float bulletSpeed;
+    private float bulletDamage;
+    private int bulletReloadSpeed;
+
+    private int bulletReloadProgress;
+
+    private List<Bullet> bullets = new ArrayList<>();
+
+    // Unit status
+    private EntityStatus entityStatus;
+
+    public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
+        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType);
     }
 
-    public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base) {
+    public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = xSize;
@@ -36,14 +60,56 @@ public class AbstractEntity implements Drawable {
         this.previousBase = base;
         this.nextBase = base;
         this.path = new ArrayList<>();
+        this.health = health;
+        this.maxHealth = maxHealth;
+        this.bulletSpeed = bulletSpeed;
+        this.bulletDamage = bulletDamage;
+        this.bulletReloadSpeed = bulletReloadSpeed;
+        this.speed = 0;
+        this.maxSpeed = maxSpeed;
+        this.attackType = attackType;
+
+        // TODO: IDLE By default, currently testing
+        this.entityStatus = EntityStatus.COMBAT;
     }
 
     @Override
     public void draw(SpriteBatch batch) {
         batch.draw(texture, this.xPosition - (this.xSize/2), this.yPosition - (this.ySize/2), this.xSize, this.ySize);
+
+        if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
+            if (bulletReloadProgress <= 0) {
+                bulletReloadProgress = bulletReloadSpeed;
+                bullets.add(new Bullet(this.xPosition, this.yPosition, 100, 50, this.bulletSpeed));
+                // fire bullet
+            }
+            bulletReloadProgress -= 1;
+        }
+
+        for (Bullet _bullet :
+                bullets) {
+            _bullet.draw(batch);
+
+        }
+
+
     }
 
-    public void step(){
+
+
+    public void step() {
+        List<Bullet> bulletsToRemove = new ArrayList<>();
+
+        for (Bullet _bullet : bullets) {
+            if (_bullet.step()) {
+                bulletsToRemove.add(_bullet);
+            }
+        }
+
+        for (Bullet _bullet : bulletsToRemove) {
+            bullets.remove(_bullet);
+        }
+
         if (nextBase != previousBase || !path.isEmpty()){
             if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
                 previousBase = nextBase;
@@ -58,7 +124,7 @@ public class AbstractEntity implements Drawable {
             if (nextBase != previousBase || !path.isEmpty()){
                 float diffX = nextBase.getX()*TILE_SIZE - xPosition;
                 float diffY = nextBase.getY()*TILE_SIZE - yPosition;
-                double factor = Gdx.graphics.getDeltaTime()*1000/(Math.sqrt(diffX*diffX + diffY*diffY));
+                double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
                 float updateX = (float) (diffX*factor);
                 float updateY = (float) (diffY*factor);
 
