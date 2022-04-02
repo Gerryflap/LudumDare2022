@@ -6,7 +6,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import nl.lipsum.gameLogic.GameController;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GameController;
+import nl.lipsum.controllers.InputController;
+import nl.lipsum.controllers.MainMenuController;
+import nl.lipsum.ui.UiController;
 
 import static nl.lipsum.Config.*;
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class CameraController implements GenericController {
 
-    public OrthographicCamera camera;
+    private OrthographicCamera camera;
     public float zoomedAmount = 0;
 
     public int cameraMovementSpeed = 15;
@@ -29,6 +29,10 @@ public class CameraController implements GenericController {
         if (this.activeKeys.contains(keycode)) {
             this.activeKeys.remove((Integer) keycode);
         }
+    }
+
+    public OrthographicCamera getCamera() {
+        return this.camera;
     }
 
     @Override

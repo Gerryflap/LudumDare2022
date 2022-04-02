@@ -1,11 +1,9 @@
 package nl.lipsum.ui;
 
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import nl.lipsum.CameraController;
-import nl.lipsum.GenericController;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
 
 /**
  * Controller of the static user interface (minimap and top/bottom bars)
