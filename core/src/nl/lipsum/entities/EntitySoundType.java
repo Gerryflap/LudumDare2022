@@ -2,7 +2,8 @@ package nl.lipsum.entities;
 
 public enum EntitySoundType {
 
-    FIRE("fire.wav");
+    FIRE("fire.wav"),
+    DEATH("death.wav");
 
     String path;
 
