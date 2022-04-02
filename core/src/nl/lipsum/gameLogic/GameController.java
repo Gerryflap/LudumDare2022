@@ -6,8 +6,6 @@ import nl.lipsum.buildings.BuildingBuilder;
 import nl.lipsum.buildings.BuildingGrid;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
-import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.gameLogic.grid.Tile;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
 
@@ -47,6 +45,7 @@ public class GameController implements GenericController {
 
     @Override
     public void step() {
+        baseGraph.step();
         playerController.step();
     }
 
@@ -54,12 +53,14 @@ public class GameController implements GenericController {
     public void render(SpriteBatch batch, CameraController cameraController) {
         tileGrid.draw(batch);
 //        exampleEntity.draw(batch);
+        baseGraph.render(batch, cameraController);
         playerController.render(batch, cameraController);
     }
 
     @Override
     public void dispose() {
         tileGrid.dispose();
+        baseGraph.dispose();
         playerController.dispose();
     }
 

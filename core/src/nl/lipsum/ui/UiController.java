@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameLogic.GameController;
 
 /**
@@ -14,8 +15,8 @@ public class UiController implements GenericController {
     private final BarController barController;
     private final MinimapController minimapController;
 
-    public UiController(GameController gameController){
-        this.barController = new BarController(gameController);
+    public UiController(GameController gameController, HumanPlayerModel humanPlayerModel){
+        this.barController = new BarController(gameController, humanPlayerModel);
         this.minimapController = new MinimapController(gameController);
     }
 
