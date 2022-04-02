@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.TextureStore;
-import nl.lipsum.gameLogic.player.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 
 import static nl.lipsum.ui.UiConstants.*;
 

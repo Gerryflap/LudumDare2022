@@ -1,4 +1,4 @@
-package nl.lipsum.gameLogic.player;
+package nl.lipsum.gameLogic.playermodel;
 
 // abstract omdat we ook ai player models hebben straks
 public abstract class PlayerModel {

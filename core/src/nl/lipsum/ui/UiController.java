@@ -2,10 +2,9 @@ package nl.lipsum.ui;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import nl.lipsum.TextureStore;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
-import nl.lipsum.gameLogic.player.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameLogic.GameController;
 
 /**

@@ -1,7 +1,6 @@
 package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.GameController;
-import nl.lipsum.gameLogic.player.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
@@ -41,7 +40,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameController = new GameController();
 
 		mainMenuController = new MainMenuController();
-		uiController = new UiController(humanPlayerModel, gameController bekijk dit even);
+		uiController = new UiController(gameController, humanPlayerModel);
 
 		gameState = GameState.MAIN_MENU;
 
