@@ -110,45 +110,31 @@ public class AbstractEntity implements Drawable {
             bullets.remove(_bullet);
         }
 
-        if (nextBase != previousBase || !path.isEmpty()){
-            if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
-                previousBase = nextBase;
-//                System.out.println(nextBase);
-                if (!path.isEmpty()){
-                    nextBase = path.get(0);
-                    path.remove(0);
-                }
-//                System.out.println(nextBase);
-                System.out.println("hoi" + nextBase + previousBase);
+        if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
+            previousBase = nextBase;
+            if (!path.isEmpty()){
+                nextBase = path.get(0);
+                path.remove(0);
             }
-            if (nextBase != previousBase || !path.isEmpty()){
-                float diffX = nextBase.getX()*TILE_SIZE - xPosition;
-                float diffY = nextBase.getY()*TILE_SIZE - yPosition;
-                double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
-                float updateX = (float) (diffX*factor);
-                float updateY = (float) (diffY*factor);
-
-//                System.out.println("udpate pos");
-//                System.out.println(xPosition);
-//                System.out.println(yPosition);
-//                System.out.println(diffX);
-//                System.out.println(updateX);
-//                System.out.println(diffY);
-//                System.out.println(updateX);
-                if (Math.abs(updateX) < Math.abs(diffX)){
-                    this.xPosition += updateX;
-                } else {
-                    this.xPosition = nextBase.getX()*TILE_SIZE;
-                }
-                if (Math.abs(updateY) < Math.abs(diffY)){
-                    this.yPosition += updateY;
-                } else {
-                    this.yPosition = nextBase.getY()*TILE_SIZE;
-//                    System.out.println("At ypos " + this.yPosition);
-                }
+            System.out.println("hoi" + nextBase + previousBase);
+        }
+        if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
+            float diffX = nextBase.getX()*TILE_SIZE - xPosition;
+            float diffY = nextBase.getY()*TILE_SIZE - yPosition;
+            double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
+            float updateX = (float) (diffX*factor);
+            float updateY = (float) (diffY*factor);
+            if (Math.abs(updateX) < Math.abs(diffX)){
+                this.xPosition += updateX;
+            } else {
+                this.xPosition = nextBase.getX()*TILE_SIZE;
+            }
+            if (Math.abs(updateY) < Math.abs(diffY)){
+                this.yPosition += updateY;
+            } else {
+                this.yPosition = nextBase.getY()*TILE_SIZE;
             }
         }
-
     }
 
     public void goTo(Base b, BaseGraph baseGraph){
@@ -158,7 +144,6 @@ public class AbstractEntity implements Drawable {
             startBases.add(nextBase);
         }
         path = baseGraph.findPath(startBases, b);
-        System.out.println(path);
         nextBase = path.get(0);
         path.remove(0);
     }
