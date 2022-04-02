@@ -26,8 +26,6 @@ public class CameraController implements GenericController {
     private static final float CAMERA_MAX_X = Config.TILE_SIZE * Config.WIDTH_IN_TILES;
     private static final float CAMERA_MAX_Y = Config.TILE_SIZE * Config.HEIGHT_IN_TILES;
 
-
-
     public int cameraMovementSpeed = 15;
     private ArrayList<Integer> activeKeys;
 

@@ -52,7 +52,7 @@ public class BuildingBuilder implements Drawable {
                     nb = new ResourceBuilding(tx, ty, player, 10);
                     break;
                 case UNIT:
-                    nb = new InfantryBuilding(tx, ty, player, 10, 10, 10);
+                    nb = new InfantryBuilding(tx, ty, player, 10, 100, 2);
                     break;
             }
             try {
