@@ -1,6 +1,7 @@
 package nl.lipsum.main_menu.buttons;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -18,6 +19,10 @@ public abstract class MainMenuButton {
     private String buttonText;
     private BitmapFont font;
 
+    private Sound hoverSound;
+
+    private boolean cursorInButtonBox;
+
     public MainMenuButton(MainMenuController mainMenuController, int x, int y, int height, int width, String buttonText) {
         this.mainMenuController = mainMenuController;
         this.x = x;
@@ -25,7 +30,11 @@ public abstract class MainMenuButton {
         this.height = height;
         this.width = width;
         this.buttonText = buttonText;
-        this.font = new BitmapFont(); //or use alex answer to use custom font
+        this.font = new BitmapFont();
+
+        hoverSound = Gdx.audio.newSound(Gdx.files.internal("audio/sfx/select_hover.wav"));
+
+        this.cursorInButtonBox = false;
     }
 
     public void render(ShapeRenderer shapeRenderer, SpriteBatch spriteBatch) {
@@ -36,10 +45,23 @@ public abstract class MainMenuButton {
         shapeRenderer.rect(getX(), getY(), getWidth(), getHeight());
         shapeRenderer.end();
 
+        font.setColor(Color.BLACK);
+
         font.draw(spriteBatch, getButtonText(), getX(), getY() + font.getLineHeight());
     }
 
-    public abstract void step(int x, int y);
+    public void step(int x, int y) {
+        Coordinate locationCursor = convertCringeTopLeftCoordinateToNormalBottomLeftCoordinateForButtonPressed(x, y);
+
+        if (isCoordinateInButtonBox(locationCursor)) {
+            if (!cursorInButtonBox) {
+                emitSound(MainMenuSound.HOVER);
+            }
+            cursorInButtonBox = true;
+        } else {
+            cursorInButtonBox = false;
+        }
+    }
 
     public MainMenuController getMainMenuController() {
         return mainMenuController;
@@ -55,6 +77,18 @@ public abstract class MainMenuButton {
 
     public static Coordinate convertCringeTopLeftCoordinateToNormalBottomLeftCoordinateForButtonPressed(int x, int y) {
         return new Coordinate(x, Gdx.graphics.getHeight() - y);
+    }
+
+    public void emitSound(MainMenuSound mainMenuSound) {
+        switch (mainMenuSound) {
+            case HOVER:
+                hoverSound.play();
+                break;
+        }
+    }
+
+    public void dispose() {
+        hoverSound.dispose();
     }
 
     public int getX() {

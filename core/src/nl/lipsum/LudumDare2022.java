@@ -2,6 +2,7 @@ package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,6 +25,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private UiController uiController;
 
 	private static GameState gameState;
+
+	private static Music mainMenuMusic;
 	
 	@Override
 	public void create () {
@@ -38,10 +41,15 @@ public class LudumDare2022 extends ApplicationAdapter {
 		uiController = new UiController();
 
 		gameState = GameState.MAIN_MENU;
+
+		mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/main_menu.wav"));
 	}
 
 	@Override
 	public void render () {
+		// Manage music
+		manageMainMenuMusic();
+
 		// Step Methods called here for controllers
 		switch (gameState) {
 			case MAIN_MENU:
@@ -72,11 +80,28 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch.end();
 	}
 
+	private static void manageMainMenuMusic() {
+		if (gameState == GameState.MAIN_MENU) {
+			if (!mainMenuMusic.isPlaying()) {
+				mainMenuMusic.play();
+				mainMenuMusic.setVolume(0.1f);
+				mainMenuMusic.setLooping(true);
+			}
+		} else {
+			if (mainMenuMusic.isPlaying()) {
+				mainMenuMusic.stop();
+			}
+		}
+	}
+
 	@Override
 	public void dispose () {
 		batch.dispose();
 		this.gameController.dispose();
 		this.uiController.dispose();
+		this.mainMenuController.dispose();
+
+		mainMenuMusic.dispose();
 	}
 
 	public static GameState getGameState() {
