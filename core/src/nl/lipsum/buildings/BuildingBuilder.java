@@ -39,7 +39,7 @@ public class BuildingBuilder implements Drawable {
 
     public void buildBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
         Gdx.graphics.getHeight();
-        boolean notOnUi = y < Gdx.graphics.getHeight() - MINIMAP_HEIGHT || (x < Gdx.graphics.getWidth() - MINIMAP_WIDTH && y < Gdx.graphics.getHeight() + BAR_HEIGHT);
+        boolean notOnUi = y < Gdx.graphics.getHeight() - MINIMAP_HEIGHT || (x < Gdx.graphics.getWidth() - MINIMAP_WIDTH && y < Gdx.graphics.getHeight() - BAR_HEIGHT);
         if(active && notOnUi){
             int[] tileCoords = camCon.screenToTile(x, y);
             int tx = tileCoords[0];
