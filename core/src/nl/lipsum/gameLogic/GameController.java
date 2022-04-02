@@ -1,9 +1,10 @@
-package nl.lipsum.controllers;
+package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.gameLogic.BaseGraph;
 
 import java.util.ArrayList;
 import java.util.List;
