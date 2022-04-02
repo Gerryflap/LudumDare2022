@@ -103,17 +103,26 @@ public class AbstractEntity implements Drawable {
         }
     }
 
-    private float calculateDistanceToCenterCamera() {
-        return 1;
-    }
+//    private float calculateSortOfDistanceToCenterCamera() {
+//        float distance = (float) Math.sqrt(Math.pow(Math.abs(this.xPosition - LudumDare2022.cameraController.getCamera().position.x), 2) + Math.pow(Math.abs(this.yPosition - LudumDare2022.cameraController.getCamera().position.y), 2));
+//        distance = ((1 / distance) * 5000) - 5;
+//        System.out.println(distance);
+//        return (float) Math.pow(2, distance);
+//    }
 
     public void emitSound(EntitySoundType entitySoundType) {
-        float volume = 1 * calculateDistanceToCenterCamera() * (1/(LudumDare2022.cameraController.getCamera().zoom * 10));
-        System.out.printf("%s %s %s %s\n", volume, 1, calculateDistanceToCenterCamera(), LudumDare2022.cameraController.getCamera().zoom);
+//        float distance = calculateSortOfDistanceToCenterCamera();
+        float zoomDistance = (1/(LudumDare2022.cameraController.getCamera().zoom * 5));
+
+        if (!StaticUtils.inRange(LudumDare2022.cameraController, xPosition, yPosition)) {
+            return ;
+        }
+
+        float volume = 1 * zoomDistance;
+//        System.out.printf("%s %s\n", volume, zoomDistance);
         Sound sound = Gdx.audio.newSound(Gdx.files.internal(entityType.getPath() + entitySoundType.getPath()));
         long id = sound.play();
         sound.setVolume(id, volume);
-//        System.out.println(volume);
     }
 
 

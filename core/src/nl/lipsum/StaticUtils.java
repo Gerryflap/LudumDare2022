@@ -7,7 +7,7 @@ import nl.lipsum.controllers.CameraController;
 
 public class StaticUtils {
 
-    private static boolean inRange(CameraController cameraController, float x, float y) {
+    public static boolean inRange(CameraController cameraController, float x, float y) {
         final OrthographicCamera camera = cameraController.getCamera();
         float trueWidth = camera.viewportWidth * camera.zoom;
         float trueHeight = camera.viewportHeight * camera.zoom;
