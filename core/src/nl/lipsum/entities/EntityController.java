@@ -73,7 +73,7 @@ public class EntityController implements GenericController {
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
         for (AbstractEntity entity :entities) {
-            entity.draw(batch);
+            entity.draw(batch, cameraController);
         }
 
     }
