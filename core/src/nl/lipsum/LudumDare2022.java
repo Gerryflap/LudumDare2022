@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.entities.EntityController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.main_menu.MainMenuController;
@@ -25,6 +26,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
+	public static EntityController entityController = new EntityController();
 
 	private static GameState previousGameState;
 	private static GameState gameState;
@@ -48,6 +50,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameState = GameState.MAIN_MENU;
 
 		mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/main_menu.wav"));
+
 	}
 
 	@Override
@@ -62,6 +65,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case PLAYING:
 				this.cameraController.step();
 				this.gameController.step();
+				entityController.step();
 				this.uiController.step();
 		}
 
@@ -77,6 +81,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 				this.cameraController.render(batch, null);
 				this.gameController.render(batch, this.cameraController);
 				this.buildingController.render(batch, this.cameraController);
+				entityController.render(batch, this.cameraController);
 				this.uiController.render(batch, this.cameraController);
 				break;
 			case EXITING:

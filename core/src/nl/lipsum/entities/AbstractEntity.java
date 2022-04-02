@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
+import nl.lipsum.LudumDare2022;
+import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
+import java.util.Optional;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -23,6 +26,7 @@ public class AbstractEntity implements Drawable {
     private Base previousBase;
     private Base nextBase;
     private List<Base> path;
+    private Army army;
 
     // Movement information
     private float speed;
@@ -71,6 +75,7 @@ public class AbstractEntity implements Drawable {
 
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
+        LudumDare2022.entityController.addEntity(this);
     }
 
     @Override
@@ -161,5 +166,21 @@ public class AbstractEntity implements Drawable {
         System.out.println(path);
         nextBase = path.get(0);
         path.remove(0);
+    }
+
+    public void kill() {
+        Optional.ofNullable(army).ifPresent(army -> army.removeEntity(this));
+
+        LudumDare2022.entityController.removeEntity(this);
+    }
+
+    public Army getArmy() {
+        return army;
+    }
+
+    public void setArmy(Army army) {
+        Optional.ofNullable(this.army).ifPresent(a -> a.removeEntity(this));
+        Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
+        this.army = army;
     }
 }

@@ -15,12 +15,11 @@ public class PlayerController implements GenericController {
 
     @Override
     public void step() {
-        army.step();
     }
 
     @Override
     public void render(SpriteBatch batch, CameraController cameraController) {
-        army.render(batch, cameraController);
+
     }
 
     @Override
