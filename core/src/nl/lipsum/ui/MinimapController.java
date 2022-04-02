@@ -2,6 +2,7 @@ package nl.lipsum.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.GameController;
