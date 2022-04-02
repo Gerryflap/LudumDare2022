@@ -2,7 +2,6 @@ package nl.lipsum;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +12,7 @@ import static nl.lipsum.Config.*;
 public class LudumDare2022 extends ApplicationAdapter {
 	SpriteBatch batch;
 	Texture img;
-	Camera camera;
+	CameraController cameraController;
 	TextureStore textureStore;
 	TileGrid tileGrid;
 
@@ -32,7 +31,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 		tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
-		camera = new OrthographicCamera(1280, 720);
+		//todo: magic constants vervangen voor viewport width/height
+		cameraController = new CameraController(new OrthographicCamera(1280, 720));
 //		img = new Texture("badlogic.jpg");
 
 //		Gdx.graphics.setWindowedMode(WIDTH * TILE_SIZE, HEIGHT * TILE_SIZE);
@@ -41,14 +41,13 @@ public class LudumDare2022 extends ApplicationAdapter {
 	@Override
 	public void render () {
 		// Step Methods called here for controllers
-
-		camera.update();
-
+		this.cameraController.step();
 		ScreenUtils.clear(1, 0, 0, 1);
-		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+
 		// Render methods called here for controllers
-//		batch.draw(img, 0, 0);
+		this.cameraController.render(batch, null);
+
 		tileGrid.draw(batch);
 		batch.end();
 	}
