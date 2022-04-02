@@ -63,7 +63,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		}
 
 
-		ScreenUtils.clear(1, 0, 0, 1);
+		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
 		// Render methods called here for controllers
 		switch (gameState) {
