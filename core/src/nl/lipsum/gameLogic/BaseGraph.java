@@ -92,4 +92,8 @@ public class BaseGraph {
         }
         return paths.get(dest);
     }
+
+    public List<Base> getBases() {
+        return bases;
+    }
 }
