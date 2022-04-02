@@ -21,9 +21,15 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public void create () {
 		textureStore = new TextureStore();
 		tileGrid = new TileGrid(WIDTH,HEIGHT);
-		tileGrid.setTile(5, 5, new Tile(5, 5, "white", textureStore));
-		tileGrid.setTile(6, 5, new Tile(6, 5, "orange", textureStore));
-		tileGrid.setTile(7, 7, new Tile(7, 7, "white", textureStore));
+		tileGrid.setTile(0, 0, new Tile(0, 0, "orange", textureStore));
+		tileGrid.setTile(20, 0, new Tile(20, 0, "orange", textureStore));
+		tileGrid.setTile(0, 20, new Tile(0, 20, "orange", textureStore));
+		tileGrid.setTile(20, 20, new Tile(20, 20, "orange", textureStore));
+		tileGrid.setTile(10, 10, new Tile(10, 10, "white", textureStore));
+		tileGrid.setTile(0, 10, new Tile(0, 10, "white", textureStore));
+		tileGrid.setTile(10, 0, new Tile(10, 0, "white", textureStore));
+		tileGrid.setTile(10, 20, new Tile(10, 20, "white", textureStore));
+		tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
 		camera = new OrthographicCamera(1280, 720);
@@ -43,7 +49,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		batch.begin();
 		// Render methods called here for controllers
 //		batch.draw(img, 0, 0);
-//		tileGrid.draw(batch);
+		tileGrid.draw(batch);
 		batch.end();
 	}
 	
