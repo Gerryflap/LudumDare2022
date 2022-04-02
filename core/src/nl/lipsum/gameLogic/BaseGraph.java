@@ -30,6 +30,7 @@ public class BaseGraph {
 
         base00.addConnection(base01);
         base00.addConnection(base10);
+        //Center needs to be last otherwise breadth first search doesn't work as pathfinding
         base00.addConnection(base11);
 
         base02.addConnection(base01);
