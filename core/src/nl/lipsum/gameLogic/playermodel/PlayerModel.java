@@ -40,6 +40,7 @@ public abstract class PlayerModel {
         armies.add(new Army(base, this));
         armies.add(new Army(base, this));
         this.base = base;
+        base.setOwner(this);
     }
 
     public void step() {
