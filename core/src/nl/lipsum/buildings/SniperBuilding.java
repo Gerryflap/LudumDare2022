@@ -31,6 +31,7 @@ public class SniperBuilding extends UnitBuilding {
                     trainingProgress = 0;
                     AbstractEntity unit = new Sniper(x*TILE_SIZE, y*TILE_SIZE, owner);
                     unit.setBuilding(this);
+                    unit.setArmy(owner.armies.get(selectedArmy));
                     owner.armies.get(selectedArmy).entities.add(unit);
                     unit.goTo(owner.armies.get(selectedArmy).getDestBase());
                     this.units.add(unit);

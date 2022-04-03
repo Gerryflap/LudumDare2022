@@ -181,7 +181,7 @@ public class BuildingBuilder implements Drawable {
             StaticUtils.smartDraw(batch, cameraController, tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
 
             /* if can build, draw the selected army number too */
-            if (canbuild && this.type == BuildingType.UNIT) {
+            if (canbuild && (this.type == BuildingType.INFANTRY || this.type == BuildingType.TANK || this.type == BuildingType.SNIPER)) {
                 StaticUtils.smartDraw(
                         batch,
                         cameraController,
