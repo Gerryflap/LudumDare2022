@@ -26,8 +26,6 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private final float xSize;
     private final float ySize;
     private final Texture texture;
-    private Base previousBase;
-    private Base nextBase;
     private List<Base> path;
     private Army army;
 
@@ -58,14 +56,12 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private AbstractEntity target = null;
     private boolean dead = false;
 
-    public AbstractEntity(float xPosition, float yPosition, Base base, PlayerModel owner) {
+    public AbstractEntity(float xPosition, float yPosition, PlayerModel owner) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = getXSize();
         this.ySize = getYSize();
         this.texture = getTexture();
-        this.previousBase = base;
-        this.nextBase = base;
         this.path = new ArrayList<>();
         this.health = getMaxHealth();
         this.maxHealth = getMaxHealth();
@@ -148,7 +144,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
         if (target != null) {
             attackTarget();
-        } else if (nextBase != null) {
+        } else if (!path.isEmpty()) {
             moveToBase();
         }
     }
@@ -171,19 +167,15 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     private void moveToBase() {
-        //            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
-        if ((nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
+        if (!path.isEmpty()){
+            Base nextBase = path.get(0);
+            if ((nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
                 (nextBase.getY() * TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY() * TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
-//                System.out.println("Arrived!");
-            previousBase = nextBase;
-            if (!path.isEmpty()) {
-                nextBase = path.get(0);
                 path.remove(0);
             }
         }
-//            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition) {
-        if (!(nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE && nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) ||
-                !(nextBase.getY() * TILE_SIZE <= yPosition + ARRIVAL_RANGE && nextBase.getY() * TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
+        if (!path.isEmpty()){
+            Base nextBase = path.get(0);
             float diffX = nextBase.getX() * TILE_SIZE - xPosition;
             float diffY = nextBase.getY() * TILE_SIZE - yPosition;
             double factor = Gdx.graphics.getDeltaTime() * maxSpeed / (Math.sqrt(diffX * diffX + diffY * diffY));
@@ -266,16 +258,6 @@ public abstract class AbstractEntity implements Drawable, Ownable {
                     path.remove(0);
                 }
             }
-            nextBase = path.get(0);
-
-//            List<Base> startBases = new ArrayList<>();
-//            startBases.add(previousBase);
-//            if (nextBase != previousBase){
-//                startBases.add(nextBase);
-//            }
-//            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
-//            nextBase = path.get(0);
-//            path.remove(0);
         }
     }
 

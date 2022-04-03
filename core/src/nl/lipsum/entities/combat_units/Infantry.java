@@ -21,8 +21,8 @@ public class Infantry extends AbstractEntity {
     public static float VISION_RANGE = 100;
 
 
-    public Infantry(float xPosition, float yPosition, Base base, PlayerModel owner) {
-        super(xPosition, yPosition, base, owner);
+    public Infantry(float xPosition, float yPosition, PlayerModel owner) {
+        super(xPosition, yPosition, owner);
         TEXTURE = new Texture(String.format("player%d/infantry.png", owner.getId()));
     }
 
