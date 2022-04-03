@@ -39,7 +39,7 @@ public class BarController {
         this.textureStore = new TextureStore();
 
         try {
-            UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getHumanBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
@@ -49,7 +49,7 @@ public class BarController {
                 }
             });
             unitBuilding.setRequiredResources(INFANTRY_BUILDING_COST);
-            UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getHumanBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
