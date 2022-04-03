@@ -13,7 +13,9 @@ public class AIPlayerModel extends PlayerModel {
         random = new Random();
     }
 
-    public void update(){
+    @Override
+    public void step(){
+        super.step();
         for(Army army:armies){
             if(random.nextDouble()* 25 < Gdx.graphics.getDeltaTime()){
                 int i = random.nextInt(LudumDare2022.gameController.getBaseGraph().getBases().size());

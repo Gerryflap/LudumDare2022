@@ -11,6 +11,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.EntityController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import nl.lipsum.gameover.GameOverController;
 import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
@@ -27,6 +28,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private MainMenuController mainMenuController;
 	private UiController uiController;
 	public static EntityController entityController = new EntityController();
+	private static GameOverController gameOverController;
 
 	private static GameState previousGameState;
 	private static GameState gameState;
@@ -46,6 +48,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		buildingController = new BuildingController(cameraController, humanPlayerModel);
 		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController(humanPlayerModel);
+		gameOverController = new GameOverController();
 
 		mainMenuController = new MainMenuController();
 		uiController = new UiController(gameController, humanPlayerModel);
@@ -56,23 +59,57 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	}
 
+	private void handleGameOver() {
+		resetGame();
+
+		batch = new SpriteBatch();
+
+		humanPlayerModel = new HumanPlayerModel();
+
+		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+		buildingController = new BuildingController(cameraController, humanPlayerModel);
+		inputController = new InputController(cameraController, buildingController);
+		gameController = new GameController(humanPlayerModel);
+		mainMenuController = new MainMenuController();
+		uiController = new UiController(gameController, humanPlayerModel);
+
+		setGameState(GameState.MAIN_MENU);
+	}
+
+	private void resetGame() {
+		batch.dispose();
+		cameraController.dispose();
+		buildingController.dispose();
+		gameController.dispose();
+		mainMenuController.dispose();
+		uiController.dispose();
+	}
+
 	@Override
 	public void render () {
 		// Manage music
 		manageMainMenuMusic();
 
+		if (gameState == GameState.GAME_OVER && previousGameState != GameState.GAME_OVER) {
+			handleGameOver();
+		}
+
 		// Step Methods called here for controllers
 		switch (gameState) {
 			case MAIN_MENU:
 				mainMenuController.step();
+				break;
 			case PLAYING:
-				this.cameraController.step();
-				this.gameController.step();
+				cameraController.step();
+				gameController.step();
 				entityController.step();
-				this.uiController.step();
-				this.buildingController.step();
+				uiController.step();
+				buildingController.step();
+				break;
+			case GAME_OVER:
+				gameOverController.step();
+				break;
 		}
-
 
 		ScreenUtils.clear(0, 0, 0, 1);
 		batch.begin();
@@ -82,14 +119,17 @@ public class LudumDare2022 extends ApplicationAdapter {
 				mainMenuController.render(batch, null);
 				break;
 			case PLAYING:
-				this.cameraController.render(batch, null);
-				this.gameController.render(batch, this.cameraController);
-				this.buildingController.render(batch, this.cameraController);
-				entityController.render(batch, this.cameraController);
-				this.uiController.render(batch, this.cameraController);
+				cameraController.render(batch, null);
+				gameController.render(batch, cameraController);
+				buildingController.render(batch, cameraController);
+				entityController.render(batch, cameraController);
+				uiController.render(batch, cameraController);
 				break;
 			case EXITING:
 				System.exit(0);
+				break;
+			case GAME_OVER:
+				gameOverController.render(batch, null);
 				break;
 		}
 		batch.end();
@@ -112,10 +152,9 @@ public class LudumDare2022 extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		this.gameController.dispose();
-		this.uiController.dispose();
-		this.mainMenuController.dispose();
-
+		gameController.dispose();
+		uiController.dispose();
+		mainMenuController.dispose();
 		mainMenuMusic.dispose();
 	}
 

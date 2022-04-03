@@ -29,6 +29,8 @@ public class BarController {
     private HumanPlayerModel humanPlayerModel;
     private BitmapFont font = new BitmapFont();
     private SpriteBatch fontSpriteBatch = new SpriteBatch();
+    private ShapeRenderer borderShapeRenderer = new ShapeRenderer();
+    private SpriteBatch spriteBatch = new SpriteBatch();
 
     public BarController(GameController gameController, HumanPlayerModel humanPlayerModel) {
         this.gameController = gameController;
@@ -134,15 +136,19 @@ public class BarController {
         shapeRenderer.end();
 
         // draw resource counter
-
         font.setColor(UI_FONT_COLOR);
 
         fontSpriteBatch.begin();
-        font.draw(fontSpriteBatch, String.format("Resources: %s", (int) (humanPlayerModel.getAmountResources())), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+        font.draw(fontSpriteBatch, String.format("Resources: %s", (int) humanPlayerModel.getAmountResources()), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+
+        // draw global temperature
+        font.draw(fontSpriteBatch, String.format("Global temperature: %.1f C", gameController.globalTemperature), 5, BAR_HEIGHT + 2 * font.getLineHeight() - 3);
+
+        // draw player health
+        font.draw(fontSpriteBatch, String.format("Player health: %s", humanPlayerModel.getHealth()), 5, BAR_HEIGHT + 3 * font.getLineHeight() - 3);
         fontSpriteBatch.end();
 
         //draw item icons
-        SpriteBatch spriteBatch = new SpriteBatch();
         spriteBatch.begin();
         float uiItemX = 5;
         float uiItemY = 3;
@@ -164,7 +170,6 @@ public class BarController {
 
 
         // draw icon borders
-        ShapeRenderer borderShapeRenderer = new ShapeRenderer();
         borderShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         borderShapeRenderer.setColor(ICON_BORDER_COLOR);
         uiItemX = 5;
@@ -195,5 +200,7 @@ public class BarController {
     public void dispose() {
         font.dispose();
         fontSpriteBatch.dispose();
+        borderShapeRenderer.dispose();
+        spriteBatch.dispose();
     }
 }
