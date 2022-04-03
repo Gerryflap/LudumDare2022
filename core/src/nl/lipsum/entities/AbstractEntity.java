@@ -221,14 +221,16 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     public void goTo(Base b){
-        List<Base> startBases = new ArrayList<>();
-        startBases.add(previousBase);
-        if (nextBase != previousBase){
-            startBases.add(nextBase);
+        if(b!=null){
+            List<Base> startBases = new ArrayList<>();
+            startBases.add(previousBase);
+            if (nextBase != previousBase){
+                startBases.add(nextBase);
+            }
+            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
+            nextBase = path.get(0);
+            path.remove(0);
         }
-        path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
-        nextBase = path.get(0);
-        path.remove(0);
     }
 
     public void kill() {

@@ -15,6 +15,8 @@ import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 
 import java.util.function.Function;
 
+import static nl.lipsum.Config.INFANTRY_BUILDING_COST;
+import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
 import static nl.lipsum.ui.UiConstants.*;
 
 /**
@@ -37,23 +39,21 @@ public class BarController {
             UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
-                    System.out.println("unit");
                     LudumDare2022.buildingController.setActive(true);
                     LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
                     return null;
                 }
             });
-            unitBuilding.setRequiredResources(100);
+            unitBuilding.setRequiredResources(INFANTRY_BUILDING_COST);
             UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
-                    System.out.println("resource");
                     LudumDare2022.buildingController.setActive(true);
                     LudumDare2022.buildingController.setBuildingType(BuildingType.RESOURCE);
                     return null;
                 }
             });
-            resourceBuilding.setRequiredResources(50);
+            resourceBuilding.setRequiredResources(RESOURCE_BUILDING_COST);
 
             this.uiItems[8] = unitBuilding;
             this.uiItems[9] = resourceBuilding;
@@ -109,9 +109,7 @@ public class BarController {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
             int i = 1;
             for (UiItem uiItem : uiItems) {
-                System.out.println(i);
                 if (uiItem != null && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()) {
-                    System.out.println(i);
                     if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)){
                         uiItem.getFunction().apply(uiItem);
                     }
@@ -140,7 +138,7 @@ public class BarController {
         font.setColor(UI_FONT_COLOR);
 
         fontSpriteBatch.begin();
-        font.draw(fontSpriteBatch, String.format("Resources: %s", humanPlayerModel.getAmountResources()), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+        font.draw(fontSpriteBatch, String.format("Resources: %s", (int) (humanPlayerModel.getAmountResources())), 5, BAR_HEIGHT + font.getLineHeight() - 3);
         fontSpriteBatch.end();
 
         //draw item icons

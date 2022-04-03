@@ -10,4 +10,8 @@ public class Config {
 
     public static final int COLLISION_GRID_WIDTH = WIDTH_IN_TILES * TILE_SIZE;
     public static final int COLLISION_GRID_HEIGHT = HEIGHT_IN_TILES * TILE_SIZE;
+
+    public static final int RESOURCE_BUILDING_COST = 50;
+    public static final int INFANTRY_BUILDING_COST = 100;
+    public static final int RESOURCES_PER_BUILDING_PER_SECOND = 25;
 }

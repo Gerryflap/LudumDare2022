@@ -22,13 +22,14 @@ public abstract class UnitBuilding extends Building {
     private final AbstractEntity[] units;
     private int unitPointer = 0;
 
-    private int selectedArmy = 0;
+    private int selectedArmy;
 
-    public UnitBuilding(int x, int y, PlayerModel owner, int cost, int trainingTime, int unitCap) {
-        super(x, y, owner, cost);
+    public UnitBuilding(int x, int y, PlayerModel owner, int trainingTime, int unitCap) {
+        super(x, y, owner);
         this.trainingTime = trainingTime;
         this.unitCap = unitCap;
         this.units = new AbstractEntity[unitCap];
+        this.selectedArmy = owner.getSelectedArmy();
     }
 
     @Override
