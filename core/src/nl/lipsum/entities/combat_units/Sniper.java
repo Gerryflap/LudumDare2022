@@ -4,28 +4,25 @@ import com.badlogic.gdx.graphics.Texture;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.entities.EntityType;
-import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
-import static nl.lipsum.Config.TILE_SIZE;
-
-public class Infantry extends AbstractEntity {
+public class Sniper extends AbstractEntity {
     public static float X_SIZE = 48;
     public static float Y_SIZE = 48;
     public Texture TEXTURE;
-    public static EntityType ENTITY_TYPE = EntityType.INFANTRY;
-    public static int MAX_HEALTH = 100;
+    public static EntityType ENTITY_TYPE = EntityType.SNIPER;
+    public static int MAX_HEALTH = 50;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
-    public static float BULLET_DAMAGE = 5;
-    public static int BULLET_RELOAD_SPEED = 10;
-    public static float MAX_SPEED = 250;
-    public static float ATTACK_RANGE = 100;
+    public static float BULLET_DAMAGE = 100;
+    public static int BULLET_RELOAD_SPEED = 20;
+    public static float MAX_SPEED = 200;
+    public static float ATTACK_RANGE = 250;
     public static float VISION_RANGE = 250;
 
 
-    public Infantry(float xPosition, float yPosition, PlayerModel owner) {
+    public Sniper(float xPosition, float yPosition, PlayerModel owner) {
         super(xPosition, yPosition, owner);
-        TEXTURE = new Texture(String.format("player%d/infantry.png", owner.getId()));
+        TEXTURE = new Texture(String.format("player%d/sniper.png", owner.getId()));
     }
 
 

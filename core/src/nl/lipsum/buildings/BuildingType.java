@@ -3,6 +3,8 @@ package nl.lipsum.buildings;
 public enum BuildingType {
 
     RESOURCE,
-    UNIT
+    INFANTRY,
+    TANK,
+    SNIPER
 
 }
