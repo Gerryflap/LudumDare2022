@@ -3,8 +3,11 @@ package nl.lipsum;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.buildings.BuildingType;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
+
+import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
 
 public class StaticUtils {
 
@@ -50,4 +53,15 @@ public class StaticUtils {
     public static double distance(AbstractEntity e1, AbstractEntity e2) {
         return Math.sqrt(squareDistance(e1, e2));
     }
+
+    public static Integer getCost(BuildingType type) {
+        switch (type) {
+            case RESOURCE:
+                return RESOURCE_BUILDING_COST;
+            default:
+                return null;
+        }
+    }
 }
+
+

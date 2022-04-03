@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class Base implements GenericController {
     }
 
     public Base(int x, int y, PlayerModel initialOwner){
-        this(x,y,initialOwner, 2);
+        this(x,y,initialOwner, 5);
     }
 
 
@@ -80,5 +81,9 @@ public class Base implements GenericController {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
+
+    public void setOwner(AIPlayerModel aiPlayerModel) {
+        owner = aiPlayerModel;
     }
 }

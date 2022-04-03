@@ -2,10 +2,8 @@ package nl.lipsum.gameLogic.playermodel;
 
 import com.badlogic.gdx.Gdx;
 import nl.lipsum.LudumDare2022;
-import nl.lipsum.buildings.Building;
-import nl.lipsum.buildings.BuildingBuilder;
-import nl.lipsum.buildings.InfantryBuilding;
-import nl.lipsum.buildings.ResourceBuilding;
+import nl.lipsum.StaticUtils;
+import nl.lipsum.buildings.*;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 
@@ -15,6 +13,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
+
 /**
  * Contains the AI code
  */
@@ -22,14 +22,15 @@ public class AIPlayerModel extends PlayerModel {
     private static Random random = new Random();
     private static final int TARGET_RESOURCE_BUILDINGS = 3;
     private static final int DECISION_INTERVAL = 60;
-    private BuildingBuilder builder;
     private int stepsTillDecision = DECISION_INTERVAL;
     private Base targetBase = null;
     private int resourceNodes = 0;
+    private Set<Building> buildings;
 
     public AIPlayerModel(){
         super();
         random = new Random();
+        buildings = new HashSet<>();
     }
 
     @Override
@@ -39,6 +40,10 @@ public class AIPlayerModel extends PlayerModel {
         if (--stepsTillDecision <= 0) {
             stepsTillDecision = DECISION_INTERVAL;
             decide();
+        }
+
+        for (Building building : new HashSet<>(buildings)) {
+            // Dispose dead buildings
         }
     }
 
@@ -50,17 +55,23 @@ public class AIPlayerModel extends PlayerModel {
 
         if (bases.size() > 0) {
             if (resourceNodes < TARGET_RESOURCE_BUILDINGS) {
-                BuildingBuilder buildingBuilder = getBuilder();
                 Base base = bases.iterator().next();
-                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-                buildingBuilder.buildBuilding(new ResourceBuilding(x, y, this), x, y);
+                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2 - 1);
+                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2 - 1);
+                boolean hasBuilt = build(BuildingType.RESOURCE, x, y);
+                if (hasBuilt) {
+                    resourceNodes += 1;
+                }
             } else {
-                BuildingBuilder buildingBuilder = getBuilder();
-                Base base = bases.iterator().next();
-                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-                buildingBuilder.buildBuilding(new InfantryBuilding(x, y, this), x, y);
+//                Base base = bases.iterator().next();
+//                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
+//                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
+//                Building building = new InfantryBuilding(x, y, this);
+//                boolean success = build(building, x, y);
+//                if (success) {
+//                    buildings.add(building);
+//
+//                }
             }
         }
 
@@ -95,12 +106,50 @@ public class AIPlayerModel extends PlayerModel {
         armies.get(1).goTo(targetBase);
     }
 
-    private BuildingBuilder getBuilder() {
-        if (builder == null) {
-            builder = LudumDare2022.buildingController.getBuildingBuilder(this);
+    private boolean canBuild(BuildingType type, int gridX, int gridY) {
+        BuildingGrid grid = LudumDare2022.buildingController.getBuildingGrid();
+        if (gridX < 0 || gridY < 0 || grid.SIZE_X <= gridX || grid.SIZE_Y <= gridY) {
+            return false;
         }
-        return builder;
+
+        boolean canbuild = false;
+        for (Base base: LudumDare2022.gameController.getBaseGraph().getBases()) {
+            if(base.getOwner() == this && gridX < base.getX() + base.getBuildrange() &&
+                    gridX > base.getX() - base.getBuildrange() &&
+                    gridY < base.getY() + base.getBuildrange() && gridY > base.getY() - base.getBuildrange()){
+                canbuild = true;
+                break;
+            }
+        }
+
+        Integer cost = StaticUtils.getCost(type);
+        canbuild &= cost != null && cost <= getAmountResources();
+        return canbuild;
     }
+
+    // Returns whether it is successful
+    private boolean build(BuildingType type, int gridX, int gridY) {
+        Building building;
+        boolean built = false;
+        if (canBuild(type, gridX, gridY)) {
+            switch (type) {
+                case RESOURCE:
+                    building = new ResourceBuilding(gridX, gridY, this);
+                    break;
+                default:
+                    building = null;
+                    break;
+            }
+
+            if (building != null) {
+                LudumDare2022.buildingController.getBuildingGrid().setBuilding(gridX, gridY, building);
+                buildings.add(building);
+                return true;
+            }
+        }
+        return built;
+    }
+
 
     private Set<Base> getOwnBases() {
         return LudumDare2022.gameController.getBaseGraph().getBases().stream()
