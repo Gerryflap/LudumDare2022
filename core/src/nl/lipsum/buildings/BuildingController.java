@@ -1,6 +1,7 @@
 package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.GameController;
@@ -26,6 +27,7 @@ public class BuildingController implements GenericController {
     }
     public void stopBuilder(){
         buildingBuilder.stop();
+        LudumDare2022.humanPlayerModel.setUiBuildingSelect(null);
     }
 
     public void onClick(int x, int y){
