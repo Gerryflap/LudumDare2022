@@ -1,6 +1,7 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.ui.UiArmySelect;
@@ -19,9 +20,9 @@ public class PlayerController implements GenericController {
     public PlayerController(Base base, BaseGraph baseGraph){
         this.base = base;
         armies = new ArrayList<>();
-        armies.add(new Army(base));
-        armies.add(new Army(base));
-        armies.add(new Army(base));
+        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
+        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
+        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
         this.baseGraph = baseGraph;
     }
 

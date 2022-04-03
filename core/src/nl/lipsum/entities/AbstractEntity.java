@@ -10,6 +10,7 @@ import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,12 +53,12 @@ public class AbstractEntity implements Drawable {
     private EntityStatus entityStatus;
 
     public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
-        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType);
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, PlayerModel owner) {
+        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType, owner);
     }
 
     public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType) {
+                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, PlayerModel owner) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = xSize;
