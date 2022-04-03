@@ -11,10 +11,11 @@ import static nl.lipsum.Config.RESOURCES_PER_BUILDING_PER_SECOND;
 import static nl.lipsum.Config.TILE_SIZE;
 
 public class ResourceBuilding extends Building{
-    public static final Texture tileTexture = new Texture("whiteTile.jpg");
+    public final Texture tileTexture;
 
     public ResourceBuilding(int x, int y, PlayerModel owner) {
         super(x, y, owner);
+        this.tileTexture = new Texture(String.format("player%d/resource_building.png", owner.getId()));
     }
 
     public void step(){
