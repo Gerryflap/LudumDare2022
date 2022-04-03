@@ -13,7 +13,7 @@ import static nl.lipsum.Config.TILE_SIZE;
 
 public abstract class UnitBuilding extends Building {
 
-    public static final Texture tileTexture = new Texture("greenTile.jpg");
+    private final Texture tileTexture;
 
     private int trainingProgress;
     private final int trainingTime;
@@ -30,6 +30,7 @@ public abstract class UnitBuilding extends Building {
         this.unitCap = unitCap;
         this.units = new AbstractEntity[unitCap];
         this.selectedArmy = owner.getSelectedArmy();
+        this.tileTexture = new Texture("greenTile.jpg");
     }
 
     @Override
@@ -52,12 +53,16 @@ public abstract class UnitBuilding extends Building {
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
     }
 
     @Override
     public void dispose() {
 
+    }
+
+    public Texture getTileTexture() {
+        return tileTexture;
     }
 
     public void click(){
