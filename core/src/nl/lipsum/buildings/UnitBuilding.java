@@ -38,8 +38,9 @@ public abstract class UnitBuilding extends Building {
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        if(!isDead()){
-            StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        if (!isDead()) {
+            StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE / 2, TILE_SIZE * this.y - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            StaticUtils.smartDraw(batch, cameraController, this.owner.armies.get(this.selectedArmy).getTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
         }
     }
 

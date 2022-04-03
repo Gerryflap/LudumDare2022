@@ -1,21 +1,25 @@
 package nl.lipsum.gameLogic.playermodel;
 
 import nl.lipsum.gameLogic.Base;
-import nl.lipsum.ui.UiArmySelect;
+import nl.lipsum.ui.UiSelectedItem;
 
 public class HumanPlayerModel extends PlayerModel {
-    UiArmySelect uiArmySelect;
+    UiSelectedItem uiSelectedArmy;
+    UiSelectedItem uiSelectedBuilding;
 
     public HumanPlayerModel(){
         super();
     }
-    public void setUiArmySelect(UiArmySelect uiArmySelect) {
-        this.uiArmySelect = uiArmySelect;
+    public void setUiArmySelect(UiSelectedItem uiSelectedItem) {
+        this.uiSelectedArmy = uiSelectedItem;
+    }
+    public void setUiBuildingSelect(UiSelectedItem uiSelectedItem) {this.uiSelectedBuilding = uiSelectedItem;}
+
+    public UiSelectedItem getUiArmySelected() {
+        return uiSelectedArmy;
     }
 
-    public UiArmySelect getUiArmySelect() {
-        return uiArmySelect;
-    }
+    public UiSelectedItem getUiBuildingSelected() {return uiSelectedBuilding;}
 
     public void step() {
         super.step();

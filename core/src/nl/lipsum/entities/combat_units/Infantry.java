@@ -1,9 +1,13 @@
 package nl.lipsum.entities.combat_units;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.StaticUtils;
+import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.entities.EntityType;
+import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
@@ -26,6 +30,14 @@ public class Infantry extends AbstractEntity {
     public Infantry(float xPosition, float yPosition, PlayerModel owner) {
         super(xPosition, yPosition, owner);
         TEXTURE = new Texture(String.format("player%d/infantry.png", owner.getId()));
+    }
+
+    @Override
+    public void draw(SpriteBatch batch, CameraController cameraController) {
+        super.draw(batch, cameraController);
+        if (this.getArmy() != null) {
+            StaticUtils.smartDraw(batch, cameraController, this.getArmy().getTexture(), this.xPosition - (this.xSize / 2), this.yPosition - (this.ySize / 2), this.xSize, this.ySize);
+        }
     }
 
 
