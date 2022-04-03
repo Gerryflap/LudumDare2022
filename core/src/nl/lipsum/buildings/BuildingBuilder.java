@@ -100,7 +100,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= SNIPER_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-SNIPER_BUILDING_COST);
-                            nb = new SniperBuilding(x, y, playerModel, 10, 10);
+                            nb = new SniperBuilding(x, y, playerModel);
                         }
                     } else {
                         canbuild = false;
@@ -110,7 +110,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-TANK_BUILDING_COST);
-                            nb = new TankBuilding(x, y, playerModel, 10, 10);
+                            nb = new TankBuilding(x, y, playerModel);
                         }
                     } else {
                         canbuild = false;

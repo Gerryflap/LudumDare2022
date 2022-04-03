@@ -11,7 +11,7 @@ import nl.lipsum.entities.Targetable;
 
 import javax.swing.text.TabableView;
 
-import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
+import static nl.lipsum.Config.*;
 
 public class StaticUtils {
 
@@ -62,6 +62,12 @@ public class StaticUtils {
         switch (type) {
             case RESOURCE:
                 return RESOURCE_BUILDING_COST;
+            case INFANTRY:
+                return INFANTRY_BUILDING_COST;
+            case TANK:
+                return TANK_BUILDING_COST;
+            case SNIPER:
+                return SNIPER_BUILDING_COST;
             default:
                 return null;
         }

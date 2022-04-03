@@ -19,6 +19,8 @@ import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
  * Contains the AI code
  */
 public class AIPlayerModel extends PlayerModel {
+    private static final BuildingType[] buildingTypes = new BuildingType[]{BuildingType.INFANTRY, BuildingType.SNIPER, BuildingType.TANK};
+
     private static Random random = new Random();
     private static final int TARGET_RESOURCE_BUILDINGS = 3;
     private static final int DECISION_INTERVAL = 60;
@@ -63,15 +65,14 @@ public class AIPlayerModel extends PlayerModel {
                     resourceNodes += 1;
                 }
             } else {
-//                Base base = bases.iterator().next();
-//                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-//                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-//                Building building = new InfantryBuilding(x, y, this);
-//                boolean success = build(building, x, y);
-//                if (success) {
-//                    buildings.add(building);
-//
-//                }
+                Base base = bases.iterator().next();
+                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
+                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
+                boolean success = build(buildingTypes[random.nextInt(buildingTypes.length -1)], x, y);
+                if (success) {
+                    selectedArmy = (selectedArmy + 1)%3;
+                }
+
             }
         }
 
@@ -135,6 +136,15 @@ public class AIPlayerModel extends PlayerModel {
             switch (type) {
                 case RESOURCE:
                     building = new ResourceBuilding(gridX, gridY, this);
+                    break;
+                case INFANTRY:
+                    building = new InfantryBuilding(gridX, gridY, this);
+                    break;
+                case TANK:
+                    building = new TankBuilding(gridX, gridY, this);
+                    break;
+                case SNIPER:
+                    building = new SniperBuilding(gridX, gridY, this);
                     break;
                 default:
                     building = null;

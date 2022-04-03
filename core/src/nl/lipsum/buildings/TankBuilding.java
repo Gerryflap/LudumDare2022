@@ -11,8 +11,8 @@ import static nl.lipsum.Config.TILE_SIZE;
 public class TankBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
-    public TankBuilding(int x, int y, PlayerModel owner, int trainingTime, int unitCap) {
-        super(x, y, owner, trainingTime, unitCap);
+    public TankBuilding(int x, int y, PlayerModel owner) {
+        super(x, y, owner, 100, 5);
         this.tileTexture = new Texture(String.format("player%s/tank_building.png", owner.getId()));
     }
 
