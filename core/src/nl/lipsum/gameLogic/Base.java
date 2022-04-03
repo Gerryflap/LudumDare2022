@@ -5,13 +5,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.Config;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.entities.AbstractEntity;
+import nl.lipsum.entities.EntityController;
+import nl.lipsum.entities.PositionalEntityResolver;
+import nl.lipsum.entities.Targetable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static nl.lipsum.Config.BASE_SIZE;
 import static nl.lipsum.Config.TILE_SIZE;
@@ -36,6 +41,8 @@ public class Base implements GenericController {
 
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
     private BitmapFont font = new BitmapFont();
+
+    public Set<AbstractEntity> entitiesInRange = new HashSet<>();
 
 
     public Base(int x, int y, PlayerModel initialOwner, int buildrange){
@@ -93,13 +100,13 @@ public class Base implements GenericController {
         return "Base x:" + Integer.toString(x) + " y:" + Integer.toString(y);
     }
 
+    public void updateInRangeUnits() {
+        entitiesInRange = LudumDare2022.positionalEntityResolver.getTargetsInRange(x*TILE_SIZE-BASE_SIZE/2, y*TILE_SIZE-BASE_SIZE/2, BASE_SIZE/2).stream().filter(t -> t instanceof AbstractEntity).map(t -> (AbstractEntity) t).collect(Collectors.toSet());
+    }
+
     @Override
     public void step() {
-        // TODO: Get set of entities in base range
-        Set<AbstractEntity> entitiesInRange = new HashSet<AbstractEntity>();
-
-        // TODO remove true
-        if (entitiesInRange.size() > 0 || true) {
+        if (entitiesInRange.size() > 0) {
             int[] entityCount = new int[Config.PLAYER_COUNT];
 
             int highestCount = 0;
@@ -127,7 +134,7 @@ public class Base implements GenericController {
                 // 1. There is an owner that we first need to dethrone
                 if (this.owner != null) {
                     this.captureProgress[this.owner.getId()] -= 1;
-                    baseStatus = BaseStatus.CAPTURING;
+                    baseStatus = BaseStatus.DETHRONING;
                     playerCapturing = armyOwnerWithHighestCount;
 
                     // If owner is kicked to 0 dominance, make the base neutral
@@ -170,9 +177,12 @@ public class Base implements GenericController {
         }
 
         StringBuilder stringBuilderBuilderBuilderBuilder = new StringBuilder();
-        stringBuilderBuilderBuilderBuilder.append("Capturing [");
+        if (baseStatus == BaseStatus.CAPTURING) {
+            stringBuilderBuilderBuilderBuilder.append("Capturing [");
+        } else if (baseStatus == BaseStatus.DETHRONING) {
+            stringBuilderBuilderBuilderBuilder.append("Dethroning [");
+        }
         for (int i = 0; i < capStrLen; i++) {
-            System.out.printf("%s %s %s\n", i, captIntermediates, currentCapProg);
             if (i*captIntermediates < currentCapProg) {
                 stringBuilderBuilderBuilderBuilder.append("=");
             } else {
@@ -181,8 +191,7 @@ public class Base implements GenericController {
         }
         stringBuilderBuilderBuilderBuilder.append("]");
 
-
-        if (baseStatus == BaseStatus.CAPTURING) {
+        if (baseStatus == BaseStatus.CAPTURING || baseStatus == BaseStatus.DETHRONING) {
             font.draw(batch, stringBuilderBuilderBuilderBuilder.toString(), x*TILE_SIZE-BASE_SIZE/2, y*TILE_SIZE-BASE_SIZE/2);
         }
 

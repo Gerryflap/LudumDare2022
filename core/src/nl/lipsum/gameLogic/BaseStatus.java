@@ -4,6 +4,7 @@ public enum BaseStatus {
 
     NEUTRAL,
     OWNED,
-    CAPTURING
+    CAPTURING,
+    DETHRONING
 
 }
