@@ -16,10 +16,8 @@ public class PlayerController implements GenericController {
     HumanPlayerModel humanPlayerModel;
     List<AIPlayerModel> aiPlayerModels;
 
-    public Base base;
 
     public PlayerController(BaseGraph baseGraph, HumanPlayerModel humanPlayerModel, TextureStore textureStore) throws Exception{
-        this.base = base;
         this.baseGraph = baseGraph;
         aiPlayerModels = new ArrayList<>();
         aiPlayerModels.add(new AIPlayerModel());

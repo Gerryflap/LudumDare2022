@@ -40,4 +40,8 @@ public abstract class PlayerModel {
             a.setTextures(texture);
         }
     }
+
+    public Base getBase() {
+        return base;
+    }
 }
