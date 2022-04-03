@@ -138,10 +138,10 @@ public abstract class AbstractEntity implements Drawable {
             return;
         }
         if (nextBase != null){
-            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
+//            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
             if ((nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
                     (nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)){
-                System.out.println("Arrived!");
+//                System.out.println("Arrived!");
                 previousBase = nextBase;
                 if (!path.isEmpty()){
                     nextBase = path.get(0);
@@ -255,10 +255,6 @@ public abstract class AbstractEntity implements Drawable {
     public abstract float getBulletDamage();
     public abstract int getBulletReloadSpeed();
     public abstract float getMaxSpeed();
-
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
 
     public float getxPosition() {
         return xPosition;
