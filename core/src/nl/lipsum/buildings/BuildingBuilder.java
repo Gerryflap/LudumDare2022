@@ -123,7 +123,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TURRET_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-TURRET_BUILDING_COST);
-                            nb = new TurretBuilding(x, y, player);
+                            nb = new TurretBuilding(x, y, playerModel);
                         }
                     } else {
                         canbuild = false;
