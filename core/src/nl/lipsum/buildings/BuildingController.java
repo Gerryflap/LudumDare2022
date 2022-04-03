@@ -53,6 +53,11 @@ public class BuildingController implements GenericController {
         buildingBuilder.draw(batch, cameraController);
     }
 
+    public BuildingBuilder getBuildingBuilder() {
+        return buildingBuilder;
+    }
+
+
     public BuildingBuilder getBuildingBuilder(PlayerModel player) {
         if (buildingBuilders[player.getId()] == null) {
             buildingBuilders[player.getId()] = new BuildingBuilder(player);
