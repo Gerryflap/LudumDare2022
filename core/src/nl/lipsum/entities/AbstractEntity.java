@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.buildings.UnitBuilding;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
@@ -59,6 +60,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private EntityStatus entityStatus;
     private boolean firing = false;
     private AbstractEntity target = null;
+    private UnitBuilding unitBuilding;
 
     public AbstractEntity(float xPosition, float yPosition, Base base, PlayerModel owner) {
         this.xPosition = xPosition;
@@ -284,6 +286,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
         if (previousEntityStatus != EntityStatus.DEAD) {
             emitSound(EntitySoundType.DEATH);
         }
+        Optional.ofNullable(unitBuilding).ifPresent(building -> building.reportKilled(this));
         Optional.ofNullable(army).ifPresent(army -> army.removeEntity(this));
         LudumDare2022.entityController.removeEntity(this);
     }
@@ -338,5 +341,9 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public void setTarget(AbstractEntity target) {
         this.target = target;
+    }
+
+    public void setBuilding(UnitBuilding unitBuilding) {
+        this.unitBuilding = unitBuilding;
     }
 }

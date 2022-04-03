@@ -9,6 +9,9 @@ import nl.lipsum.entities.combat_units.Infantry;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static nl.lipsum.Config.TILE_SIZE;
 
 public abstract class UnitBuilding extends Building {
@@ -19,7 +22,7 @@ public abstract class UnitBuilding extends Building {
     private final int trainingTime;
     private final int unitCap;
 
-    private final AbstractEntity[] units;
+    private final Set<AbstractEntity> units;
     private int unitPointer = 0;
 
     private int selectedArmy;
@@ -28,7 +31,7 @@ public abstract class UnitBuilding extends Building {
         super(x, y, owner);
         this.trainingTime = trainingTime;
         this.unitCap = unitCap;
-        this.units = new AbstractEntity[unitCap];
+        this.units = new HashSet<>(unitCap);
         this.selectedArmy = owner.getSelectedArmy();
     }
 
@@ -36,16 +39,16 @@ public abstract class UnitBuilding extends Building {
     public void step() {
         trainingProgress += 1;
         if (trainingProgress > trainingTime) {
-            if (unitPointer >= unitCap) {
+            if (this.units.size() >= unitCap) {
 
             } else {
                 trainingProgress = 0;
                 AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, GameController.playerController.getHumanPlayerModel().getBase(), owner);
+                unit.setBuilding(this);
                 //TODO: make sure the right army is has the added entity
                 owner.armies.get(selectedArmy).entities.add(unit);
                 unit.goTo(owner.armies.get(selectedArmy).getDestBase());
-                this.units[unitPointer] = unit;
-                unitPointer += 1;
+                this.units.add(unit);
             }
         }
     }
@@ -62,5 +65,9 @@ public abstract class UnitBuilding extends Building {
 
     public void click(){
         selectedArmy = (selectedArmy+1)%3;
+    }
+
+    public void reportKilled(AbstractEntity entity) {
+        units.remove(entity);
     }
 }
