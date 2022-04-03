@@ -8,6 +8,9 @@ import java.util.Random;
  * Uses wave height to determine tile type.
  */
 public class WorldGen {
+
+    private static boolean snowWorld = true;
+
     private WorldGen() {
         // Private constructor to prevent initialization
     }
@@ -71,23 +74,31 @@ public class WorldGen {
     private static void setTileFor(int x, int y, TileGrid tileGrid, float[][] map, Random random) {
         float val = map[x][y];
 
-        if (val > 0.2) {
-            int textureNr = random.nextInt(2);
-            switch (textureNr) {
-                case 0:
-                    tileGrid.setTile(x, y, Tile.GRASS_1);
-                    break;
-                case 1:
-                    tileGrid.setTile(x, y, Tile.GRASS_2);
-                    break;
-                default:
-                    tileGrid.setTile(x, y, Tile.GRASS_3);
-                    break;
+        if (!snowWorld) {
+            if (val > 0.2) {
+                int textureNr = random.nextInt(2);
+                switch (textureNr) {
+                    case 0:
+                        tileGrid.setTile(x, y, Tile.GRASS_1);
+                        break;
+                    case 1:
+                        tileGrid.setTile(x, y, Tile.GRASS_2);
+                        break;
+                    default:
+                        tileGrid.setTile(x, y, Tile.GRASS_3);
+                        break;
+                }
+            } else if (val < -0.2) {
+                tileGrid.setTile(x, y, Tile.DIRT);
+            } else {
+                tileGrid.setTile(x, y, Tile.SAND);
             }
-        } else if (val < -0.2) {
-            tileGrid.setTile(x, y, Tile.DIRT);
         } else {
-            tileGrid.setTile(x, y, Tile.SAND);
+            if (val > 0.2) {
+                tileGrid.setTile(x, y, Tile.ICE_1);
+            } else {
+                tileGrid.setTile(x, y, Tile.SNOW_1);
+            }
         }
     }
 

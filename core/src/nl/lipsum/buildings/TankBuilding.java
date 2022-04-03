@@ -2,17 +2,17 @@ package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.Texture;
 import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.entities.combat_units.Infantry;
+import nl.lipsum.entities.combat_units.Tank;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public class InfantryBuilding extends UnitBuilding {
+public class TankBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
-    public InfantryBuilding(int x, int y, PlayerModel owner) {
-        super(x, y, owner, 50, 10);
-        this.tileTexture = new Texture(String.format("player%s/infantry_building.png", owner.getId()));
+    public TankBuilding(int x, int y, PlayerModel owner) {
+        super(x, y, owner, 100, 5);
+        this.tileTexture = new Texture(String.format("player%s/tank_building.png", owner.getId()));
     }
 
     public Texture getTileTexture() {
@@ -28,7 +28,7 @@ public class InfantryBuilding extends UnitBuilding {
 
                 } else {
                     trainingProgress = 0;
-                    AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, owner);
+                    AbstractEntity unit = new Tank(x*TILE_SIZE, y*TILE_SIZE, owner);
                     unit.setBuilding(this);
                     unit.setArmy(owner.armies.get(selectedArmy));
                     owner.armies.get(selectedArmy).entities.add(unit);

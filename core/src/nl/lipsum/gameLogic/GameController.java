@@ -23,7 +23,7 @@ public class GameController implements GenericController {
     public static BaseGraph baseGraph;
 
     private int currentTemperatureUpdateCount;
-    private static final int globalTemperatureUpdateTime = 250;
+    private static final int globalTemperatureUpdateTime = 50;
     public static float globalTemperature;
 
     private Random random = new Random();
@@ -34,21 +34,6 @@ public class GameController implements GenericController {
         WorldGen.generateWorld(tileGrid);
 
         globalTemperature = 5;
-
-//        try {
-//            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"), );
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        tileGrid.setTile(0, 0, new Tile(0, 0, "orange", textureStore));
-//        tileGrid.setTile(20, 0, new Tile(20, 0, "orange", textureStore));
-//        tileGrid.setTile(0, 20, new Tile(0, 20, "orange", textureStore));
-//        tileGrid.setTile(20, 20, new Tile(20, 20, "orange", textureStore));
-//        tileGrid.setTile(10, 10, new Tile(10, 10, "white", textureStore));
-//        tileGrid.setTile(0, 10, new Tile(0, 10, "white", textureStore));
-//        tileGrid.setTile(10, 0, new Tile(10, 0, "white", textureStore));
-//        tileGrid.setTile(10, 20, new Tile(10, 20, "white", textureStore));
-//        tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 
         baseGraph = new BaseGraph();
         try{

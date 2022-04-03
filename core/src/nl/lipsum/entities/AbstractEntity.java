@@ -10,11 +10,8 @@ import nl.lipsum.buildings.UnitBuilding;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
-import nl.lipsum.gameLogic.BaseGraph;
 import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
-import org.w3c.dom.Text;
-import sun.awt.image.ImageWatched;
 
 import java.util.*;
 import java.lang.Math;
@@ -51,7 +48,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
     private final float bulletDamage;
     private final int bulletReloadSpeed;
 
-    private int bulletReloadProgress;
+    private float bulletReloadProgress;
 
     // Unit status
     private EntityStatus previousEntityStatus;
@@ -146,7 +143,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 //        }
 
         if (bulletReloadProgress >= 0) {
-            bulletReloadProgress -= 1;
+            bulletReloadProgress -= Gdx.graphics.getDeltaTime();
         }
 
 

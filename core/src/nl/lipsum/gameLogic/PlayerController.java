@@ -29,6 +29,9 @@ public class PlayerController implements GenericController {
         aiPlayerModels.add(new AIPlayerModel());
         PlayerController.humanPlayerModel = humanPlayerModel;
         PlayerController.humanPlayerModel.initiateArmies(baseGraph.getBases().get(0));
+        baseGraph.getBases().get(2).setOwner(aiPlayerModels.get(0));
+        baseGraph.getBases().get(6).setOwner(aiPlayerModels.get(1));
+        baseGraph.getBases().get(8).setOwner(aiPlayerModels.get(2));
         aiPlayerModels.get(0).initiateArmies(baseGraph.getBases().get(2));
         aiPlayerModels.get(1).initiateArmies(baseGraph.getBases().get(6));
         aiPlayerModels.get(2).initiateArmies(baseGraph.getBases().get(8));
