@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.GameController;
 
@@ -24,6 +25,7 @@ public class MinimapController {
         if (Gdx.input.justTouched()){
             if (Gdx.graphics.getWidth() - MINIMAP_WIDTH < Gdx.input.getX() && Gdx.input.getX() < Gdx.graphics.getWidth()){
                 if (Gdx.graphics.getHeight() - MINIMAP_HEIGHT < Gdx.input.getY() && Gdx.input.getY() < Gdx.graphics.getHeight()){
+                    LudumDare2022.buildingController.stopBuilder(); // if clicked on minimap, then builder deactivates
                     for(Base b:gameController.getBaseGraph().getBases()){
                         float xDist = (Gdx.graphics.getWidth() - MINIMAP_WIDTH +  2*MINIMAP_BORDER_SIZE + (b.getX()*(MINIMAP_WIDTH-4*MINIMAP_BORDER_SIZE)/WIDTH_IN_TILES) - MINIMAP_BASE_SIZE/2)-Gdx.input.getX();
                         float yDist = (Gdx.graphics.getHeight() - (2*MINIMAP_BORDER_SIZE + (b.getY()*(MINIMAP_HEIGHT-4*MINIMAP_BORDER_SIZE)/HEIGHT_IN_TILES) - MINIMAP_BASE_SIZE/2))-Gdx.input.getY();

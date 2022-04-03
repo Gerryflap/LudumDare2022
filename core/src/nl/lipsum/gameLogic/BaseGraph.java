@@ -74,19 +74,17 @@ public class BaseGraph implements GenericController {
         base11.addConnection(base10);
     }
 
-    public List<Base> findPath(List<Base> start, Base dest){
+    public List<Base> findPath(Base start, Base dest){
         Map<Base, ArrayList<Base>> paths = new HashMap<Base, ArrayList<Base>>();
         Set<Base> visited = new LinkedHashSet<Base>();
         Queue<Base> stack = new LinkedList<Base>();
         boolean continue_ = true;
-        for(Base b: start){
-            stack.add(b);
-            ArrayList<Base> path = new ArrayList<>();
-            path.add(b);
-            paths.put(b, path);
-            if (b == dest){
-                continue_ = false;
-            }
+        stack.add(start);
+        ArrayList<Base> path = new ArrayList<>();
+        path.add(start);
+        paths.put(start, path);
+        if (start == dest){
+            continue_ = false;
         }
         while (continue_ && !stack.isEmpty()) {
             Base vertex = stack.remove();
@@ -94,7 +92,7 @@ public class BaseGraph implements GenericController {
                 visited.add(vertex);
                 for (Base neighbour : vertex.getConnections()) {
                     stack.add(neighbour);
-                    ArrayList<Base> path = (ArrayList<Base>) paths.get(vertex).clone();
+                    path = (ArrayList<Base>) paths.get(vertex).clone();
                     path.add(neighbour);
                     if(!paths.containsKey(neighbour)){
                         paths.put(neighbour, path);

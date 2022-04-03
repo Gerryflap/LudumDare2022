@@ -11,12 +11,10 @@ import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
 import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
+import sun.awt.image.ImageWatched;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.lang.Math;
-import java.util.Optional;
-import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -28,8 +26,6 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private final float xSize;
     private final float ySize;
     private final Texture texture;
-    private Base previousBase;
-    private Base nextBase;
     private List<Base> path;
     private Army army;
 
@@ -60,14 +56,12 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private AbstractEntity target = null;
     private boolean dead = false;
 
-    public AbstractEntity(float xPosition, float yPosition, Base base, PlayerModel owner) {
+    public AbstractEntity(float xPosition, float yPosition, PlayerModel owner) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.xSize = getXSize();
         this.ySize = getYSize();
         this.texture = getTexture();
-        this.previousBase = base;
-        this.nextBase = base;
         this.path = new ArrayList<>();
         this.health = getMaxHealth();
         this.maxHealth = getMaxHealth();
@@ -150,7 +144,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
         if (target != null) {
             attackTarget();
-        } else if (nextBase != null) {
+        } else if (!path.isEmpty()) {
             moveToBase();
         }
     }
@@ -173,19 +167,15 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     private void moveToBase() {
-        //            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
-        if ((nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
+        if (!path.isEmpty()){
+            Base nextBase = path.get(0);
+            if ((nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
                 (nextBase.getY() * TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY() * TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
-//                System.out.println("Arrived!");
-            previousBase = nextBase;
-            if (!path.isEmpty()) {
-                nextBase = path.get(0);
                 path.remove(0);
             }
         }
-//            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition) {
-        if (!(nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE && nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) ||
-                !(nextBase.getY() * TILE_SIZE <= yPosition + ARRIVAL_RANGE && nextBase.getY() * TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
+        if (!path.isEmpty()){
+            Base nextBase = path.get(0);
             float diffX = nextBase.getX() * TILE_SIZE - xPosition;
             float diffY = nextBase.getY() * TILE_SIZE - yPosition;
             double factor = Gdx.graphics.getDeltaTime() * maxSpeed / (Math.sqrt(diffX * diffX + diffY * diffY));
@@ -261,15 +251,32 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public void goTo(Base b) {
         if(b!=null){
-            List<Base> startBases = new ArrayList<>();
-            startBases.add(previousBase);
-            if (nextBase != previousBase) {
-                startBases.add(nextBase);
+            Base[] closest = getClosestBases();
+            path = LudumDare2022.gameController.getBaseGraph().findPath(closest[0], b);
+            if (path.size() > 1){
+                if (path.get(1) == closest[1]){
+                    path.remove(0);
+                }
             }
-            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
-            nextBase = path.get(0);
-            path.remove(0);
         }
+    }
+
+    private Base[] getClosestBases(){
+        Base[] output = new Base[2];
+        double[] dists = new double[]{-1, -1};
+        for(Base b:LudumDare2022.gameController.getBaseGraph().getBases()){
+            double d = Math.pow(b.getX()*TILE_SIZE-xPosition, 2) + Math.pow(b.getY()*TILE_SIZE-yPosition, 2);
+            if (dists[0] == -1 || dists[0]>d){
+                output[1] = output[0];
+                dists[1] = dists[0];
+                output[0] = b;
+                dists[0] = d;
+            } else if (dists[1] == -1 || dists[1]>d){
+                output[1] = b;
+                dists[1] = d;
+            }
+        }
+        return output;
     }
 
     public void kill() {
