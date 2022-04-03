@@ -9,6 +9,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
+import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.ArrayList;
@@ -19,8 +20,9 @@ import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public abstract class AbstractEntity implements Drawable {
+public abstract class AbstractEntity implements Drawable, Ownable {
 
+    private final PlayerModel owner;
     private float xPosition;
     private float yPosition;
     private final float xSize;
@@ -72,6 +74,7 @@ public abstract class AbstractEntity implements Drawable {
         this.speed = 0;
         this.maxSpeed = getMaxSpeed();
         this.attackType = getAttackType();
+        this.owner = owner;
 
         this.entityType = getEntityType();
 
@@ -263,5 +266,9 @@ public abstract class AbstractEntity implements Drawable {
 
     public float getyPosition() {
         return yPosition;
+    }
+
+    public PlayerModel getOwner() {
+        return owner;
     }
 }

@@ -5,6 +5,7 @@ import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.entities.EntityType;
 import nl.lipsum.gameLogic.Base;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 public class Infantry extends AbstractEntity {
     public static float X_SIZE = 16;
@@ -17,8 +18,8 @@ public class Infantry extends AbstractEntity {
     public static int BULLET_RELOAD_SPEED = 10;
     public static float MAX_SPEED = 250;
 
-    public Infantry(float xPosition, float yPosition, Base base) {
-        super(xPosition, yPosition, base);
+    public Infantry(float xPosition, float yPosition, Base base, PlayerModel owner) {
+        super(xPosition, yPosition, base, owner);
     }
 
 

@@ -19,12 +19,7 @@ public class PlayerController implements GenericController {
     List<AIPlayerModel> aiPlayerModels;
 
 
-    public PlayerController(Base base, BaseGraph baseGraphHumanPlayerModel, humanPlayerModel, TextureStore textureStore){
-        this.base = base;
-        armies = new ArrayList<>();
-        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
-        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
-        armies.add(new Army(base, LudumDare2022.humanPlayerModel));
+    public PlayerController(BaseGraph baseGraph, HumanPlayerModel humanPlayerModel){
         this.baseGraph = baseGraph;
         aiPlayerModels = new ArrayList<>();
         aiPlayerModels.add(new AIPlayerModel());
@@ -35,10 +30,6 @@ public class PlayerController implements GenericController {
         aiPlayerModels.get(0).initiateArmies(baseGraph.getBases().get(2));
         aiPlayerModels.get(1).initiateArmies(baseGraph.getBases().get(6));
         aiPlayerModels.get(2).initiateArmies(baseGraph.getBases().get(8));
-//        this.humanPlayerModel.setTextures(textureStore.getTileTextureByName("green"));
-//        aiPlayerModels.get(0).setTextures(textureStore.getTileTextureByName("red"));
-//        aiPlayerModels.get(1).setTextures(textureStore.getTileTextureByName("blue"));
-//        aiPlayerModels.get(2).setTextures(textureStore.getTileTextureByName("orange"));
     }
 
     @Override
