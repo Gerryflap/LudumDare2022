@@ -8,6 +8,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.PlayerStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,13 @@ public class PlayerController implements GenericController {
     @Override
     public void step() {
         for(AIPlayerModel aiPlayerModel: aiPlayerModels){
-            aiPlayerModel.step();
+            if (aiPlayerModel.playerStatus == PlayerStatus.ALIVE) {
+                aiPlayerModel.step();
+            }
         }
-        humanPlayerModel.update();
+        if (humanPlayerModel.playerStatus == PlayerStatus.ALIVE) {
+            humanPlayerModel.step();
+        }
     }
 
     @Override

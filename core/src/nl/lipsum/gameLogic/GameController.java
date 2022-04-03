@@ -9,6 +9,7 @@ import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.PlayerStatus;
 import nl.lipsum.ui.UiArmySelect;
 
 import java.util.Random;
@@ -25,7 +26,7 @@ public class GameController implements GenericController {
 
     private int currentTemperatureUpdateCount;
     private static final int globalTemperatureUpdateTime = 250;
-    public float globalTemperature;
+    public static float globalTemperature;
 
     private Random random = new Random();
 
@@ -34,7 +35,7 @@ public class GameController implements GenericController {
         tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         WorldGen.generateWorld(tileGrid);
 
-        globalTemperature = 25;
+        globalTemperature = 5;
 
 //        try {
 //            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"), );
@@ -74,6 +75,10 @@ public class GameController implements GenericController {
 
     @Override
     public void step() {
+        if (playerController.humanPlayerModel.playerStatus == PlayerStatus.DEAD) {
+            LudumDare2022.setGameState(GameState.GAME_OVER);
+        }
+
         baseGraph.step();
         playerController.step();
         updateGlobalTemperature();

@@ -1,9 +1,8 @@
 package nl.lipsum.gameLogic.playermodel;
 
-import com.badlogic.gdx.graphics.Texture;
-import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
+import nl.lipsum.gameLogic.GameController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +18,15 @@ public abstract class PlayerModel {
 
     private int coolingPower;
 
+    private final static int TEMPERATURE_MAX_CAN_SURVIVE_WITHOUT_DAMAGE = 0;
+
+    public PlayerStatus playerStatus;
+
     public PlayerModel() {
         this.amountResources = 50;
         this.health = 1000;
         this.coolingPower = 0;
+        this.playerStatus = PlayerStatus.ALIVE;
     }
 
     public void initiateArmies(Base base){
@@ -31,6 +35,19 @@ public abstract class PlayerModel {
         armies.add(new Army(base, this));
         armies.add(new Army(base, this));
         this.base = base;
+    }
+
+    public void step() {
+        float tempDiff = GameController.globalTemperature + coolingPower - TEMPERATURE_MAX_CAN_SURVIVE_WITHOUT_DAMAGE;
+        if (tempDiff > 0) {
+            return ;
+        }
+
+        health += tempDiff;
+
+        if (health <= 0) {
+            this.playerStatus = PlayerStatus.DEAD;
+        }
     }
 
     public int getAmountResources() {

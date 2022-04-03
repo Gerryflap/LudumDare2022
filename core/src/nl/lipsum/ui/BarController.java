@@ -25,6 +25,8 @@ public class BarController {
     private HumanPlayerModel humanPlayerModel;
     private BitmapFont font = new BitmapFont();
     private SpriteBatch fontSpriteBatch = new SpriteBatch();
+    private ShapeRenderer borderShapeRenderer = new ShapeRenderer();
+    private SpriteBatch spriteBatch = new SpriteBatch();
 
     public BarController(GameController gameController, HumanPlayerModel humanPlayerModel) {
         this.gameController = gameController;
@@ -113,7 +115,7 @@ public class BarController {
         fontSpriteBatch.end();
 
         //draw item icons
-        SpriteBatch spriteBatch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
         spriteBatch.begin();
         float uiItemX = 5;
         float uiItemY = 3;
@@ -135,7 +137,7 @@ public class BarController {
 
 
         // draw icon borders
-        ShapeRenderer borderShapeRenderer = new ShapeRenderer();
+        borderShapeRenderer = new ShapeRenderer();
         borderShapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         borderShapeRenderer.setColor(ICON_BORDER_COLOR);
         uiItemX = 5;
@@ -166,5 +168,7 @@ public class BarController {
     public void dispose() {
         font.dispose();
         fontSpriteBatch.dispose();
+        borderShapeRenderer.dispose();
+        spriteBatch.dispose();
     }
 }
