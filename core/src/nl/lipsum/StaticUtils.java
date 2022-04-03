@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.entities.AbstractEntity;
 
 public class StaticUtils {
 
@@ -30,5 +31,23 @@ public class StaticUtils {
         if (inRange(cameraController, x, y)) {
             batch.draw(texture, x, y, width, height);
         }
+    }
+
+    /**
+     * @param e1 entity 1
+     * @param e2 entity 2
+     * @return the distance^2 between the two
+     */
+    public static double squareDistance(AbstractEntity e1, AbstractEntity e2) {
+        return Math.pow(e1.getxPosition() - e2.getxPosition(), 2) + Math.pow(e1.getyPosition() - e2.getyPosition(), 2);
+    }
+
+    /**
+     * @param e1 entity 1
+     * @param e2 entity 2
+     * @return the distance between the two
+     */
+    public static double distance(AbstractEntity e1, AbstractEntity e2) {
+        return Math.sqrt(squareDistance(e1, e2));
     }
 }
