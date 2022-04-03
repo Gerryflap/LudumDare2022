@@ -9,17 +9,20 @@ import nl.lipsum.entities.combat_units.Infantry;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static nl.lipsum.Config.TILE_SIZE;
 
 public abstract class UnitBuilding extends Building {
 
-    public static final Texture tileTexture = new Texture("greenTile.jpg");
+    private final Texture tileTexture;
 
     private int trainingProgress;
     private final int trainingTime;
     private final int unitCap;
 
-    private final AbstractEntity[] units;
+    private final Set<AbstractEntity> units;
     private int unitPointer = 0;
 
     private int selectedArmy;
@@ -28,31 +31,32 @@ public abstract class UnitBuilding extends Building {
         super(x, y, owner);
         this.trainingTime = trainingTime;
         this.unitCap = unitCap;
-        this.units = new AbstractEntity[unitCap];
+        this.units = new HashSet<>(unitCap);
         this.selectedArmy = owner.getSelectedArmy();
+        this.tileTexture = new Texture("greenTile.jpg");
     }
 
     @Override
     public void step() {
         trainingProgress += 1;
         if (trainingProgress > trainingTime) {
-            if (unitPointer >= unitCap) {
+            if (this.units.size() >= unitCap) {
 
             } else {
                 trainingProgress = 0;
                 AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, owner);
+                unit.setBuilding(this);
                 //TODO: make sure the right army is has the added entity
                 owner.armies.get(selectedArmy).entities.add(unit);
                 unit.goTo(owner.armies.get(selectedArmy).getDestBase());
-                this.units[unitPointer] = unit;
-                unitPointer += 1;
+                this.units.add(unit);
             }
         }
     }
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
     }
 
     @Override
@@ -60,7 +64,15 @@ public abstract class UnitBuilding extends Building {
 
     }
 
+    public Texture getTileTexture() {
+        return tileTexture;
+    }
+
     public void click(){
         selectedArmy = (selectedArmy+1)%3;
+    }
+
+    public void reportKilled(AbstractEntity entity) {
+        units.remove(entity);
     }
 }

@@ -19,15 +19,17 @@ import static nl.lipsum.ui.UiConstants.*;
 public class BuildingBuilder implements Drawable {
     private boolean active;
     private BuildingType type;
-    public static final Texture resourceTexture = new Texture("whiteTile.jpg");
-    public static final Texture unitTexture = new Texture("greenTile.jpg");
     public static final Texture errorTexture = new Texture("redTile.jpg");
+    public final Texture resourceTexture;
+    public final Texture unitTexture;
     private CameraController camCon;
 
 
-    public BuildingBuilder(CameraController camCon){
+    public BuildingBuilder(CameraController camCon, PlayerModel playerModel){
         this.active = false;
         this.camCon = camCon;
+        this.resourceTexture = new Texture(String.format("player%d/resource_building.png", playerModel.getId()));
+        this.unitTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
     }
 
     public void start(BuildingType type){
