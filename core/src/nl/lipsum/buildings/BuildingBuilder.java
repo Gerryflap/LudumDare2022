@@ -19,6 +19,7 @@ import static nl.lipsum.ui.UiConstants.*;
 public class BuildingBuilder implements Drawable {
     private boolean active;
     private BuildingType type;
+    public static final Texture errorTexture = new Texture("redTile.jpg");
     public final Texture resourceTexture;
     public final Texture unitTexture;
     private CameraController camCon;
@@ -71,16 +72,20 @@ public class BuildingBuilder implements Drawable {
             switch (this.type) {
                 case RESOURCE:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= RESOURCE_BUILDING_COST){
-                        LudumDare2022.humanPlayerModel.addResources(-RESOURCE_BUILDING_COST);
-                        nb = new ResourceBuilding(x, y, player);
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-RESOURCE_BUILDING_COST);
+                            nb = new ResourceBuilding(x, y, player);
+                        }
                     } else {
                         canbuild = false;
                     }
                     break;
                 case UNIT:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST){
-                        LudumDare2022.humanPlayerModel.addResources(-INFANTRY_BUILDING_COST);
-                        nb = new InfantryBuilding(x, y, player, 10, 10);
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-INFANTRY_BUILDING_COST);
+                            nb = new InfantryBuilding(x, y, player, 10, 10);
+                        }
                     } else {
                         canbuild = false;
                     }
@@ -100,15 +105,39 @@ public class BuildingBuilder implements Drawable {
     public void draw(SpriteBatch batch, CameraController cameraController) {
         if(active){
             Texture tex = null;
+            boolean canbuild = false;
+            int[] tileCoords = camCon.screenToTile(Gdx.input.getX(), Gdx.input.getY());
+            int tx = tileCoords[0];
+            int ty = tileCoords[1];
+            for (Base base: LudumDare2022.gameController.getBaseGraph().getBases()) {
+                if(base.getOwner() == LudumDare2022.humanPlayerModel &&
+                        tx < base.getX() + base.getBuildrange() &&
+                        tx > base.getX() - base.getBuildrange() &&
+                        ty < base.getY() + base.getBuildrange() &&
+                        ty > base.getY() - base.getBuildrange()){
+                    canbuild = true;
+                }
+            }
             switch (this.type) {
                 case RESOURCE:
-                    tex = resourceTexture;
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= RESOURCE_BUILDING_COST) {
+                        tex = resourceTexture;
+                    } else {
+                        canbuild = false;
+                    }
                     break;
                 case UNIT:
-                    tex = unitTexture;
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST) {
+                        tex = unitTexture;
+                    } else {
+                        canbuild = false;
+                    }
                     break;
             }
-            int[] tileCoords = camCon.screenToTile(Gdx.input.getX(), Gdx.input.getY());
+            if(!canbuild){
+                tex = errorTexture;
+            }
+//            int[] tileCoords = camCon.screenToTile(Gdx.input.getX(), Gdx.input.getY());
             batch.enableBlending();
             batch.setColor(1,1,1,(float)0.5);
             StaticUtils.smartDraw(batch, cameraController, tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);

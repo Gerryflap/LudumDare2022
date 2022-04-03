@@ -2,10 +2,10 @@ package nl.lipsum.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Config;
-import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,15 +13,18 @@ import java.util.Set;
  * This class has supreme command of all entities
  */
 public class EntityController implements GenericController {
+    public static final int UPDATE_TARGETS_EVERY_N_STEPS = 10;
 
     public static boolean[][] collisionGrid;
 
     private final Set<AbstractEntity> entities;
-    private boolean chunkMapValid = false;
+    private PositionalEntityResolver positionalEntityResolver;
+    private int targetUpdateCounter = UPDATE_TARGETS_EVERY_N_STEPS;
 
     public EntityController() {
         this.entities = new HashSet<>();
         collisionGrid = new boolean[Config.COLLISION_GRID_HEIGHT][Config.COLLISION_GRID_WIDTH];
+        positionalEntityResolver = new PositionalEntityResolver();
     }
 
     /**
@@ -47,35 +50,30 @@ public class EntityController implements GenericController {
      * The expensiveness becomes more expensive the longer the range.
      * This method can only be used in the step of entities, otherwise it will throw an exception
      *
-     * Finds the closest enemy in the given range.
-     * @param radius the radius in which to check, usually the max range of the weapon. Try to keep this smol.
+     * Finds the closest enemy in vision range for all entities and sets their target.
      */
-    public void findClosestEnemyInRange(float radius) {
-        if (chunkMapValid) {
-            throw new RuntimeException("Ik ben lui");
-        } else {
-            throw new IllegalStateException("Cannot compute: chunks invalid");
+    private void updateClosestEntities() {
+        for (AbstractEntity entity : entities) {
+            entity.setTarget(positionalEntityResolver.getClosestHostileEntity(entity, entity.getVisionRange()));
         }
     }
 
     @Override
     public void step() {
-        generateChunkMap();
+
+        if (--targetUpdateCounter == 0) {
+            updateClosestEntities();
+            targetUpdateCounter = UPDATE_TARGETS_EVERY_N_STEPS;
+        }
 
         // Clone the entity set to allow adding and removing entities in the step
         Set<AbstractEntity> entitiesClone = new HashSet<>(entities);
         for (AbstractEntity entity :entitiesClone) {
             entity.step();
         }
-        invalidateChunkMap();
-    }
-
-    private void generateChunkMap() {
-        chunkMapValid = true;
-    }
-
-    private void invalidateChunkMap() {
-        chunkMapValid = false;
+        if (positionalEntityResolver.isMapValid()){
+            positionalEntityResolver.invalidate();
+        }
     }
 
     @Override
@@ -89,5 +87,12 @@ public class EntityController implements GenericController {
     @Override
     public void dispose() {
 
+    }
+
+    /**
+     * @return the set of entities
+     */
+    public Set<AbstractEntity> getEntities() {
+        return Collections.unmodifiableSet(entities);
     }
 }
