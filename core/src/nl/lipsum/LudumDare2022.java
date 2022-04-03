@@ -34,6 +34,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private static GameState gameState;
 
 	private static Music mainMenuMusic;
+	private static Music gameMusic;
 
 	@Override
 	public void create () {
@@ -56,7 +57,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameState = GameState.MAIN_MENU;
 
 		mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/main_menu.wav"));
-
+		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/game.wav"));
 	}
 
 	private void handleGameOver() {
@@ -137,6 +138,10 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	private static void manageMainMenuMusic() {
 		if (gameState == GameState.MAIN_MENU) {
+			if (gameMusic.isPlaying()) {
+				gameMusic.stop();
+			}
+
 			if (!mainMenuMusic.isPlaying()) {
 				mainMenuMusic.play();
 				mainMenuMusic.setVolume(0.1f);
@@ -145,6 +150,14 @@ public class LudumDare2022 extends ApplicationAdapter {
 		} else {
 			if (mainMenuMusic.isPlaying()) {
 				mainMenuMusic.stop();
+			}
+		}
+
+		if (gameState == GameState.PLAYING) {
+			if (!gameMusic.isPlaying()) {
+				gameMusic.play();
+				gameMusic.setVolume(0.1f);
+				gameMusic.setLooping(true);
 			}
 		}
 	}
