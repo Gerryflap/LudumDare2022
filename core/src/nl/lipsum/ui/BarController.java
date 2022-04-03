@@ -37,6 +37,7 @@ public class BarController {
             UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
+                    System.out.println("unit");
                     LudumDare2022.buildingController.setActive(true);
                     LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
                     return null;
@@ -46,6 +47,7 @@ public class BarController {
             UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
+                    System.out.println("resource");
                     LudumDare2022.buildingController.setActive(true);
                     LudumDare2022.buildingController.setBuildingType(BuildingType.RESOURCE);
                     return null;
@@ -94,7 +96,7 @@ public class BarController {
                 if (Gdx.graphics.getHeight() - uiItemY > Gdx.input.getY() && Gdx.graphics.getHeight() - uiItemY - ICON_HEIGHT < Gdx.input.getY()) {
                     float uiItemX = 5;
                     for (UiItem uiItem : uiItems) {
-                        if (uiItem != null && uiItem.getRequiredResources() < humanPlayerModel.getAmountResources()) {
+                        if (uiItem != null && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()) {
                             if (uiItemX < Gdx.input.getX() && uiItemX + ICON_WIDTH > Gdx.input.getX()) {
                                 uiItem.getFunction().apply(uiItem);
                             }
@@ -105,12 +107,11 @@ public class BarController {
             }
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
-            int i = 0;
+            int i = 1;
             for (UiItem uiItem : uiItems) {
-                if (uiItem != null && uiItem.getRequiredResources() < humanPlayerModel.getAmountResources()) {
-//                    if (uiItemX < Gdx.input.getX() && uiItemX + ICON_WIDTH > Gdx.input.getX()) {
-//                        uiItem.getFunction().apply(uiItem);
-//                    }
+                System.out.println(i);
+                if (uiItem != null && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()) {
+                    System.out.println(i);
                     if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)){
                         uiItem.getFunction().apply(uiItem);
                     }
@@ -120,11 +121,7 @@ public class BarController {
                     //0 is the last on the numbers on your keyboard
                     i = 0;
                 }
-//                uiItemX = uiItemX + 5 + ICON_WIDTH;
             }
-//            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
-//                uiItem.getFunction().apply(uiItem);
-//            }
         }
     }
 
