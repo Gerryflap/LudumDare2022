@@ -17,7 +17,7 @@ public class TurretBuilding extends Building{
     public int vision = 300;
     public int attackRange = 300;
     public int bulletDamage = 100;
-    public float bulletReloadSpeed = 100;
+    public float bulletReloadSpeed = 1;
     public float bulletReloadProgress = bulletReloadSpeed;
 
     public TurretBuilding(int x, int y, PlayerModel owner) {
@@ -32,11 +32,13 @@ public class TurretBuilding extends Building{
                 bulletReloadProgress -= Gdx.graphics.getDeltaTime();
             }
             Targetable target = (LudumDare2022.positionalEntityResolver.getClosestHostileTarget(this, this.vision));
-            double dist = StaticUtils.distance(this, target);
-            if (dist < this.attackRange) {
-                if (bulletReloadProgress <= 0) {
-                    target.damage(this.bulletDamage);
-                    bulletReloadProgress = bulletReloadSpeed;
+            if(target!=null){
+                double dist = StaticUtils.distance(this, target);
+                if (dist < this.attackRange) {
+                    if (bulletReloadProgress <= 0) {
+                        target.damage(this.bulletDamage);
+                        bulletReloadProgress = bulletReloadSpeed;
+                    }
                 }
             }
         }

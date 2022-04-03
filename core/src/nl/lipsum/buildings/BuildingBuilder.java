@@ -24,6 +24,7 @@ public class BuildingBuilder implements Drawable {
     public final Texture infantryTexture;
     public final Texture tankTexture;
     public final Texture sniperTexture;
+    public final Texture turretTexture;
     private CameraController camCon;
 
 
@@ -34,6 +35,8 @@ public class BuildingBuilder implements Drawable {
         this.infantryTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
         this.tankTexture = new Texture(String.format("player%d/tank_building.png", playerModel.getId()));
         this.sniperTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
+        //TODO: use correct texture
+        this.turretTexture = new Texture(String.format("orangeTile.jpg", playerModel.getId()));
     }
 
     public void start(BuildingType type){
@@ -114,6 +117,16 @@ public class BuildingBuilder implements Drawable {
                         canbuild = false;
                     }
                     break;
+                case TURRET:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= TURRET_BUILDING_COST){
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-TURRET_BUILDING_COST);
+                            nb = new TurretBuilding(x, y, player);
+                        }
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
             }
             try {
                 if (canbuild) {
@@ -167,6 +180,13 @@ public class BuildingBuilder implements Drawable {
                 case TANK:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST) {
                         tex = tankTexture;
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case TURRET:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= TURRET_BUILDING_COST) {
+                        tex = turretTexture;
                     } else {
                         canbuild = false;
                     }

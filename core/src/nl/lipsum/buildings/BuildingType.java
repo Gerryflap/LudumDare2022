@@ -5,6 +5,7 @@ public enum BuildingType {
     RESOURCE,
     INFANTRY,
     TANK,
-    SNIPER
+    SNIPER,
+    TURRET
 
 }
