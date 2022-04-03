@@ -57,6 +57,8 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     // Unit status
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
+    private AbstractEntity target = null;
+    private boolean dead = false;
 
     public AbstractEntity(float xPosition, float yPosition, Base base, PlayerModel owner) {
         this.xPosition = xPosition;
@@ -132,6 +134,10 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     public void step() {
+        if (target != null && target.isDead()) {
+            target = null;
+        }
+
         if (health <= 0) {
             setEntityStatus(EntityStatus.DEAD);
 
@@ -141,7 +147,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
             return;
         }
-        if (nextBase != null){
+        if (nextBase != null && target == null) {
 //            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
             if ((nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
                     (nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)){
@@ -220,6 +226,10 @@ public abstract class AbstractEntity implements Drawable, Ownable {
         }
     }
 
+    private boolean isDead() {
+        return dead;
+    }
+
     public void goTo(Base b){
         List<Base> startBases = new ArrayList<>();
         startBases.add(previousBase);
@@ -233,8 +243,8 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public void kill() {
         Optional.ofNullable(army).ifPresent(army -> army.removeEntity(this));
-
         LudumDare2022.entityController.removeEntity(this);
+        dead = true;
     }
 
     public Army getArmy() {
@@ -259,6 +269,8 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     public abstract float getBulletDamage();
     public abstract int getBulletReloadSpeed();
     public abstract float getMaxSpeed();
+    public abstract float getAttackRange();
+    public abstract float getVisionRange();
 
     public float getxPosition() {
         return xPosition;
@@ -270,5 +282,10 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public PlayerModel getOwner() {
         return owner;
+    }
+
+
+    public void setTarget(AbstractEntity target) {
+        this.target = target;
     }
 }
