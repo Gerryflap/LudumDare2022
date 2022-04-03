@@ -5,9 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.Drawable;
-import nl.lipsum.LudumDare2022;
-import nl.lipsum.StaticUtils;
+import nl.lipsum.*;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Army;
@@ -18,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
 import java.util.Optional;
+import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -32,6 +31,8 @@ public class AbstractEntity implements Drawable {
     private Base nextBase;
     private List<Base> path;
     private Army army;
+
+    private static final int ARRIVAL_RANGE = 10;
 
     private EntityType entityType;
 
@@ -50,6 +51,8 @@ public class AbstractEntity implements Drawable {
     private int bulletReloadSpeed;
 
     private int bulletReloadProgress;
+
+    public static final Random random = new Random();
 
     private List<Bullet> bullets = new ArrayList<>();
 
@@ -164,28 +167,79 @@ public class AbstractEntity implements Drawable {
             return;
         }
         if (nextBase != null){
-            if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
+            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
+            if ((nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
+                    (nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)){
+                System.out.println("Arrived!");
                 previousBase = nextBase;
                 if (!path.isEmpty()){
                     nextBase = path.get(0);
                     path.remove(0);
                 }
             }
-            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
+//            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition) {
+            if (!(nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE && nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) ||
+                    !(nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE && nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
                 float diffX = nextBase.getX()*TILE_SIZE - xPosition;
                 float diffY = nextBase.getY()*TILE_SIZE - yPosition;
                 double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
                 float updateX = (float) (diffX*factor);
                 float updateY = (float) (diffY*factor);
+
+                float newX;
+                float newY;
+
+                boolean allowedToMove = true;
+
                 if (Math.abs(updateX) < Math.abs(diffX)){
-                    this.xPosition += updateX;
+                    newX = this.xPosition + updateX;
                 } else {
-                    this.xPosition = nextBase.getX()*TILE_SIZE;
+                    newX = nextBase.getX()*TILE_SIZE;
                 }
                 if (Math.abs(updateY) < Math.abs(diffY)){
-                    this.yPosition += updateY;
+                    newY = this.yPosition + updateY;
                 } else {
-                    this.yPosition = nextBase.getY()*TILE_SIZE;
+                    newY = nextBase.getY()*TILE_SIZE;
+                }
+
+                if (EntityController.collisionGrid[(int) newY][(int) newX]) {
+                    int signX = -1;
+                    int signY = -1;
+                    if (random.nextFloat() > 0.5) {
+                        signX = 1;
+                    }
+                    if (random.nextFloat() > 0.5) {
+                        signY = 1;
+                    }
+                    newX += signX * random.nextInt(5);
+                    newY += signY * random.nextInt(5);
+
+                    if (0 > newX) {
+                        newX = 0;
+                    }
+                    // this will break if collision grid != movement grid
+                    if (newX > Config.COLLISION_GRID_WIDTH) {
+                        newX = Config.COLLISION_GRID_WIDTH;
+                    }
+
+                    if (0 > newY) {
+                        newY = 0;
+                    }
+                    // this will break if collision grid != movement grid
+                    if (newY > Config.COLLISION_GRID_HEIGHT) {
+                        newY = Config.COLLISION_GRID_HEIGHT;
+                    }
+
+                    if (EntityController.collisionGrid[(int) newY][(int) newX]) {
+                        allowedToMove = false;
+                    }
+                }
+
+                if (allowedToMove) {
+                    EntityController.collisionGrid[(int) this.yPosition][(int) this.xPosition] = false;
+                    EntityController.collisionGrid[(int) newY][(int) newX] = true;
+                    this.xPosition = newX;
+                    this.yPosition = newY;
                 }
             }
         }

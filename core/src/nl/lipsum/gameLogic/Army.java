@@ -15,9 +15,9 @@ public class Army {
 
     public Army(Base startBase){
         entities = new HashSet<>();
-        AbstractEntity entity = new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
-                100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
-        entity.setArmy(this);
+//        AbstractEntity entity = new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
+//                100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
+//        entity.setArmy(this);
     }
 
     public void goTo(Base b){

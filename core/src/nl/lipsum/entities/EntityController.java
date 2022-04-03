@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class EntityController implements GenericController {
 
-    public boolean[][] collisionGrid;
+    public static boolean[][] collisionGrid;
 
     private final Set<AbstractEntity> entities;
     private boolean chunkMapValid = false;
