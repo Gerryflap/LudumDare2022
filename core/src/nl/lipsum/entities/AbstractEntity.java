@@ -132,6 +132,10 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     public void step() {
+        if (isDead()) {
+            return;
+        }
+
         if (target != null && target.isDead()) {
             target = null;
         }
