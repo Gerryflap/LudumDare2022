@@ -2,12 +2,10 @@ package nl.lipsum.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
 import nl.lipsum.controllers.CameraController;
-import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
@@ -20,13 +18,13 @@ import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public class AbstractEntity implements Drawable {
+public abstract class AbstractEntity implements Drawable {
 
     private float xPosition;
     private float yPosition;
-    private float xSize;
-    private float ySize;
-    private Texture texture;
+    private final float xSize;
+    private final float ySize;
+    private final Texture texture;
     private Base previousBase;
     private Base nextBase;
     private List<Base> path;
@@ -38,53 +36,43 @@ public class AbstractEntity implements Drawable {
 
     // Movement information
     private float speed;
-    private float maxSpeed;
+    private final float maxSpeed;
 
     // Defense information
     private int health;
-    private int maxHealth;
+    private final int maxHealth;
 
     // Offense information
-    private AttackType attackType;
-    private float bulletSpeed;
-    private float bulletDamage;
-    private int bulletReloadSpeed;
+    private final AttackType attackType;
+    private final float bulletDamage;
+    private final int bulletReloadSpeed;
 
     private int bulletReloadProgress;
 
     public static final Random random = new Random();
 
-    private List<Bullet> bullets = new ArrayList<>();
-
     // Unit status
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
 
-    public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
-        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType, entityType);
-    }
-
-    public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
+    public AbstractEntity(float xPosition, float yPosition, Base base) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.xSize = xSize;
-        this.ySize = ySize;
-        this.texture = texture;
+        this.xSize = getXSize();
+        this.ySize = getYSize();
+        this.texture = getTexture();
         this.previousBase = base;
         this.nextBase = base;
         this.path = new ArrayList<>();
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.bulletSpeed = bulletSpeed;
-        this.bulletDamage = bulletDamage;
-        this.bulletReloadSpeed = bulletReloadSpeed;
+        this.health = getMaxHealth();
+        this.maxHealth = getMaxHealth();
+        this.bulletDamage = getBulletDamage();
+        this.bulletReloadSpeed =getBulletReloadSpeed();
         this.speed = 0;
-        this.maxSpeed = maxSpeed;
-        this.attackType = attackType;
+        this.maxSpeed = getMaxSpeed();
+        this.attackType = getAttackType();
 
-        this.entityType = entityType;
+        this.entityType = getEntityType();
 
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
@@ -102,15 +90,9 @@ public class AbstractEntity implements Drawable {
             if (bulletReloadProgress <= 0) {
                 // fire bullet
                 bulletReloadProgress = bulletReloadSpeed;
-                bullets.add(new Bullet(this.xPosition, this.yPosition, 100, 50, this.bulletSpeed));
-                emitSound(EntitySoundType.FIRE);
+                //TODO: Fire bullet ofzo
             }
             bulletReloadProgress -= 1;
-        }
-
-        for (Bullet _bullet :
-                bullets) {
-            _bullet.draw(batch);
         }
     }
 
@@ -146,17 +128,6 @@ public class AbstractEntity implements Drawable {
     }
 
     public void step() {
-        List<Bullet> bulletsToRemove = new ArrayList<>();
-
-        for (Bullet _bullet : bullets) {
-            if (_bullet.step()) {
-                bulletsToRemove.add(_bullet);
-            }
-        }
-
-        for (Bullet _bullet : bulletsToRemove) {
-            bullets.remove(_bullet);
-        }
         if (health <= 0) {
             setEntityStatus(EntityStatus.DEAD);
 
@@ -271,6 +242,19 @@ public class AbstractEntity implements Drawable {
         Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
         this.army = army;
     }
+
+    /*
+     * These constants should be defined for every entity type
+     */
+    public abstract float getXSize();
+    public abstract float getYSize();
+    public abstract Texture getTexture();
+    public abstract EntityType getEntityType();
+    public abstract int getMaxHealth();
+    public abstract AttackType getAttackType();
+    public abstract float getBulletDamage();
+    public abstract int getBulletReloadSpeed();
+    public abstract float getMaxSpeed();
 
     public void setTexture(Texture texture) {
         this.texture = texture;
