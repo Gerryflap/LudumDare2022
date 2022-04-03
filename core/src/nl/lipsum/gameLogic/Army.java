@@ -28,7 +28,6 @@ public class Army implements Ownable{
             armyCounter.put(owner, 1);
         }
 
-        System.out.println(String.format("getting resource army%d.png", this.id));
         this.texture = new Texture(String.format("army%d.png", this.id));
 
         entities = new HashSet<>();

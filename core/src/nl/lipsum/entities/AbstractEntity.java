@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.*;
 import nl.lipsum.buildings.UnitBuilding;
 import nl.lipsum.controllers.CameraController;
@@ -12,14 +13,19 @@ import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
 import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
+import org.w3c.dom.Text;
 import sun.awt.image.ImageWatched;
 
 import java.util.*;
 import java.lang.Math;
 
-import static nl.lipsum.Config.TILE_SIZE;
+import static nl.lipsum.Config.*;
 
 public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
+    public static final Random random = new Random();
+    private static final int ARRIVAL_RANGE = 10;
+    private static final Texture HEALTH_BAR_BG = new Texture("red.png");
+    private static final Texture HEALTH_BAR = new Texture("green.png");
 
     private final PlayerModel owner;
     protected float xPosition;
@@ -29,8 +35,6 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
     private final Texture texture;
     private List<Base> path;
     private Army army;
-
-    private static final int ARRIVAL_RANGE = 10;
 
     private EntityType entityType;
 
@@ -48,8 +52,6 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
     private final int bulletReloadSpeed;
 
     private int bulletReloadProgress;
-
-    public static final Random random = new Random();
 
     // Unit status
     private EntityStatus previousEntityStatus;
@@ -86,7 +88,15 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, this.getTexture(), this.xPosition - (this.xSize / 2), this.yPosition - (this.ySize / 2), this.xSize, this.ySize);
+        final float x = this.xPosition - (this.xSize / 2);
+        final float y = this.yPosition - (this.ySize / 2);
+
+        StaticUtils.smartDraw(batch, cameraController, this.getTexture(), x, y, this.xSize, this.ySize);
+
+        if (!isDead()) {
+            StaticUtils.smartDraw(batch, cameraController, HEALTH_BAR_BG, x, y, this.xSize, HEALTH_BAR_HEIGHT);
+            StaticUtils.smartDraw(batch, cameraController, HEALTH_BAR, x, y, this.xSize * (1f/((float)(this.getMaxHealth() / this.health))), HEALTH_BAR_HEIGHT);
+        }
 
         if (firing) {
             //TODO: Fire bullet ofzo
