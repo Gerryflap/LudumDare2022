@@ -141,6 +141,19 @@ public class BuildingBuilder implements Drawable {
             batch.enableBlending();
             batch.setColor(1,1,1,(float)0.5);
             StaticUtils.smartDraw(batch, cameraController, tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+
+            /* if can build, draw the selected army number too */
+            if (canbuild && this.type == BuildingType.UNIT) {
+                StaticUtils.smartDraw(
+                        batch,
+                        cameraController,
+                        /* get the texture of the current selected army */
+                        LudumDare2022.humanPlayerModel.armies.get(
+                                LudumDare2022.humanPlayerModel.getSelectedArmy()
+                        ).getTexture(),
+                        max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2,
+                        max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+            }
             batch.setColor(1,1,1,1);
         }
     }
