@@ -7,5 +7,6 @@ public interface Targetable {
     float getyPosition();
     PlayerModel getOwner();
     boolean isDead();
+    void damage(float d);
 
 }

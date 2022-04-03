@@ -116,6 +116,13 @@ public class PositionalEntityResolver {
         for (AbstractEntity entity: LudumDare2022.entityController.getEntities()) {
             addTarget(entity);
         }
+        for (Building[] buildingList: LudumDare2022.buildingController.getBuildings()){
+            for(Building building: buildingList){
+                if(building != null){
+                    addTarget(building);
+                }
+            }
+        }
         mapValid = true;
     }
 }
