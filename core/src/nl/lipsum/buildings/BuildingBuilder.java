@@ -136,7 +136,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= HEAT_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-HEAT_BUILDING_COST);
-                            nb = new HeatBuilding(x, y, player);
+                            nb = new HeatBuilding(x, y, playerModel);
                         }
                     } else {
                         canbuild = false;
