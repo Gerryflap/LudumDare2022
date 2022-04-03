@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -64,7 +65,7 @@ public class BarController {
             this.uiItems[8] = unitBuilding;
             this.uiItems[9] = resourceBuilding;
 
-            UiArmySelect uiArmySelect1 = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            UiArmySelect uiArmySelect1 = new UiArmySelect(new Texture("army0.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -75,7 +76,7 @@ public class BarController {
                     });
             this.uiItems[0] = uiArmySelect1;
             gameController.setSelectedArmy(0, uiArmySelect1);
-            this.uiItems[1] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[1] = new UiArmySelect(new Texture("army1.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -84,7 +85,7 @@ public class BarController {
                             return null;
                         }
                     });
-            this.uiItems[2] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[2] = new UiArmySelect(new Texture("army2.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -175,9 +176,8 @@ public class BarController {
                 if (uiItem instanceof UiArmySelect){
                     if (gameController.getUiArmySelect() == uiItem){
                         spriteBatch.draw(((UiArmySelect) uiItem).getTextureSelected(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
-                    } else {
-                        spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
                     }
+                    spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY + 10, ICON_WIDTH, ICON_HEIGHT);
                 } else {
                     spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
                 }

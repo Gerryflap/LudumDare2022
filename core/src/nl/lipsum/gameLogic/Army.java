@@ -1,9 +1,11 @@
 package nl.lipsum.gameLogic;
 
+import com.badlogic.gdx.graphics.Texture;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.combat_units.Infantry;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,8 +15,22 @@ public class Army implements Ownable{
     public Set<AbstractEntity> entities;
     private final PlayerModel owner;
     private Base destBase;
+    private static HashMap<PlayerModel, Integer> armyCounter = new HashMap<>();
+    private final int id;
+    private final Texture texture;
 
     public Army(Base startBase, PlayerModel owner){
+        if (armyCounter.containsKey(owner)) {
+            this.id = armyCounter.get(owner);
+            armyCounter.put(owner, id + 1);
+        } else {
+            this.id = 0;
+            armyCounter.put(owner, 1);
+        }
+
+        System.out.println(String.format("getting resource army%d.png", this.id));
+        this.texture = new Texture(String.format("army%d.png", this.id));
+
         entities = new HashSet<>();
         this.owner = owner;
         this.destBase = startBase;
@@ -44,5 +60,13 @@ public class Army implements Ownable{
 
     public Base getDestBase() {
         return destBase;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Texture getTexture() {
+        return this.texture;
     }
 }
