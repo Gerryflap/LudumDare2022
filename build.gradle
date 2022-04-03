@@ -17,7 +17,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '1.0'
+    version = '1.1'
     ext {
         appName = "LudumDare2022"
         gdxVersion = '1.10.0'
