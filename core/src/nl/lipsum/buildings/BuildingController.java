@@ -17,7 +17,7 @@ public class BuildingController implements GenericController {
 
     public BuildingController(CameraController cameraController, HumanPlayerModel humanPlayer){
         buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
-        buildingBuilder = new BuildingBuilder(cameraController);
+        buildingBuilder = new BuildingBuilder(cameraController, humanPlayer);
         this.humanPlayer = humanPlayer;
         buildingBuilder.start(BuildingType.UNIT);
     }
