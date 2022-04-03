@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
+import nl.lipsum.buildings.UnitBuilding;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
@@ -53,8 +54,9 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     // Unit status
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
+    private boolean firing = false;
     private AbstractEntity target = null;
-    private boolean dead = false;
+    private UnitBuilding unitBuilding;
 
     public AbstractEntity(float xPosition, float yPosition, PlayerModel owner) {
         this.xPosition = xPosition;
@@ -86,13 +88,9 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     public void draw(SpriteBatch batch, CameraController cameraController) {
         StaticUtils.smartDraw(batch, cameraController, this.getTexture(), this.xPosition - (this.xSize / 2), this.yPosition - (this.ySize / 2), this.xSize, this.ySize);
 
-        if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
-            if (bulletReloadProgress <= 0) {
-                // fire bullet
-                bulletReloadProgress = bulletReloadSpeed;
-                //TODO: Fire bullet ofzo
-            }
-            bulletReloadProgress -= 1;
+        if (firing) {
+            //TODO: Fire bullet ofzo
+            firing = false;
         }
     }
 
@@ -128,19 +126,19 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     public void step() {
-        if (target != null && target.isDead()) {
-            target = null;
-        }
-
-        if (health <= 0) {
-            setEntityStatus(EntityStatus.DEAD);
-
-            if (previousEntityStatus != EntityStatus.DEAD) {
-                emitSound(EntitySoundType.DEATH);
-            }
-
+        if (isDead()) {
             return;
         }
+
+        // Skip this for now
+//        if (target != null && target.isDead()) {
+//            target = null;
+//        }
+
+        if (bulletReloadProgress >= 0) {
+            bulletReloadProgress -= 1;
+        }
+
 
         if (target != null) {
             attackTarget();
@@ -150,11 +148,17 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     private void attackTarget() {
+        setEntityStatus(EntityStatus.COMBAT);
         double dist = StaticUtils.distance(this, target);
         if (dist < getAttackRange()) {
             speed = 0.0f;
 
-            // TODO: Pew Pew
+            if (bulletReloadProgress <= 0) {
+                target.damage(getBulletDamage());
+                firing = true;
+                bulletReloadProgress = getBulletReloadSpeed();
+            }
+
         } else {
             speed = getMaxSpeed();
             float cos = (float) ((target.getxPosition() - xPosition)/dist);
@@ -167,6 +171,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     private void moveToBase() {
+        setEntityStatus(EntityStatus.MOVING);
         if (!path.isEmpty()){
             Base nextBase = path.get(0);
             if ((nextBase.getX() * TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX() * TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
@@ -246,7 +251,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     private boolean isDead() {
-        return dead;
+        return EntityStatus.DEAD.equals(entityStatus);
     }
 
     public void goTo(Base b) {
@@ -279,10 +284,23 @@ public abstract class AbstractEntity implements Drawable, Ownable {
         return output;
     }
 
+    public void damage(float damageAmount) {
+        health -= damageAmount;
+
+        if (health <= 0) {
+            kill();
+        }
+    }
+
     public void kill() {
+        setEntityStatus(EntityStatus.DEAD);
+
+        if (previousEntityStatus != EntityStatus.DEAD) {
+            emitSound(EntitySoundType.DEATH);
+        }
+        Optional.ofNullable(unitBuilding).ifPresent(building -> building.reportKilled(this));
         Optional.ofNullable(army).ifPresent(army -> army.removeEntity(this));
         LudumDare2022.entityController.removeEntity(this);
-        dead = true;
     }
 
     public Army getArmy() {
@@ -335,5 +353,9 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public void setTarget(AbstractEntity target) {
         this.target = target;
+    }
+
+    public void setBuilding(UnitBuilding unitBuilding) {
+        this.unitBuilding = unitBuilding;
     }
 }
