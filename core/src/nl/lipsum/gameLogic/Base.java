@@ -26,7 +26,11 @@ public class Base implements GenericController {
         this.x = x;
         this.y = y;
         this.connections = new ArrayList<>();
-        texture = new Texture("whiteTile.jpg");
+        if (initialOwner != null) {
+            texture = new Texture(String.format("player%s/base.png", initialOwner.getId()));
+        } else {
+            texture = new Texture("base.png");
+        }
         this.buildrange = buildrange;
     }
 
