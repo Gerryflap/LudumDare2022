@@ -8,8 +8,8 @@ import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 public class Infantry extends AbstractEntity {
-    public static float X_SIZE = 16;
-    public static float Y_SIZE = 16;
+    public static float X_SIZE = 48;
+    public static float Y_SIZE = 48;
     public Texture TEXTURE;
     public static EntityType ENTITY_TYPE = EntityType.INFANTRY;
     public static int MAX_HEALTH = 100;

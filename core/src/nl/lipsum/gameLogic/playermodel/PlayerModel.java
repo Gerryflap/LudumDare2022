@@ -10,12 +10,16 @@ import java.util.List;
 
 // abstract omdat we ook ai player models hebben straks
 public abstract class PlayerModel {
+    private static int amountPlayers = 0;
     private float amountResources;
     public List<Army> armies;
     private Base base;
     int selectedArmy = 0;
+    private final int id;
 
     public PlayerModel() {
+        this.id = amountPlayers;
+        amountPlayers++;
         this.amountResources = 50;
     }
 
@@ -45,5 +49,9 @@ public abstract class PlayerModel {
 
     public Base getBase() {
         return base;
+    }
+
+    public int getId() {
+        return id;
     }
 }
