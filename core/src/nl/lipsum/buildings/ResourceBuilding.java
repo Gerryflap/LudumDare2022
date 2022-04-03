@@ -19,11 +19,15 @@ public class ResourceBuilding extends Building{
     }
 
     public void step(){
-        this.owner.addResources(RESOURCES_PER_BUILDING_PER_SECOND * Gdx.graphics.getDeltaTime());
+        if(!isDead()){
+            this.owner.addResources(RESOURCES_PER_BUILDING_PER_SECOND * Gdx.graphics.getDeltaTime());
+        }
     }
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        if(!isDead()){
+            StaticUtils.smartDraw(batch, cameraController, tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        }
     }
 
     public void dispose(){
