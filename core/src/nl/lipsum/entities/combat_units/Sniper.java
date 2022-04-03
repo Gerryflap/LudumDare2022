@@ -14,7 +14,7 @@ public class Sniper extends AbstractEntity {
     public static int MAX_HEALTH = 50;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
     public static float BULLET_DAMAGE = 100;
-    public static int BULLET_RELOAD_SPEED = 20;
+    public static int BULLET_RELOAD_SPEED = 3;
     public static float MAX_SPEED = 200;
     public static float ATTACK_RANGE = 250;
     public static float VISION_RANGE = 250;
