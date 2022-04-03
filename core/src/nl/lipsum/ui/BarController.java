@@ -42,8 +42,9 @@ public class BarController {
             UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
-                    LudumDare2022.buildingController.setActive(true);
-                    LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
+//                    LudumDare2022.buildingController.setActive(true);
+//                    LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
+                    LudumDare2022.buildingController.startBuilder(BuildingType.UNIT);
                     return null;
                 }
             });
@@ -51,8 +52,10 @@ public class BarController {
             UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
-                    LudumDare2022.buildingController.setActive(true);
-                    LudumDare2022.buildingController.setBuildingType(BuildingType.RESOURCE);
+//                    LudumDare2022.buildingController.setActive(true);
+                    LudumDare2022.buildingController.startBuilder(BuildingType.RESOURCE);
+//                    buildingBuilder.start(BuildingType.UNIT);
+
                     return null;
                 }
             });
@@ -65,6 +68,7 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
+                            LudumDare2022.buildingController.stopBuilder();
                             LudumDare2022.gameController.setSelectedArmy(0, (UiArmySelect) uiItem);
                             return null;
                         }
@@ -75,6 +79,7 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
+                            LudumDare2022.buildingController.stopBuilder();
                             LudumDare2022.gameController.setSelectedArmy(1, (UiArmySelect) uiItem);
                             return null;
                         }
@@ -83,6 +88,7 @@ public class BarController {
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
+                            LudumDare2022.buildingController.stopBuilder();
                             LudumDare2022.gameController.setSelectedArmy(2, (UiArmySelect) uiItem);
                             return null;
                         }
@@ -99,10 +105,11 @@ public class BarController {
         if (Gdx.input.justTouched()){
             if (Gdx.graphics.getHeight() - BAR_HEIGHT < Gdx.input.getY() && Gdx.input.getY() < Gdx.graphics.getHeight()){
                 float uiItemY = 3;
+                LudumDare2022.buildingController.stopBuilder(); //maybe activate later again, but if clicked on bar, then builder deactivates
                 if (Gdx.graphics.getHeight() - uiItemY > Gdx.input.getY() && Gdx.graphics.getHeight() - uiItemY - ICON_HEIGHT < Gdx.input.getY()) {
                     float uiItemX = 5;
                     for (UiItem uiItem : uiItems) {
-                        if (uiItem != null && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()) {
+                        if (uiItem != null/* && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()*/) {
                             if (uiItemX < Gdx.input.getX() && uiItemX + ICON_WIDTH > Gdx.input.getX()) {
                                 uiItem.getFunction().apply(uiItem);
                             }
@@ -115,9 +122,11 @@ public class BarController {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
             int i = 1;
             for (UiItem uiItem : uiItems) {
-                if (uiItem != null && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()) {
-                    if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)){
+                if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)) {
+                    if (uiItem != null/* && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()*/) {
                         uiItem.getFunction().apply(uiItem);
+                    } else {
+                        LudumDare2022.buildingController.stopBuilder();
                     }
                 }
                 i += 1;

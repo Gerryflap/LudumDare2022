@@ -11,12 +11,10 @@ import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
 import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
+import sun.awt.image.ImageWatched;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.lang.Math;
-import java.util.Optional;
-import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
@@ -222,15 +220,42 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     public void goTo(Base b){
         if(b!=null){
-            List<Base> startBases = new ArrayList<>();
-            startBases.add(previousBase);
-            if (nextBase != previousBase){
-                startBases.add(nextBase);
+            Base[] closest = getClosestBases();
+            path = LudumDare2022.gameController.getBaseGraph().findPath(closest[0], b);
+            if (path.size() > 1){
+                if (path.get(1) == closest[1]){
+                    path.remove(0);
+                }
             }
-            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
             nextBase = path.get(0);
-            path.remove(0);
+
+//            List<Base> startBases = new ArrayList<>();
+//            startBases.add(previousBase);
+//            if (nextBase != previousBase){
+//                startBases.add(nextBase);
+//            }
+//            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
+//            nextBase = path.get(0);
+//            path.remove(0);
         }
+    }
+
+    private Base[] getClosestBases(){
+        Base[] output = new Base[2];
+        double[] dists = new double[]{-1, -1};
+        for(Base b:LudumDare2022.gameController.getBaseGraph().getBases()){
+            double d = Math.pow(b.getX()*TILE_SIZE-xPosition, 2) + Math.pow(b.getY()*TILE_SIZE-yPosition, 2);
+            if (dists[0] == -1 || dists[0]>d){
+                output[1] = output[0];
+                dists[1] = dists[0];
+                output[0] = b;
+                dists[0] = d;
+            } else if (dists[1] == -1 || dists[1]>d){
+                output[1] = b;
+                dists[1] = d;
+            }
+        }
+        return output;
     }
 
     public void kill() {
