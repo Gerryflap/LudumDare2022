@@ -12,6 +12,7 @@ import nl.lipsum.entities.EntityController;
 import nl.lipsum.entities.PositionalEntityResolver;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 import nl.lipsum.gameover.GameOverController;
 import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
@@ -29,7 +30,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
-	public static EntityController entityController = new EntityController();
+	public static EntityController entityController;
 	private static GameOverController gameOverController;
 
 	private static GameState previousGameState;
@@ -43,6 +44,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
 
+		entityController  = new EntityController();
 		humanPlayerModel = new HumanPlayerModel();
 		positionalEntityResolver = new PositionalEntityResolver();
 
@@ -68,6 +70,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 		batch = new SpriteBatch();
 
+		entityController = new EntityController();
 		humanPlayerModel = new HumanPlayerModel();
 
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -87,6 +90,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameController.dispose();
 		mainMenuController.dispose();
 		uiController.dispose();
+		entityController.dispose();
+		PlayerModel.reset();
 	}
 
 	@Override

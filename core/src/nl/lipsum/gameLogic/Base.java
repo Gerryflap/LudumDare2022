@@ -145,6 +145,7 @@ public class Base implements GenericController {
                     // If owner is kicked to 0 dominance, make the base neutral
                     if (this.captureProgress[this.owner.getId()] <= 0) {
                         this.owner = null;
+                        baseStatus = BaseStatus.NEUTRAL;
                     }
                     // 2. There isn't another owner (possibly already dethroned) and we must simply capture the base
                 } else {

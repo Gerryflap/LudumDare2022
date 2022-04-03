@@ -17,6 +17,7 @@ import static nl.lipsum.Config.*;
 import static nl.lipsum.ui.UiConstants.*;
 
 public class BuildingBuilder implements Drawable {
+
     private final PlayerModel playerModel;
     private boolean active;
     private BuildingType type;
@@ -25,6 +26,7 @@ public class BuildingBuilder implements Drawable {
     public final Texture infantryTexture;
     public final Texture tankTexture;
     public final Texture sniperTexture;
+    public final Texture heatTexture;
     public final Texture turretTexture;
     private CameraController camCon = LudumDare2022.cameraController;
 
@@ -35,6 +37,7 @@ public class BuildingBuilder implements Drawable {
         this.infantryTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
         this.tankTexture = new Texture(String.format("player%d/tank_building.png", playerModel.getId()));
         this.sniperTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
+        this.heatTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
         this.playerModel = playerModel;
         //TODO: use correct texture
         this.turretTexture = new Texture(String.format("orangeTile.jpg", playerModel.getId()));
@@ -129,6 +132,16 @@ public class BuildingBuilder implements Drawable {
                         canbuild = false;
                     }
                     break;
+                case HEAT:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= HEAT_BUILDING_COST){
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-HEAT_BUILDING_COST);
+                            nb = new HeatBuilding(x, y, playerModel);
+                        }
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
             }
             try {
                 if (canbuild) {
@@ -191,6 +204,13 @@ public class BuildingBuilder implements Drawable {
                 case TURRET:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TURRET_BUILDING_COST) {
                         tex = turretTexture;
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case HEAT:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= HEAT_BUILDING_COST) {
+                        tex = heatTexture;
                     } else {
                         canbuild = false;
                     }
