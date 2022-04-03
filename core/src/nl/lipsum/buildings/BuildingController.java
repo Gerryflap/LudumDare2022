@@ -19,7 +19,13 @@ public class BuildingController implements GenericController {
         buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         buildingBuilder = new BuildingBuilder(cameraController);
         this.humanPlayer = humanPlayer;
-        buildingBuilder.start(BuildingType.UNIT);
+    }
+
+    public void startBuilder(BuildingType b){
+        buildingBuilder.start(b);
+    }
+    public void stopBuilder(){
+        buildingBuilder.stop();
     }
 
     public void onClick(int x, int y){
