@@ -14,7 +14,7 @@ public class HeatBuilding extends Building {
 
     public HeatBuilding(int x, int y, PlayerModel owner) {
         super(x, y, owner);
-        this.tileTexture = new Texture(String.format("player%d/resource_building.png", owner.getId()));
+        this.tileTexture = new Texture("heat_building.png");
         getOwner().heatBuildingsAmount += 1;
     }
 

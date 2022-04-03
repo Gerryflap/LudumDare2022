@@ -37,7 +37,7 @@ public class BuildingBuilder implements Drawable {
         this.infantryTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
         this.tankTexture = new Texture(String.format("player%d/tank_building.png", playerModel.getId()));
         this.sniperTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
-        this.heatTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
+        this.heatTexture = new Texture("heat_building.png");
         this.playerModel = playerModel;
         //TODO: use correct texture
         this.turretTexture = new Texture(String.format("orangeTile.jpg", playerModel.getId()));
