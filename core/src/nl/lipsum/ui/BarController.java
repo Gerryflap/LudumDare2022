@@ -100,11 +100,16 @@ public class BarController {
         shapeRenderer.end();
 
         // draw resource counter
-
         font.setColor(UI_FONT_COLOR);
 
         fontSpriteBatch.begin();
         font.draw(fontSpriteBatch, String.format("Resources: %s", humanPlayerModel.getAmountResources()), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+
+        // draw global temperature
+        font.draw(fontSpriteBatch, String.format("Global temperature: %.1f C", gameController.globalTemperature), 5, BAR_HEIGHT + 2 * font.getLineHeight() - 3);
+
+        // draw player health
+        font.draw(fontSpriteBatch, String.format("Player health: %s", humanPlayerModel.getHealth()), 5, BAR_HEIGHT + 3 * font.getLineHeight() - 3);
         fontSpriteBatch.end();
 
         //draw item icons

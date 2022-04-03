@@ -22,6 +22,7 @@ public class HumanPlayerModel extends PlayerModel {
     }
 
 
+
     public void setSelectedArmy(int selectedArmy){
         this.selectedArmy = selectedArmy;
     }

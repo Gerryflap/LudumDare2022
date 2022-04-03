@@ -11,6 +11,8 @@ import nl.lipsum.gameLogic.grid.WorldGen;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.ui.UiArmySelect;
 
+import java.util.Random;
+
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
 
@@ -21,10 +23,19 @@ public class GameController implements GenericController {
 //    AbstractEntity exampleEntity;
     BaseGraph baseGraph;
 
+    private int currentTemperatureUpdateCount;
+    private static final int globalTemperatureUpdateTime = 250;
+    public float globalTemperature;
+
+    private Random random = new Random();
+
     public GameController(HumanPlayerModel humanPlayerModel){
         textureStore = new TextureStore();
         tileGrid = new TileGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
         WorldGen.generateWorld(tileGrid);
+
+        globalTemperature = 25;
+
 //        try {
 //            exampleEntity = new AbstractEntity(389, 340, textureStore.getTileTextureByName("background"), );
 //        } catch (Exception e) {
@@ -49,10 +60,23 @@ public class GameController implements GenericController {
 
     }
 
+    public void updateGlobalTemperature() {
+        currentTemperatureUpdateCount += 1;
+        if (currentTemperatureUpdateCount >= globalTemperatureUpdateTime) {
+            currentTemperatureUpdateCount = 0;
+            if (random.nextFloat() > 0.6) {
+                globalTemperature += 0.1;
+            } else {
+                globalTemperature -= 0.1;
+            }
+        }
+    }
+
     @Override
     public void step() {
         baseGraph.step();
         playerController.step();
+        updateGlobalTemperature();
     }
 
     @Override
