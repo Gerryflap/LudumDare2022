@@ -12,6 +12,7 @@ import static nl.lipsum.Config.TILE_SIZE;
 public class Army implements Ownable{
     public Set<AbstractEntity> entities;
     private final PlayerModel owner;
+    private Base destBase;
 
     public Army(Base startBase, PlayerModel owner){
         entities = new HashSet<>();
@@ -21,6 +22,7 @@ public class Army implements Ownable{
     }
 
     public void goTo(Base b){
+        destBase = b;
         for(AbstractEntity e:entities){
             e.goTo(b);
         }
@@ -37,5 +39,9 @@ public class Army implements Ownable{
     @Override
     public PlayerModel getOwner() {
         return owner;
+    }
+
+    public Base getDestBase() {
+        return destBase;
     }
 }

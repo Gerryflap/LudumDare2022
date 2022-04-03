@@ -23,7 +23,7 @@ public class BuildingController implements GenericController {
     }
 
     public void onClick(int x, int y){
-        buildingBuilder.buildBuilding(x,y, buildingGrid, this.humanPlayer);
+        buildingBuilder.buildBuildingClick(x,y, buildingGrid, this.humanPlayer);
     }
 
     @Override
@@ -40,5 +40,17 @@ public class BuildingController implements GenericController {
     @Override
     public void dispose() {
         buildingGrid.dispose();
+    }
+
+    public void setActive(boolean isActive){
+        buildingBuilder.setActive(isActive);
+    }
+
+    public void setBuildingType(BuildingType buildingType){
+        buildingBuilder.setType(buildingType);
+    }
+
+    public BuildingBuilder getBuildingBuilder() {
+        return buildingBuilder;
     }
 }

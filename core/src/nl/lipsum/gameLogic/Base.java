@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +18,22 @@ public class Base implements GenericController {
     int y;
     List<Base> connections;
     Texture texture;
+    PlayerModel owner;
+    int buildrange;
 
-    public Base(int x, int y){
+    public Base(int x, int y, PlayerModel initialOwner, int buildrange){
+        this.owner = initialOwner;
         this.x = x;
         this.y = y;
         this.connections = new ArrayList<>();
         texture = new Texture("whiteTile.jpg");
+        this.buildrange = buildrange;
     }
+
+    public Base(int x, int y, PlayerModel initialOwner){
+        this(x,y,initialOwner, 2);
+    }
+
 
     public void addConnection(Base b){
         this.connections.add(b);
@@ -39,6 +49,14 @@ public class Base implements GenericController {
 
     public int getY() {
         return y;
+    }
+
+    public int getBuildrange(){
+        return buildrange;
+    }
+
+    public PlayerModel getOwner(){
+        return owner;
     }
 
     public String toString(){
