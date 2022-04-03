@@ -27,9 +27,9 @@ public abstract class PlayerModel {
 
     public void initiateArmies(Base base){
         armies = new ArrayList<>();
-        armies.add(new Army(base));
-        armies.add(new Army(base));
-        armies.add(new Army(base));
+        armies.add(new Army(base, this));
+        armies.add(new Army(base, this));
+        armies.add(new Army(base, this));
         this.base = base;
     }
 
