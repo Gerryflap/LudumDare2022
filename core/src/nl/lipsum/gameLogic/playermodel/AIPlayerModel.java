@@ -7,10 +7,7 @@ import nl.lipsum.buildings.*;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
@@ -27,7 +24,7 @@ public class AIPlayerModel extends PlayerModel {
     private int stepsTillDecision = DECISION_INTERVAL;
     private Base targetBase = null;
     private int resourceNodes = 0;
-    private Set<Building> buildings;
+    private final Set<Building> buildings;
 
     public AIPlayerModel(){
         super();
@@ -57,18 +54,18 @@ public class AIPlayerModel extends PlayerModel {
 
         if (bases.size() > 0) {
             if (resourceNodes < TARGET_RESOURCE_BUILDINGS) {
-                Base base = bases.iterator().next();
-                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2 - 1);
-                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2 - 1);
+                Base base = getRandomOwnBase();
+                int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
+                int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
                 boolean hasBuilt = build(BuildingType.RESOURCE, x, y);
                 if (hasBuilt) {
                     resourceNodes += 1;
                 }
             } else {
-                Base base = bases.iterator().next();
+                Base base = getRandomOwnBase();
                 int x = base.getX() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
                 int y = base.getY() - base.getBuildrange() + random.nextInt(base.getBuildrange() * 2);
-                boolean success = build(buildingTypes[random.nextInt(buildingTypes.length -1)], x, y);
+                boolean success = build(buildingTypes[random.nextInt(buildingTypes.length)], x, y);
                 if (success) {
                     selectedArmy = (selectedArmy + 1)%3;
                 }
@@ -167,12 +164,28 @@ public class AIPlayerModel extends PlayerModel {
                 .collect(Collectors.toSet());
     }
 
+    private Set<Base> getOtherBases() {
+        return LudumDare2022.gameController.getBaseGraph().getBases().stream()
+                .filter(base -> base.getOwner() != this)
+                .collect(Collectors.toSet());
+    }
+
     private void updateTargetBase() {
         if (targetBase == null || targetBase.getOwner() == this) {
             // Get a base that isn't ours (to capture)
-            targetBase = LudumDare2022.gameController.getBaseGraph().getBases().stream()
-                    .filter(base -> base.getOwner() != this)
-                    .findFirst().orElse(null);
+            targetBase = getRandomOtherBase();
         }
+    }
+
+    private Base getRandomOwnBase() {
+        List<Base> baseList = new ArrayList<>(getOwnBases());
+        return baseList.get(random.nextInt(baseList.size() ));
+
+    }
+
+    private Base getRandomOtherBase() {
+        List<Base> baseList = new ArrayList<>(getOtherBases());
+        return baseList.get(random.nextInt(baseList.size() ));
+
     }
 }
