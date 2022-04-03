@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public class EntityController implements GenericController {
 
-    private boolean[][] collisionGrid;
+    public boolean[][] collisionGrid;
 
     private final Set<AbstractEntity> entities;
     private boolean chunkMapValid = false;
@@ -30,6 +30,7 @@ public class EntityController implements GenericController {
      */
     public void addEntity(AbstractEntity entity) {
         entities.add(entity);
+        collisionGrid[(int) entity.getxPosition()][(int) entity.getyPosition()] = true;
     }
 
     /**
@@ -38,6 +39,7 @@ public class EntityController implements GenericController {
      */
     public void removeEntity(AbstractEntity entity) {
         entities.remove(entity);
+        collisionGrid[(int) entity.getxPosition()][(int) entity.getyPosition()] = false;
     }
 
     /**

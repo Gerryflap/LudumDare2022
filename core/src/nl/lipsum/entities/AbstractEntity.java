@@ -217,4 +217,12 @@ public class AbstractEntity implements Drawable {
         Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
         this.army = army;
     }
+
+    public float getxPosition() {
+        return xPosition;
+    }
+
+    public float getyPosition() {
+        return yPosition;
+    }
 }
