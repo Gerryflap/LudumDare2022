@@ -1,6 +1,7 @@
 package nl.lipsum.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,6 +26,7 @@ public class BarController {
     private HumanPlayerModel humanPlayerModel;
     private BitmapFont font = new BitmapFont();
     private SpriteBatch fontSpriteBatch = new SpriteBatch();
+    private boolean displayDebugInfo = false;
 
     public BarController(GameController gameController, HumanPlayerModel humanPlayerModel) {
         this.gameController = gameController;
@@ -71,6 +73,9 @@ public class BarController {
     }
 
     public void step() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.GRAVE)) {
+            displayDebugInfo = !displayDebugInfo;
+        }
         if (Gdx.input.justTouched()){
             if (Gdx.graphics.getHeight() - BAR_HEIGHT < Gdx.input.getY() && Gdx.input.getY() < Gdx.graphics.getHeight()){
                 float uiItemY = 3;
@@ -105,6 +110,11 @@ public class BarController {
 
         fontSpriteBatch.begin();
         font.draw(fontSpriteBatch, String.format("Resources: %s", humanPlayerModel.getAmountResources()), 5, BAR_HEIGHT + font.getLineHeight() - 3);
+        // draw debug info
+        if(displayDebugInfo){
+            font.draw(fontSpriteBatch, String.format("FPS: %s", (int) (1/Gdx.graphics.getDeltaTime())), 0, camera.viewportHeight);
+//            font.draw(fontSpriteBatch, String.format("FPS: %s", (int) (1/Gdx.graphics.getDeltaTime())), 100, BAR_HEIGHT + font.getLineHeight() - 3);
+        }
         fontSpriteBatch.end();
 
         //draw item icons
@@ -156,6 +166,7 @@ public class BarController {
         }
         shapeRenderer.end();
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
     }
 
     public void dispose() {
