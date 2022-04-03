@@ -88,5 +88,11 @@ public class BuildingBuilder implements Drawable {
 
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
+    public void setType(BuildingType type) {
+        this.type = type;
+    }
 }

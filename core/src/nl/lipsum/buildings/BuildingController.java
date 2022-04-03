@@ -41,4 +41,16 @@ public class BuildingController implements GenericController {
     public void dispose() {
         buildingGrid.dispose();
     }
+
+    public void setActive(boolean isActive){
+        buildingBuilder.setActive(isActive);
+    }
+
+    public void setBuildingType(BuildingType buildingType){
+        buildingBuilder.setType(buildingType);
+    }
+
+    public BuildingBuilder getBuildingBuilder() {
+        return buildingBuilder;
+    }
 }

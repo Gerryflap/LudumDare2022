@@ -12,6 +12,7 @@ import static nl.lipsum.Config.TILE_SIZE;
 
 public class Army {
     public Set<AbstractEntity> entities;
+    private Base destBase;
 
     public Army(Base startBase){
         entities = new HashSet<>();
@@ -21,6 +22,7 @@ public class Army {
     }
 
     public void goTo(Base b){
+        destBase = b;
         for(AbstractEntity e:entities){
             e.goTo(b);
         }

@@ -1,12 +1,14 @@
 package nl.lipsum.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.LudumDare2022;
+import nl.lipsum.buildings.BuildingType;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.TextureStore;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
@@ -32,14 +34,29 @@ public class BarController {
         this.textureStore = new TextureStore();
 
         try {
-            UiItem exampleHaveEnough = new UiItem(textureStore.getTileTextureByName("blue"), ICON_WIDTH, ICON_HEIGHT);
-            exampleHaveEnough.setRequiredResources(100);
-            UiItem exampleDontHaveEnough = new UiItem(textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT);
+            UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+                @Override
+                public Object apply(UiItem uiItem) {
+                    LudumDare2022.buildingController.setActive(true);
+                    LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
+                    return null;
+                }
+            });
+            unitBuilding.setRequiredResources(100);
+            UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+                @Override
+                public Object apply(UiItem uiItem) {
+                    LudumDare2022.buildingController.setActive(true);
+                    LudumDare2022.buildingController.setBuildingType(BuildingType.RESOURCE);
+                    return null;
+                }
+            });
+            resourceBuilding.setRequiredResources(50);
 
-            this.uiItems[0] = exampleHaveEnough;
-            this.uiItems[1] = exampleDontHaveEnough;
+            this.uiItems[8] = unitBuilding;
+            this.uiItems[9] = resourceBuilding;
 
-            UiArmySelect uiArmySelect7 = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            UiArmySelect uiArmySelect1 = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -47,9 +64,9 @@ public class BarController {
                             return null;
                         }
                     });
-            this.uiItems[7] = uiArmySelect7;
-            gameController.setSelectedArmy(0, uiArmySelect7);
-            this.uiItems[8] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[0] = uiArmySelect1;
+            gameController.setSelectedArmy(0, uiArmySelect1);
+            this.uiItems[1] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -57,7 +74,7 @@ public class BarController {
                             return null;
                         }
                     });
-            this.uiItems[9] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[2] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
@@ -86,6 +103,28 @@ public class BarController {
                     }
                 }
             }
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)){
+            int i = 0;
+            for (UiItem uiItem : uiItems) {
+                if (uiItem != null && uiItem.getRequiredResources() < humanPlayerModel.getAmountResources()) {
+//                    if (uiItemX < Gdx.input.getX() && uiItemX + ICON_WIDTH > Gdx.input.getX()) {
+//                        uiItem.getFunction().apply(uiItem);
+//                    }
+                    if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)){
+                        uiItem.getFunction().apply(uiItem);
+                    }
+                }
+                i += 1;
+                if (i == 10){
+                    //0 is the last on the numbers on your keyboard
+                    i = 0;
+                }
+//                uiItemX = uiItemX + 5 + ICON_WIDTH;
+            }
+//            if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)){
+//                uiItem.getFunction().apply(uiItem);
+//            }
         }
     }
 
@@ -149,7 +188,7 @@ public class BarController {
         uiItemX = 5;
         uiItemY = 3;
         for (UiItem uiItem : uiItems) {
-            if (uiItem != null && uiItem.getRequiredResources() < humanPlayerModel.getAmountResources()) {
+            if (uiItem != null && uiItem.getRequiredResources() > humanPlayerModel.getAmountResources()) {
                 shapeRenderer.rect(uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
             }
             uiItemX = uiItemX + 5 + ICON_WIDTH;
