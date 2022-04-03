@@ -17,6 +17,9 @@ public class Infantry extends AbstractEntity {
     public static float BULLET_DAMAGE = 5;
     public static int BULLET_RELOAD_SPEED = 10;
     public static float MAX_SPEED = 250;
+    public static float ATTACK_RANGE = 50;
+    public static float VISION_RANGE = 100;
+
 
     public Infantry(float xPosition, float yPosition, Base base, PlayerModel owner) {
         super(xPosition, yPosition, base, owner);
@@ -67,5 +70,15 @@ public class Infantry extends AbstractEntity {
     @Override
     public float getMaxSpeed() {
         return MAX_SPEED;
+    }
+
+    @Override
+    public float getAttackRange() {
+        return ATTACK_RANGE;
+    }
+
+    @Override
+    public float getVisionRange() {
+        return VISION_RANGE;
     }
 }
