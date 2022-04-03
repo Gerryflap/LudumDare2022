@@ -17,8 +17,8 @@ public class Infantry extends AbstractEntity {
     public static float BULLET_DAMAGE = 5;
     public static int BULLET_RELOAD_SPEED = 10;
     public static float MAX_SPEED = 250;
-    public static float ATTACK_RANGE = 25;
-    public static float VISION_RANGE = 50;
+    public static float ATTACK_RANGE = 50;
+    public static float VISION_RANGE = 100;
 
 
     public Infantry(float xPosition, float yPosition, Base base, PlayerModel owner) {

@@ -2,6 +2,7 @@ package nl.lipsum.entities;
 
 import nl.lipsum.Coordinate;
 import nl.lipsum.LudumDare2022;
+import nl.lipsum.StaticUtils;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -54,7 +55,7 @@ public class PositionalEntityResolver {
 
         while (iterator.hasNext()) {
             AbstractEntity e = iterator.next();
-            double currentDist = squareDistance(entity, e);
+            double currentDist = StaticUtils.squareDistance(entity, e);
             if (closest == null) {
                 closest = e;
                 minDist = currentDist;
@@ -70,10 +71,6 @@ public class PositionalEntityResolver {
 
     public AbstractEntity getClosestHostileEntity(AbstractEntity entity, float range) {
         return getClosestEntityMatchingPredicate(entity, range, unit -> unit.getOwner() != entity.getOwner());
-    }
-
-    private double squareDistance(AbstractEntity e1, AbstractEntity e2) {
-        return Math.pow(e1.getxPosition() - e2.getxPosition(), 2) + Math.pow(e1.getyPosition() - e2.getyPosition(), 2);
     }
 
     private Set<AbstractEntity> getUnitsAtGridPos(Coordinate coordinates) {
