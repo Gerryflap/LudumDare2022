@@ -24,6 +24,7 @@ public class BuildingBuilder implements Drawable {
     public final Texture infantryTexture;
     public final Texture tankTexture;
     public final Texture sniperTexture;
+    public final Texture heatTexture;
     private CameraController camCon;
 
 
@@ -34,6 +35,7 @@ public class BuildingBuilder implements Drawable {
         this.infantryTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
         this.tankTexture = new Texture(String.format("player%d/tank_building.png", playerModel.getId()));
         this.sniperTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
+        this.heatTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
     }
 
     public void start(BuildingType type){
@@ -88,7 +90,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-INFANTRY_BUILDING_COST);
-                            nb = new InfantryBuilding(x, y, player, 10, 10);
+                            nb = new InfantryBuilding(x, y, player, 100, 20);
                         }
                     } else {
                         canbuild = false;
@@ -98,7 +100,7 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= SNIPER_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-SNIPER_BUILDING_COST);
-                            nb = new SniperBuilding(x, y, player, 10, 10);
+                            nb = new SniperBuilding(x, y, player, 100, 20);
                         }
                     } else {
                         canbuild = false;
@@ -108,7 +110,17 @@ public class BuildingBuilder implements Drawable {
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST){
                         if(canbuild){
                             LudumDare2022.humanPlayerModel.addResources(-TANK_BUILDING_COST);
-                            nb = new TankBuilding(x, y, player, 10, 10);
+                            nb = new TankBuilding(x, y, player, 100, 20);
+                        }
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case HEAT:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= HEAT_BUILDING_COST){
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-HEAT_BUILDING_COST);
+                            nb = new HeatBuilding(x, y, player);
                         }
                     } else {
                         canbuild = false;
@@ -167,6 +179,13 @@ public class BuildingBuilder implements Drawable {
                 case TANK:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST) {
                         tex = tankTexture;
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case HEAT:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= HEAT_BUILDING_COST) {
+                        tex = heatTexture;
                     } else {
                         canbuild = false;
                     }

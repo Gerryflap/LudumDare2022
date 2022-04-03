@@ -28,13 +28,12 @@ public class Army implements Ownable{
             armyCounter.put(owner, 1);
         }
 
-        System.out.println(String.format("getting resource army%d.png", this.id));
         this.texture = new Texture(String.format("army%d.png", this.id));
 
         entities = new HashSet<>();
         this.owner = owner;
         this.destBase = startBase;
-        if (owner.getId() == 2) {
+        if (owner.getId() == 2 || owner.getId() == 3 || owner.getId() == 1) {
             for (int i = 0; i < 100; i++) {
                 AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, owner);
                 entity.setArmy(this);

@@ -16,7 +16,6 @@ public class BuildingController implements GenericController {
     BuildingGrid buildingGrid;
     BuildingBuilder buildingBuilder;
     HumanPlayerModel humanPlayer;
-    GameController gameController;
 
     public BuildingController(CameraController cameraController, HumanPlayerModel humanPlayer){
         buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);

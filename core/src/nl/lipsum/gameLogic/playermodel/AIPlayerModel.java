@@ -19,7 +19,7 @@ public class AIPlayerModel extends PlayerModel {
         for(Army army:armies){
             if(random.nextDouble()* 25 < Gdx.graphics.getDeltaTime()){
                 int i = random.nextInt(LudumDare2022.gameController.getBaseGraph().getBases().size());
-                army.goTo(LudumDare2022.gameController.getBaseGraph().getBases().get(i));
+                army.goTo(LudumDare2022.gameController.getBaseGraph().getBases().get(0));
 //                random.getRandomFromList
 //                army.goTo(base);
             }

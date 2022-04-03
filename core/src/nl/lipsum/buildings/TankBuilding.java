@@ -2,7 +2,6 @@ package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.Texture;
 import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.entities.combat_units.Infantry;
 import nl.lipsum.entities.combat_units.Tank;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
