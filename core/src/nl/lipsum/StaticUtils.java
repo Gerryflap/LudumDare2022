@@ -4,8 +4,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.buildings.BuildingType;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
+import nl.lipsum.entities.Targetable;
+
+import javax.swing.text.TabableView;
 
 import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
 
@@ -41,7 +45,7 @@ public class StaticUtils {
      * @param e2 entity 2
      * @return the distance^2 between the two
      */
-    public static double squareDistance(AbstractEntity e1, AbstractEntity e2) {
+    public static double squareDistance(Targetable e1, Targetable e2) {
         return Math.pow(e1.getxPosition() - e2.getxPosition(), 2) + Math.pow(e1.getyPosition() - e2.getyPosition(), 2);
     }
 
@@ -50,7 +54,7 @@ public class StaticUtils {
      * @param e2 entity 2
      * @return the distance between the two
      */
-    public static double distance(AbstractEntity e1, AbstractEntity e2) {
+    public static double distance(Targetable e1, Targetable e2) {
         return Math.sqrt(squareDistance(e1, e2));
     }
 

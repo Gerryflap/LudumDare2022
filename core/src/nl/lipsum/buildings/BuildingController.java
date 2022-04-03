@@ -8,6 +8,8 @@ import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
+import java.util.List;
+
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
 
@@ -33,6 +35,7 @@ public class BuildingController implements GenericController {
     }
     public void stopBuilder(){
         buildingBuilder.stop();
+        LudumDare2022.humanPlayerModel.setUiBuildingSelect(null);
     }
 
     public void onClick(int x, int y){
@@ -72,6 +75,14 @@ public class BuildingController implements GenericController {
 
     public BuildingBuilder getHumanBuildingBuilder() {
         return buildingBuilder;
+    }
+
+    public void removeBuilding(Building b){
+        buildingGrid.removeBuilding(b);
+    }
+
+    public Building[][] getBuildings(){
+        return buildingGrid.getBuildings();
     }
 
     public BuildingGrid getBuildingGrid() {

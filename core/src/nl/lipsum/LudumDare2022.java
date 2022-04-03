@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.EntityController;
+import nl.lipsum.entities.PositionalEntityResolver;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameover.GameOverController;
@@ -24,6 +25,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public static InputController inputController;
 	public static BuildingController buildingController;
 	public static HumanPlayerModel humanPlayerModel;
+	public static PositionalEntityResolver positionalEntityResolver;
 
 	private MainMenuController mainMenuController;
 	private UiController uiController;
@@ -42,6 +44,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		Gdx.gl.glViewport(0, 0, Gdx.graphics.getBackBufferWidth(), Gdx.graphics.getBackBufferHeight());
 
 		humanPlayerModel = new HumanPlayerModel();
+		positionalEntityResolver = new PositionalEntityResolver();
 
 		batch = new SpriteBatch();
 		//todo: magic constants vervangen voor viewport width/height

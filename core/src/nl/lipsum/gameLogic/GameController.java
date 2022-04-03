@@ -2,15 +2,13 @@ package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.*;
-import nl.lipsum.buildings.BuildingBuilder;
-import nl.lipsum.buildings.BuildingGrid;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameLogic.playermodel.PlayerStatus;
-import nl.lipsum.ui.UiArmySelect;
+import nl.lipsum.ui.UiSelectedItem;
 
 import java.util.Random;
 
@@ -22,7 +20,7 @@ public class GameController implements GenericController {
     TileGrid tileGrid;
     public static PlayerController playerController;
 //    AbstractEntity exampleEntity;
-    BaseGraph baseGraph;
+    public static BaseGraph baseGraph;
 
     private int currentTemperatureUpdateCount;
     private static final int globalTemperatureUpdateTime = 250;
@@ -56,6 +54,8 @@ public class GameController implements GenericController {
         try{
             playerController = new PlayerController(baseGraph, humanPlayerModel);
         } catch (Exception e){
+            System.err.println(e.getMessage());
+            e.printStackTrace();
             System.out.println("tried to use textures that don't exist");
         }
 
@@ -107,12 +107,12 @@ public class GameController implements GenericController {
         playerController.goTo(base);
     }
 
-    public void setSelectedArmy(int selectedArmy, UiArmySelect uiArmySelect){
+    public void setSelectedArmy(int selectedArmy, UiSelectedItem uiSelectedItem){
         this.playerController.humanPlayerModel.setSelectedArmy(selectedArmy);
-        this.playerController.humanPlayerModel.setUiArmySelect(uiArmySelect);
+        this.playerController.humanPlayerModel.setUiArmySelect(uiSelectedItem);
     }
 
-    public UiArmySelect getUiArmySelect(){
-        return this.playerController.humanPlayerModel.getUiArmySelect();
+    public UiSelectedItem getUiArmySelect(){
+        return this.playerController.humanPlayerModel.getUiArmySelected();
     }
 }

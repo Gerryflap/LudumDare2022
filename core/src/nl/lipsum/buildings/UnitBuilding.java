@@ -18,14 +18,14 @@ public abstract class UnitBuilding extends Building {
 
     private final Texture tileTexture;
 
-    private int trainingProgress;
-    private final int trainingTime;
-    private final int unitCap;
+    protected int trainingProgress;
+    protected final int trainingTime;
+    protected final int unitCap;
 
-    private final Set<AbstractEntity> units;
-    private int unitPointer = 0;
+    protected final Set<AbstractEntity> units;
+    protected int unitPointer = 0;
 
-    private int selectedArmy;
+    protected int selectedArmy;
 
     public UnitBuilding(int x, int y, PlayerModel owner, int trainingTime, int unitCap) {
         super(x, y, owner);
@@ -37,26 +37,11 @@ public abstract class UnitBuilding extends Building {
     }
 
     @Override
-    public void step() {
-        trainingProgress += 1;
-        if (trainingProgress > trainingTime) {
-            if (this.units.size() >= unitCap) {
-
-            } else {
-                trainingProgress = 0;
-                AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, owner);
-                unit.setBuilding(this);
-                //TODO: make sure the right army is has the added entity
-                owner.armies.get(selectedArmy).entities.add(unit);
-                unit.goTo(owner.armies.get(selectedArmy).getDestBase());
-                this.units.add(unit);
-            }
-        }
-    }
-
-    @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        if (!isDead()) {
+            StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE / 2, TILE_SIZE * this.y - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            StaticUtils.smartDraw(batch, cameraController, this.owner.armies.get(this.selectedArmy).getTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        }
     }
 
     @Override

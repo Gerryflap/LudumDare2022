@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -12,17 +13,21 @@ import nl.lipsum.buildings.BuildingType;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.TextureStore;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import org.graalvm.compiler.debug.CSVUtil;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
-import static nl.lipsum.Config.INFANTRY_BUILDING_COST;
-import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
+import static nl.lipsum.Config.*;
 import static nl.lipsum.ui.UiConstants.*;
 
 /**
  * Controls the main UI bar
  */
 public class BarController {
+    private final static List<Integer> ARMY_SELECTED_KEYS = Arrays.asList(Input.Keys.NUM_0, Input.Keys.NUM_1, Input.Keys.NUM_2);
+
     private final GameController gameController;
     private TextureStore textureStore;
     private UiItem[] uiItems = new UiItem[]{null, null, null, null, null, null, null, null, null, null};
@@ -37,23 +42,51 @@ public class BarController {
         this.gameController = gameController;
         this.humanPlayerModel = humanPlayerModel;
         this.textureStore = new TextureStore();
+        Texture orangeTile = null;
+        try {
+            orangeTile = textureStore.getTileTextureByName("orange");
+        } catch (Exception e){
+
+        }
 
         try {
-            UiItem unitBuilding = new UiItem(LudumDare2022.buildingController.getHumanBuildingBuilder().unitTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem infantryBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().infantryTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+                @Override
+                public Object apply(UiItem uiItem) {
+                    LudumDare2022.buildingController.startBuilder(BuildingType.INFANTRY);
+                    LudumDare2022.humanPlayerModel.setUiBuildingSelect((UiSelectedItem) uiItem);
+                    return null;
+                }
+            });
+            infantryBuilding.setRequiredResources(INFANTRY_BUILDING_COST);
+            UiItem tankBuilding = new UiSelectedItem(LudumDare2022.buildingController.getHumanBuildingBuilder().tankTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
 //                    LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
-                    LudumDare2022.buildingController.startBuilder(BuildingType.UNIT);
+                    LudumDare2022.buildingController.startBuilder(BuildingType.TANK);
+                    LudumDare2022.humanPlayerModel.setUiBuildingSelect((UiSelectedItem) uiItem);
                     return null;
                 }
             });
-            unitBuilding.setRequiredResources(INFANTRY_BUILDING_COST);
-            UiItem resourceBuilding = new UiItem(LudumDare2022.buildingController.getHumanBuildingBuilder().resourceTexture, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            tankBuilding.setRequiredResources(TANK_BUILDING_COST);
+            UiItem sniperBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().sniperTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+                @Override
+                public Object apply(UiItem uiItem) {
+//                    LudumDare2022.buildingController.setActive(true);
+//                    LudumDare2022.buildingController.setBuildingType(BuildingType.UNIT);
+                    LudumDare2022.buildingController.startBuilder(BuildingType.SNIPER);
+                    LudumDare2022.humanPlayerModel.setUiBuildingSelect((UiSelectedItem) uiItem);
+                    return null;
+                }
+            });
+            sniperBuilding.setRequiredResources(SNIPER_BUILDING_COST);
+            UiItem resourceBuilding = new UiSelectedItem(LudumDare2022.buildingController.getHumanBuildingBuilder().resourceTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
                     LudumDare2022.buildingController.startBuilder(BuildingType.RESOURCE);
+                    LudumDare2022.humanPlayerModel.setUiBuildingSelect((UiSelectedItem) uiItem);
 //                    buildingBuilder.start(BuildingType.UNIT);
 
                     return null;
@@ -61,35 +94,37 @@ public class BarController {
             });
             resourceBuilding.setRequiredResources(RESOURCE_BUILDING_COST);
 
-            this.uiItems[8] = unitBuilding;
-            this.uiItems[9] = resourceBuilding;
+            this.uiItems[4] = tankBuilding;
+            this.uiItems[5] = sniperBuilding;
+            this.uiItems[6] = infantryBuilding;
+            this.uiItems[7] = resourceBuilding;
 
-            UiArmySelect uiArmySelect1 = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            UiSelectedItem uiSelectedItem1 = new UiSelectedItem(new Texture("army0.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            LudumDare2022.buildingController.stopBuilder();
-                            LudumDare2022.gameController.setSelectedArmy(0, (UiArmySelect) uiItem);
+//                            LudumDare2022.buildingController.stopBuilder();
+                            LudumDare2022.gameController.setSelectedArmy(0, (UiSelectedItem) uiItem);
                             return null;
                         }
                     });
-            this.uiItems[0] = uiArmySelect1;
-            gameController.setSelectedArmy(0, uiArmySelect1);
-            this.uiItems[1] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[0] = uiSelectedItem1;
+            gameController.setSelectedArmy(0, uiSelectedItem1);
+            this.uiItems[1] = new UiSelectedItem(new Texture("army1.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            LudumDare2022.buildingController.stopBuilder();
-                            LudumDare2022.gameController.setSelectedArmy(1, (UiArmySelect) uiItem);
+//                            LudumDare2022.buildingController.stopBuilder();
+                            LudumDare2022.gameController.setSelectedArmy(1, (UiSelectedItem) uiItem);
                             return null;
                         }
                     });
-            this.uiItems[2] = new UiArmySelect(textureStore.getTileTextureByName("blue"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
+            this.uiItems[2] = new UiSelectedItem(new Texture("army2.png"), textureStore.getTileTextureByName("orange"), ICON_WIDTH, ICON_HEIGHT,
                     new Function<UiItem, Object>() {
                         @Override
                         public Object apply(UiItem uiItem) {
-                            LudumDare2022.buildingController.stopBuilder();
-                            LudumDare2022.gameController.setSelectedArmy(2, (UiArmySelect) uiItem);
+//                            LudumDare2022.buildingController.stopBuilder();
+                            LudumDare2022.gameController.setSelectedArmy(2, (UiSelectedItem) uiItem);
                             return null;
                         }
                     });
@@ -125,7 +160,7 @@ public class BarController {
                 if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0 + i)) {
                     if (uiItem != null/* && uiItem.getRequiredResources() <= humanPlayerModel.getAmountResources()*/) {
                         uiItem.getFunction().apply(uiItem);
-                    } else {
+                    } else if (ARMY_SELECTED_KEYS.stream().noneMatch(key -> Gdx.input.isKeyJustPressed(key))) {
                         LudumDare2022.buildingController.stopBuilder();
                     }
                 }
@@ -172,12 +207,11 @@ public class BarController {
         float uiItemY = 3;
         for (UiItem uiItem : uiItems) {
             if (uiItem != null) {
-                if (uiItem instanceof UiArmySelect){
-                    if (gameController.getUiArmySelect() == uiItem){
-                        spriteBatch.draw(((UiArmySelect) uiItem).getTextureSelected(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
-                    } else {
-                        spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
+                if (uiItem instanceof UiSelectedItem){
+                    if (gameController.getUiArmySelect() == uiItem || LudumDare2022.humanPlayerModel.getUiBuildingSelected() == uiItem){
+                        spriteBatch.draw(((UiSelectedItem) uiItem).getTextureSelected(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
                     }
+                    spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
                 } else {
                     spriteBatch.draw(uiItem.getTexture(), uiItemX, uiItemY, ICON_WIDTH, ICON_HEIGHT);
                 }

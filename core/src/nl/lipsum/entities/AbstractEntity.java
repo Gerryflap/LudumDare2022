@@ -17,13 +17,13 @@ import java.lang.Math;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public abstract class AbstractEntity implements Drawable, Ownable {
+public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 
     private final PlayerModel owner;
-    private float xPosition;
-    private float yPosition;
-    private final float xSize;
-    private final float ySize;
+    protected float xPosition;
+    protected float yPosition;
+    protected final float xSize;
+    protected final float ySize;
     private final Texture texture;
     private List<Base> path;
     private Army army;
@@ -53,7 +53,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
     private boolean firing = false;
-    private AbstractEntity target = null;
+    private Targetable target = null;
     private UnitBuilding unitBuilding;
 
     public AbstractEntity(float xPosition, float yPosition, PlayerModel owner) {
@@ -248,7 +248,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
         }
     }
 
-    private boolean isDead() {
+    public boolean isDead() {
         return EntityStatus.DEAD.equals(entityStatus);
     }
 
@@ -349,7 +349,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
 
-    public void setTarget(AbstractEntity target) {
+    public void setTarget(Targetable target) {
         this.target = target;
     }
 

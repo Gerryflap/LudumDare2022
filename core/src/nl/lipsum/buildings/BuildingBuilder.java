@@ -22,14 +22,18 @@ public class BuildingBuilder implements Drawable {
     private BuildingType type;
     public static final Texture errorTexture = new Texture("redTile.jpg");
     public final Texture resourceTexture;
-    public final Texture unitTexture;
+    public final Texture infantryTexture;
+    public final Texture tankTexture;
+    public final Texture sniperTexture;
     private CameraController camCon = LudumDare2022.cameraController;
 
 
     public BuildingBuilder(PlayerModel playerModel){
         this.active = false;
         this.resourceTexture = new Texture(String.format("player%d/resource_building.png", playerModel.getId()));
-        this.unitTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
+        this.infantryTexture = new Texture(String.format("player%d/infantry_building.png", playerModel.getId()));
+        this.tankTexture = new Texture(String.format("player%d/tank_building.png", playerModel.getId()));
+        this.sniperTexture = new Texture(String.format("player%d/sniper_building.png", playerModel.getId()));
         this.playerModel = playerModel;
     }
 
@@ -82,11 +86,31 @@ public class BuildingBuilder implements Drawable {
                         canbuild = false;
                     }
                     break;
-                case UNIT:
+                case INFANTRY:
                     if(playerModel.getAmountResources() >= INFANTRY_BUILDING_COST){
                         if(canbuild){
                             playerModel.addResources(-INFANTRY_BUILDING_COST);
                             nb = new InfantryBuilding(x, y, playerModel);
+                        }
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case SNIPER:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= SNIPER_BUILDING_COST){
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-SNIPER_BUILDING_COST);
+                            nb = new SniperBuilding(x, y, player, 10, 10);
+                        }
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case TANK:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST){
+                        if(canbuild){
+                            LudumDare2022.humanPlayerModel.addResources(-TANK_BUILDING_COST);
+                            nb = new TankBuilding(x, y, player, 10, 10);
                         }
                     } else {
                         canbuild = false;
@@ -130,9 +154,23 @@ public class BuildingBuilder implements Drawable {
                         canbuild = false;
                     }
                     break;
-                case UNIT:
+                case INFANTRY:
                     if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST) {
-                        tex = unitTexture;
+                        tex = infantryTexture;
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case SNIPER:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= SNIPER_BUILDING_COST) {
+                        tex = sniperTexture;
+                    } else {
+                        canbuild = false;
+                    }
+                    break;
+                case TANK:
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= TANK_BUILDING_COST) {
+                        tex = tankTexture;
                     } else {
                         canbuild = false;
                     }
@@ -145,6 +183,19 @@ public class BuildingBuilder implements Drawable {
             batch.enableBlending();
             batch.setColor(1,1,1,(float)0.5);
             StaticUtils.smartDraw(batch, cameraController, tex, max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2, max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+
+            /* if can build, draw the selected army number too */
+            if (canbuild && (this.type == BuildingType.INFANTRY || this.type == BuildingType.TANK || this.type == BuildingType.SNIPER)) {
+                StaticUtils.smartDraw(
+                        batch,
+                        cameraController,
+                        /* get the texture of the current selected army */
+                        LudumDare2022.humanPlayerModel.armies.get(
+                                LudumDare2022.humanPlayerModel.getSelectedArmy()
+                        ).getTexture(),
+                        max(0, TILE_SIZE * tileCoords[0]) - TILE_SIZE/2,
+                        max(0,TILE_SIZE * tileCoords[1]) - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+            }
             batch.setColor(1,1,1,1);
         }
     }
