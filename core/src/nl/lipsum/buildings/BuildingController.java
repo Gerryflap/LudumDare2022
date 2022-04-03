@@ -7,6 +7,8 @@ import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 
+import java.util.List;
+
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
 import static nl.lipsum.Config.WIDTH_IN_TILES;
 
@@ -60,5 +62,13 @@ public class BuildingController implements GenericController {
 
     public BuildingBuilder getBuildingBuilder() {
         return buildingBuilder;
+    }
+
+    public void removeBuilding(Building b){
+        buildingGrid.removeBuilding(b);
+    }
+
+    public Building[][] getBuildings(){
+        return buildingGrid.getBuildings();
     }
 }

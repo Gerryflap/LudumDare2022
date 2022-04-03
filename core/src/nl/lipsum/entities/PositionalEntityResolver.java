@@ -3,7 +3,9 @@ package nl.lipsum.entities;
 import nl.lipsum.Coordinate;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
+import nl.lipsum.buildings.Building;
 
+import java.lang.annotation.Target;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -16,19 +18,19 @@ import java.util.function.Predicate;
  */
 public class PositionalEntityResolver {
     private final int tileSize;
-    private final Map<Coordinate, Set<AbstractEntity>> entityMap;
+    private final Map<Coordinate, Set<Targetable>> targetMap;
     private boolean mapValid = false;
 
     public PositionalEntityResolver(int tileSize) {
         this.tileSize = tileSize;
-        entityMap = new HashMap<>();
+        targetMap = new HashMap<>();
     }
 
     public PositionalEntityResolver() {
         this(20);
     }
 
-    public Set<AbstractEntity> getEntitiesInRange(AbstractEntity entity, float range) {
+    public Set<Targetable> getTargetsInRange(Targetable entity, float range) {
         if (!mapValid) {
             buildMap();
         }
@@ -36,25 +38,25 @@ public class PositionalEntityResolver {
         int gridRange = (int) Math.ceil(range/tileSize);
         Coordinate currentCoordinates = getGridCoordinate(entity);
 
-        Set<AbstractEntity> entities = new HashSet<>();
+        Set<Targetable> targets = new HashSet<>();
         for (int dx = -gridRange; dx <= gridRange; dx++) {
             for (int dy = -gridRange; dy <= gridRange; dy++) {
-                entities.addAll(getUnitsAtGridPos(currentCoordinates.translate(dx, dy)));
+                targets.addAll(getTargetsAtGridPos(currentCoordinates.translate(dx, dy)));
             }
         }
-        return entities;
+        return targets;
     }
 
-    public AbstractEntity getClosestEntityMatchingPredicate(AbstractEntity entity, float range,
-                                                            Predicate<AbstractEntity> predicate) {
-        Set<AbstractEntity> entities = getEntitiesInRange(entity, range);
-        Iterator<AbstractEntity> iterator = entities.stream().filter(predicate).iterator();
+    public Targetable getClosestTargetMatchingPredicate(Targetable entity, float range,
+                                                            Predicate<Targetable> predicate) {
+        Set<Targetable> targets = getTargetsInRange(entity, range);
+        Iterator<Targetable> iterator = targets.stream().filter(predicate).iterator();
 
-        AbstractEntity closest = null;
+        Targetable closest = null;
         double minDist = Double.MAX_VALUE;
 
         while (iterator.hasNext()) {
-            AbstractEntity e = iterator.next();
+            Targetable e = iterator.next();
             double currentDist = StaticUtils.squareDistance(entity, e);
             if (closest == null) {
                 closest = e;
@@ -69,40 +71,40 @@ public class PositionalEntityResolver {
         return closest;
     }
 
-    public AbstractEntity getClosestHostileEntity(AbstractEntity entity, float range) {
-        return getClosestEntityMatchingPredicate(entity, range, unit -> unit.getOwner() != entity.getOwner());
+    public Targetable getClosestHostileTarget(Targetable entity, float range) {
+        return getClosestTargetMatchingPredicate(entity, range, unit -> unit.getOwner() != entity.getOwner());
     }
 
-    private Set<AbstractEntity> getUnitsAtGridPos(Coordinate coordinates) {
-        if (mapValid && entityMap.containsKey(coordinates)) {
-            return entityMap.get(coordinates);
+    private Set<Targetable> getTargetsAtGridPos(Coordinate coordinates) {
+        if (mapValid && targetMap.containsKey(coordinates)) {
+            return targetMap.get(coordinates);
         } else {
             return Collections.emptySet();
         }
     }
 
-    private Coordinate getGridCoordinate(AbstractEntity entity) {
+    private Coordinate getGridCoordinate(Targetable target) {
         return new Coordinate(
-                (int) (entity.getxPosition() / tileSize),
-                (int) (entity.getyPosition() / tileSize)
+                (int) (target.getxPosition() / tileSize),
+                (int) (target.getyPosition() / tileSize)
         );
     }
 
-    private void addEntity(AbstractEntity entity) {
-        Coordinate coordinates = getGridCoordinate(entity);
+    private void addTarget(Targetable target) {
+        Coordinate coordinates = getGridCoordinate(target);
 
-        if (!entityMap.containsKey(coordinates)) {
-            entityMap.put(coordinates, new HashSet<>());
+        if (!targetMap.containsKey(coordinates)) {
+            targetMap.put(coordinates, new HashSet<>());
         }
-        Set<AbstractEntity> atPos = entityMap.get(coordinates);
-        atPos.add(entity);
+        Set<Targetable> atPos = targetMap.get(coordinates);
+        atPos.add(target);
     }
 
     /**
      * Call at the end of step to invalidate the map (since units moved)
      */
     public void invalidate() {
-        entityMap.clear();
+        targetMap.clear();
         mapValid = false;
     }
 
@@ -112,7 +114,14 @@ public class PositionalEntityResolver {
 
     private void buildMap() {
         for (AbstractEntity entity: LudumDare2022.entityController.getEntities()) {
-            addEntity(entity);
+            addTarget(entity);
+        }
+        for (Building[] buildingList: LudumDare2022.buildingController.getBuildings()){
+            for(Building building: buildingList){
+                if(building != null){
+                    addTarget(building);
+                }
+            }
         }
         mapValid = true;
     }

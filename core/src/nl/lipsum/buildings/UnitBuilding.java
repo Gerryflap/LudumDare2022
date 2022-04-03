@@ -38,26 +38,30 @@ public abstract class UnitBuilding extends Building {
 
     @Override
     public void step() {
-        trainingProgress += 1;
-        if (trainingProgress > trainingTime) {
-            if (this.units.size() >= unitCap) {
+        if(!isDead()){
+            trainingProgress += 1;
+            if (trainingProgress > trainingTime) {
+                if (this.units.size() >= unitCap) {
 
-            } else {
-                trainingProgress = 0;
-                AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, owner);
-                unit.setArmy(owner.armies.get(selectedArmy));
-                unit.setBuilding(this);
-                owner.armies.get(selectedArmy).entities.add(unit);
-                unit.goTo(owner.armies.get(selectedArmy).getDestBase());
-                this.units.add(unit);
+                } else {
+                    trainingProgress = 0;
+                    AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, owner);
+                    unit.setArmy(owner.armies.get(selectedArmy));
+                    unit.setBuilding(this);
+                    owner.armies.get(selectedArmy).entities.add(unit);
+                    unit.goTo(owner.armies.get(selectedArmy).getDestBase());
+                    this.units.add(unit);
+                }
             }
         }
     }
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
-        StaticUtils.smartDraw(batch, cameraController, this.owner.armies.get(this.selectedArmy).getTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        if (!isDead()) {
+            StaticUtils.smartDraw(batch, cameraController, this.getTileTexture(), TILE_SIZE * this.x - TILE_SIZE / 2, TILE_SIZE * this.y - TILE_SIZE / 2, TILE_SIZE, TILE_SIZE);
+            StaticUtils.smartDraw(batch, cameraController, this.owner.armies.get(this.selectedArmy).getTexture(), TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        }
     }
 
     @Override

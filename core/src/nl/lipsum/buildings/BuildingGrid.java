@@ -20,8 +20,16 @@ public class BuildingGrid implements Drawable{
         return buildings[x][y];
     }
 
+    public Building[][] getBuildings(){
+        return buildings;
+    }
+
     public void setBuilding(int x, int y, Building b) {
         this.buildings[x][y] = b;
+    }
+
+    public void removeBuilding(Building building){
+        this.buildings[building.x][building.y] = null;
     }
 
 
