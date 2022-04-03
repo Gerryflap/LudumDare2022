@@ -1,6 +1,7 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
@@ -8,23 +9,22 @@ import java.util.*;
 
 import static nl.lipsum.Config.WIDTH_IN_TILES;
 import static nl.lipsum.Config.HEIGHT_IN_TILES;
+import static nl.lipsum.LudumDare2022.humanPlayerModel;
 
 public class BaseGraph implements GenericController {
     List<Base> bases;
 
-
     public BaseGraph(){
         bases = new ArrayList<>();
-
-        Base base00 = new Base(3,3);
-        Base base10 = new Base((WIDTH_IN_TILES-1)/2,3);
-        Base base20 = new Base((WIDTH_IN_TILES-1)-3,3);
-        Base base01 = new Base(3,(HEIGHT_IN_TILES-1)/2);
-        Base base11 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)/2);
-        Base base21 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)/2);
-        Base base02 = new Base(3,(HEIGHT_IN_TILES-1)-3);
-        Base base12 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)-3);
-        Base base22 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)-3);
+        Base base00 = new Base(3,3, humanPlayerModel, 4);
+        Base base10 = new Base((WIDTH_IN_TILES-1)/2,3, null);
+        Base base20 = new Base((WIDTH_IN_TILES-1)-3,3, null);
+        Base base01 = new Base(3,(HEIGHT_IN_TILES-1)/2, null);
+        Base base11 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)/2, null);
+        Base base21 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)/2, null);
+        Base base02 = new Base(3,(HEIGHT_IN_TILES-1)-3, null);
+        Base base12 = new Base((WIDTH_IN_TILES-1)/2,(HEIGHT_IN_TILES-1)-3, null);
+        Base base22 = new Base((WIDTH_IN_TILES-1)-3,(HEIGHT_IN_TILES-1)-3, null);
         bases.add(base00);
         bases.add(base01);
         bases.add(base02);

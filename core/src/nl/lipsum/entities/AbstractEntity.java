@@ -90,7 +90,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, texture, this.xPosition - (this.xSize / 2), this.yPosition - (this.ySize / 2), this.xSize, this.ySize);
+        StaticUtils.smartDraw(batch, cameraController, this.getTexture(), this.xPosition - (this.xSize / 2), this.yPosition - (this.ySize / 2), this.xSize, this.ySize);
 
         if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
             if (bulletReloadProgress <= 0) {
@@ -260,14 +260,16 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
     public void goTo(Base b) {
-        List<Base> startBases = new ArrayList<>();
-        startBases.add(previousBase);
-        if (nextBase != previousBase) {
-            startBases.add(nextBase);
+        if(b!=null){
+            List<Base> startBases = new ArrayList<>();
+            startBases.add(previousBase);
+            if (nextBase != previousBase) {
+                startBases.add(nextBase);
+            }
+            path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
+            nextBase = path.get(0);
+            path.remove(0);
         }
-        path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
-        nextBase = path.get(0);
-        path.remove(0);
     }
 
     public void kill() {

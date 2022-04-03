@@ -8,9 +8,9 @@ import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 public class Infantry extends AbstractEntity {
-    public static float X_SIZE = 16;
-    public static float Y_SIZE = 16;
-    public static Texture TEXTURE = new Texture("orangeTile.jpg");
+    public static float X_SIZE = 48;
+    public static float Y_SIZE = 48;
+    public Texture TEXTURE;
     public static EntityType ENTITY_TYPE = EntityType.INFANTRY;
     public static int MAX_HEALTH = 100;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
@@ -23,6 +23,7 @@ public class Infantry extends AbstractEntity {
 
     public Infantry(float xPosition, float yPosition, Base base, PlayerModel owner) {
         super(xPosition, yPosition, base, owner);
+        TEXTURE = new Texture(String.format("player%d/infantry.png", owner.getId()));
     }
 
 
