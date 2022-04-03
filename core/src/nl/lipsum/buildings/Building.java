@@ -10,13 +10,11 @@ public abstract class Building implements Drawable, Ownable {
     public final int x;
     public final int y;
     public final PlayerModel owner;
-    public final int cost;
 
-    public Building(int x, int y, PlayerModel owner, int cost) {
+    public Building(int x, int y, PlayerModel owner) {
         this.x = x;
         this.y = y;
         this.owner = owner;
-        this.cost = cost;
     }
 
 

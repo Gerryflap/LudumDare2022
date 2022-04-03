@@ -8,7 +8,6 @@ import nl.lipsum.ui.UiArmySelect;
 
 public class HumanPlayerModel extends PlayerModel {
     UiArmySelect uiArmySelect;
-    int selectedArmy = 0;
 
     public HumanPlayerModel(){
         super();
@@ -21,10 +20,6 @@ public class HumanPlayerModel extends PlayerModel {
         return uiArmySelect;
     }
 
-
-    public void setSelectedArmy(int selectedArmy){
-        this.selectedArmy = selectedArmy;
-    }
 
     public void goTo(Base base){
         //TODO: actually make sure the right army is selected

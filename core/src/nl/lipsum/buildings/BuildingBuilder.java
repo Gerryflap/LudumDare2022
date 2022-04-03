@@ -8,11 +8,12 @@ import nl.lipsum.StaticUtils;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.gameLogic.Base;
+import nl.lipsum.gameLogic.PlayerController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static nl.lipsum.Config.TILE_SIZE;
+import static nl.lipsum.Config.*;
 import static nl.lipsum.ui.UiConstants.*;
 
 public class BuildingBuilder implements Drawable {
@@ -67,10 +68,20 @@ public class BuildingBuilder implements Drawable {
             Building nb = null;
             switch (this.type) {
                 case RESOURCE:
-                    nb = new ResourceBuilding(x, y, player, 10);
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= RESOURCE_BUILDING_COST){
+                        LudumDare2022.humanPlayerModel.addResources(-RESOURCE_BUILDING_COST);
+                        nb = new ResourceBuilding(x, y, player);
+                    } else {
+                        canbuild = false;
+                    }
                     break;
                 case UNIT:
-                    nb = new InfantryBuilding(x, y, player, 10, 10, 10);
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST){
+                        LudumDare2022.humanPlayerModel.addResources(-INFANTRY_BUILDING_COST);
+                        nb = new InfantryBuilding(x, y, player, 10, 10);
+                    } else {
+                        canbuild = false;
+                    }
                     break;
             }
             try {
