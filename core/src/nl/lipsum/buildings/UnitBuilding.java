@@ -42,6 +42,7 @@ public abstract class UnitBuilding extends Building {
                 AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, GameController.playerController.getHumanPlayerModel().getBase(), owner);
                 //TODO: make sure the right army is has the added entity
                 owner.armies.get(selectedArmy).entities.add(unit);
+                unit.goTo(owner.armies.get(selectedArmy).getDestBase());
                 this.units[unitPointer] = unit;
                 unitPointer += 1;
             }

@@ -40,4 +40,8 @@ public class Army implements Ownable{
     public PlayerModel getOwner() {
         return owner;
     }
+
+    public Base getDestBase() {
+        return destBase;
+    }
 }
