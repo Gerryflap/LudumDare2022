@@ -13,8 +13,8 @@ public class Sniper extends AbstractEntity {
     public static EntityType ENTITY_TYPE = EntityType.SNIPER;
     public static int MAX_HEALTH = 50;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
-    public static float BULLET_DAMAGE = 100;
-    public static int BULLET_RELOAD_SPEED = 3;
+    public static float BULLET_DAMAGE = 1;
+    public static float BULLET_RELOAD_SPEED = 0.3f;
     public static float MAX_SPEED = 200;
     public static float ATTACK_RANGE = 250;
     public static float VISION_RANGE = 250;
@@ -62,7 +62,7 @@ public class Sniper extends AbstractEntity {
     }
 
     @Override
-    public int getBulletReloadSpeed() {
+    public float getBulletReloadSpeed() {
         return BULLET_RELOAD_SPEED;
     }
 

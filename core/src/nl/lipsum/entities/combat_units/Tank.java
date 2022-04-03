@@ -13,8 +13,8 @@ public class Tank extends AbstractEntity {
     public static EntityType ENTITY_TYPE = EntityType.TANK;
     public static int MAX_HEALTH = 250;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
-    public static float BULLET_DAMAGE = 100;
-    public static int BULLET_RELOAD_SPEED = 2; //Higher is slower
+    public static float BULLET_DAMAGE = 1.5f;
+    public static float BULLET_RELOAD_SPEED = 0.2f; //Higher is slower
     public static float MAX_SPEED = 100;
     public static float ATTACK_RANGE = 100;
     public static float VISION_RANGE = 250;
@@ -62,7 +62,7 @@ public class Tank extends AbstractEntity {
     }
 
     @Override
-    public int getBulletReloadSpeed() {
+    public float getBulletReloadSpeed() {
         return BULLET_RELOAD_SPEED;
     }
 

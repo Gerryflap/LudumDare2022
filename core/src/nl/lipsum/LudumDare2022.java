@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import nl.lipsum.buildings.BuildingController;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.controllers.WinController;
 import nl.lipsum.entities.EntityController;
 import nl.lipsum.entities.PositionalEntityResolver;
 import nl.lipsum.gameLogic.GameController;
@@ -35,11 +36,16 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private UiController uiController;
 	public static EntityController entityController;
 	private static GameOverController gameOverController;
+	public static WinController winController;
 
+	private static GameState previousFrameGameState;
 	private static GameState previousGameState;
 	private static GameState gameState;
 
+	public static boolean gameStartFrame;
+
 	private long startTime;
+	public static String winTimeString;
 
 	private static Music mainMenuMusic;
 	private static Music gameMusic;
@@ -60,24 +66,28 @@ public class LudumDare2022 extends ApplicationAdapter {
 		inputController = new InputController(cameraController, buildingController);
 		gameController = new GameController(humanPlayerModel);
 		gameOverController = new GameOverController();
+		winController = new WinController();
 
 		mainMenuController = new MainMenuController();
 		uiController = new UiController(gameController, humanPlayerModel);
 
 		gameState = GameState.MAIN_MENU;
+		previousGameState = GameState.MAIN_MENU;
 
 		mainMenuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/main_menu.wav"));
 		gameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/music/game.wav"));
 	}
 
 	private void handleGameOver() {
-		resetGame();
-
-		long totalTime = startTime - System.currentTimeMillis();
+		long totalTime = System.currentTimeMillis() - startTime;
+		System.out.println(startTime + " " + System.currentTimeMillis());
 		System.out.println(totalTime);
-		SimpleDateFormat formatter= new SimpleDateFormat("mm:ss z");
+		SimpleDateFormat formatter= new SimpleDateFormat("mm.ss.SSS");
 		Date date = new Date(totalTime);
 		System.out.println(formatter.format(date));
+		winTimeString = formatter.format(date);
+
+		resetGame();
 
 		batch = new SpriteBatch();
 
@@ -90,6 +100,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		gameController = new GameController(humanPlayerModel);
 		mainMenuController = new MainMenuController();
 		uiController = new UiController(gameController, humanPlayerModel);
+		winController = new WinController();
 
 		setGameState(GameState.MAIN_MENU);
 	}
@@ -102,15 +113,21 @@ public class LudumDare2022 extends ApplicationAdapter {
 		mainMenuController.dispose();
 		uiController.dispose();
 		entityController.dispose();
+		winController.dispose();
 		PlayerModel.reset();
 	}
 
 	@Override
 	public void render () {
+		if (gameState == GameState.WIN) {
+			setGameState(GameState.GAME_OVER);
+		}
+
 		// Manage music
 		manageMainMenuMusic();
 
-		if (gameState == GameState.PLAYING && previousGameState != GameState.PLAYING) {
+		if (gameStartFrame) {
+			gameStartFrame = false;
 			startTime = System.currentTimeMillis();
 		}
 
@@ -130,9 +147,13 @@ public class LudumDare2022 extends ApplicationAdapter {
 				uiController.step();
 				buildingController.step();
 				break;
+			case WIN:
+				winController.step();
+				break;
 			case GAME_OVER:
 				gameOverController.step();
 				break;
+
 		}
 
 		ScreenUtils.clear(0, 0, 0, 1);
@@ -152,11 +173,16 @@ public class LudumDare2022 extends ApplicationAdapter {
 			case EXITING:
 				System.exit(0);
 				break;
+			case WIN:
+				winController.render(batch, null);
+				break;
 			case GAME_OVER:
 				gameOverController.render(batch, null);
 				break;
 		}
 		batch.end();
+
+		previousFrameGameState = gameState;
 	}
 
 	private static void manageMainMenuMusic() {
@@ -199,6 +225,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 	}
 
 	public static void setGameState(GameState gameState) {
+		System.out.printf("Change %s to %s\n", previousGameState, gameState);
 		LudumDare2022.previousGameState = LudumDare2022.gameState;
 		LudumDare2022.gameState = gameState;
 	}

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.*;
 import nl.lipsum.buildings.UnitBuilding;
 import nl.lipsum.controllers.CameraController;
@@ -46,7 +45,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
     // Offense information
     private final AttackType attackType;
     private final float bulletDamage;
-    private final int bulletReloadSpeed;
+    private final float bulletReloadSpeed;
 
     private float bulletReloadProgress;
 
@@ -337,7 +336,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 
     public abstract float getBulletDamage();
 
-    public abstract int getBulletReloadSpeed();
+    public abstract float getBulletReloadSpeed();
 
     public abstract float getMaxSpeed();
 

@@ -5,6 +5,7 @@ public enum GameState {
     MAIN_MENU,
     PLAYING,
     EXITING,
-    GAME_OVER
+    GAME_OVER,
+    WIN
 
 }

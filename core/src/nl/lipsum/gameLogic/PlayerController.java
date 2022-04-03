@@ -1,9 +1,6 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.LudumDare2022;
-import nl.lipsum.TextureStore;
-import nl.lipsum.TextureStore;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
@@ -18,7 +15,7 @@ public class PlayerController implements GenericController {
     BaseGraph baseGraph;
 
     static HumanPlayerModel humanPlayerModel;
-    static List<AIPlayerModel> aiPlayerModels;
+    public static List<AIPlayerModel> aiPlayerModels;
 
 
     public PlayerController(BaseGraph baseGraph, HumanPlayerModel humanPlayerModel) {

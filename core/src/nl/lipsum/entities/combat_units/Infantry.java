@@ -7,11 +7,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.AttackType;
 import nl.lipsum.entities.EntityType;
-import nl.lipsum.gameLogic.Army;
-import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
-
-import static nl.lipsum.Config.TILE_SIZE;
 
 public class Infantry extends AbstractEntity {
     public static float X_SIZE = 48;
@@ -20,8 +16,8 @@ public class Infantry extends AbstractEntity {
     public static EntityType ENTITY_TYPE = EntityType.INFANTRY;
     public static int MAX_HEALTH = 100;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
-    public static float BULLET_DAMAGE = 5;
-    public static int BULLET_RELOAD_SPEED = 1;
+    public static float BULLET_DAMAGE = 0.5f;
+    public static float BULLET_RELOAD_SPEED = 0.1f;
     public static float MAX_SPEED = 250;
     public static float ATTACK_RANGE = 100;
     public static float VISION_RANGE = 250;
@@ -77,7 +73,7 @@ public class Infantry extends AbstractEntity {
     }
 
     @Override
-    public int getBulletReloadSpeed() {
+    public float getBulletReloadSpeed() {
         return BULLET_RELOAD_SPEED;
     }
 
