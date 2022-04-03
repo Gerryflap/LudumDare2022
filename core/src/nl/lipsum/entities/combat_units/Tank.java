@@ -14,7 +14,7 @@ public class Tank extends AbstractEntity {
     public static int MAX_HEALTH = 250;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
     public static float BULLET_DAMAGE = 100;
-    public static int BULLET_RELOAD_SPEED = 100; //Higher is slower
+    public static int BULLET_RELOAD_SPEED = 2; //Higher is slower
     public static float MAX_SPEED = 100;
     public static float ATTACK_RANGE = 100;
     public static float VISION_RANGE = 250;
