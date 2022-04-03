@@ -105,7 +105,7 @@ public class BarController {
                 }
             });
             turretBuilding.setRequiredResources(TURRET_BUILDING_COST);
-            UiItem heatBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem heatBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().heatTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
                     LudumDare2022.buildingController.startBuilder(BuildingType.HEAT);
