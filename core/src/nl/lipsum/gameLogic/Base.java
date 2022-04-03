@@ -9,6 +9,7 @@ import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.EntityController;
 import nl.lipsum.entities.PositionalEntityResolver;
@@ -68,7 +69,7 @@ public class Base implements GenericController {
     }
 
     public Base(int x, int y, PlayerModel initialOwner){
-        this(x,y,initialOwner, 2);
+        this(x,y,initialOwner, 5);
     }
 
 
@@ -144,6 +145,7 @@ public class Base implements GenericController {
                     // If owner is kicked to 0 dominance, make the base neutral
                     if (this.captureProgress[this.owner.getId()] <= 0) {
                         this.owner = null;
+                        baseStatus = BaseStatus.NEUTRAL;
                     }
                     // 2. There isn't another owner (possibly already dethroned) and we must simply capture the base
                 } else {
@@ -209,5 +211,9 @@ public class Base implements GenericController {
 
     public void setTexture(Texture texture) {
         this.texture = texture;
+    }
+
+    public void setOwner(AIPlayerModel aiPlayerModel) {
+        owner = aiPlayerModel;
     }
 }

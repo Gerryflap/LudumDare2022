@@ -16,7 +16,7 @@ public class BaseGraph implements GenericController {
 
     public BaseGraph(){
         bases = new ArrayList<>();
-        Base base00 = new Base(3,3, humanPlayerModel, 4);
+        Base base00 = new Base(3,3, humanPlayerModel);
         Base base10 = new Base((WIDTH_IN_TILES-1)/2,3, null);
         Base base20 = new Base((WIDTH_IN_TILES-1)-3,3, null);
         Base base01 = new Base(3,(HEIGHT_IN_TILES-1)/2, null);

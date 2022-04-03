@@ -4,6 +4,8 @@ public class Config {
     public static final int TILE_SIZE = 50;
     public static final int BASE_SIZE = 150;
 
+    public static final int HEALTH_BAR_HEIGHT = 5;
+
     //MUST be uneven
     public static final int WIDTH_IN_TILES = 51;
     public static final int HEIGHT_IN_TILES = 51;
@@ -15,8 +17,10 @@ public class Config {
     public static final int INFANTRY_BUILDING_COST = 100;
     public static final int SNIPER_BUILDING_COST = 100;
     public static final int TANK_BUILDING_COST = 100;
+    public static final int HEAT_BUILDING_COST = 100;
     public static final int TURRET_BUILDING_COST = 100;
-    public static final int RESOURCES_PER_BUILDING_PER_SECOND = 25;
+    public static final int HEAT_COOLING_POWER = 1;
+    public static final int RESOURCES_PER_BUILDING_PER_SECOND = 5;
     public static final int BUILDING_HEALTH = 100;
 
     public static final int PLAYER_COUNT = 4;
