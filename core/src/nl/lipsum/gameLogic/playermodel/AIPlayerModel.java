@@ -16,7 +16,7 @@ import static nl.lipsum.Config.RESOURCE_BUILDING_COST;
  * Contains the AI code
  */
 public class AIPlayerModel extends PlayerModel {
-    private static final BuildingType[] buildingTypes = new BuildingType[]{BuildingType.INFANTRY, BuildingType.SNIPER, BuildingType.TANK};
+    private static final BuildingType[] buildingTypes = BuildingType.values();
 
     private static Random random = new Random();
     private static final int TARGET_RESOURCE_BUILDINGS = 3;
@@ -42,7 +42,9 @@ public class AIPlayerModel extends PlayerModel {
         }
 
         for (Building building : new HashSet<>(buildings)) {
-            // Dispose dead buildings
+            if (building.isDead()) {
+                buildings.remove(building);
+            }
         }
     }
 
