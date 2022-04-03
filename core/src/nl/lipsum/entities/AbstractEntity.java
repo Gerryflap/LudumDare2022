@@ -154,7 +154,6 @@ public class AbstractEntity implements Drawable {
         for (Bullet _bullet : bulletsToRemove) {
             bullets.remove(_bullet);
         }
-
         if (health <= 0) {
             setEntityStatus(EntityStatus.DEAD);
 
@@ -164,40 +163,41 @@ public class AbstractEntity implements Drawable {
 
             return;
         }
-
-        if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
-            previousBase = nextBase;
-            if (!path.isEmpty()){
-                nextBase = path.get(0);
-                path.remove(0);
+        if (nextBase != null){
+            if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
+                previousBase = nextBase;
+                if (!path.isEmpty()){
+                    nextBase = path.get(0);
+                    path.remove(0);
+                }
             }
-        }
-        if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
-            float diffX = nextBase.getX()*TILE_SIZE - xPosition;
-            float diffY = nextBase.getY()*TILE_SIZE - yPosition;
-            double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
-            float updateX = (float) (diffX*factor);
-            float updateY = (float) (diffY*factor);
-            if (Math.abs(updateX) < Math.abs(diffX)){
-                this.xPosition += updateX;
-            } else {
-                this.xPosition = nextBase.getX()*TILE_SIZE;
-            }
-            if (Math.abs(updateY) < Math.abs(diffY)){
-                this.yPosition += updateY;
-            } else {
-                this.yPosition = nextBase.getY()*TILE_SIZE;
+            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
+                float diffX = nextBase.getX()*TILE_SIZE - xPosition;
+                float diffY = nextBase.getY()*TILE_SIZE - yPosition;
+                double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
+                float updateX = (float) (diffX*factor);
+                float updateY = (float) (diffY*factor);
+                if (Math.abs(updateX) < Math.abs(diffX)){
+                    this.xPosition += updateX;
+                } else {
+                    this.xPosition = nextBase.getX()*TILE_SIZE;
+                }
+                if (Math.abs(updateY) < Math.abs(diffY)){
+                    this.yPosition += updateY;
+                } else {
+                    this.yPosition = nextBase.getY()*TILE_SIZE;
+                }
             }
         }
     }
 
-    public void goTo(Base b, BaseGraph baseGraph){
+    public void goTo(Base b){
         List<Base> startBases = new ArrayList<>();
         startBases.add(previousBase);
         if (nextBase != previousBase){
             startBases.add(nextBase);
         }
-        path = baseGraph.findPath(startBases, b);
+        path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
         nextBase = path.get(0);
         path.remove(0);
     }
@@ -216,5 +216,9 @@ public class AbstractEntity implements Drawable {
         Optional.ofNullable(this.army).ifPresent(a -> a.removeEntity(this));
         Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
         this.army = army;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }

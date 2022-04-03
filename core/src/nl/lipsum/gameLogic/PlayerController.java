@@ -1,32 +1,44 @@
 package nl.lipsum.gameLogic;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.TextureStore;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
+import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.ui.UiArmySelect;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerController implements GenericController {
-    public List<Army> armies;
-    int selectedArmy = 0;
     BaseGraph baseGraph;
-    UiArmySelect uiArmySelect;
+    HumanPlayerModel humanPlayerModel;
+    List<AIPlayerModel> aiPlayerModels;
 
-    public Base base;
 
-    public PlayerController(Base base, BaseGraph baseGraph){
-        this.base = base;
-        armies = new ArrayList<>();
-        armies.add(new Army(base));
-        armies.add(new Army(base));
-        armies.add(new Army(base));
+    public PlayerController(BaseGraph baseGraph, HumanPlayerModel humanPlayerModel, TextureStore textureStore) throws Exception{
         this.baseGraph = baseGraph;
+        aiPlayerModels = new ArrayList<>();
+        aiPlayerModels.add(new AIPlayerModel());
+        aiPlayerModels.add(new AIPlayerModel());
+        aiPlayerModels.add(new AIPlayerModel());
+        this.humanPlayerModel = humanPlayerModel;
+        humanPlayerModel.initiateArmies(baseGraph.getBases().get(0));
+        aiPlayerModels.get(0).initiateArmies(baseGraph.getBases().get(2));
+        aiPlayerModels.get(1).initiateArmies(baseGraph.getBases().get(6));
+        aiPlayerModels.get(2).initiateArmies(baseGraph.getBases().get(8));
+        this.humanPlayerModel.setTextures(textureStore.getTileTextureByName("green"));
+        aiPlayerModels.get(0).setTextures(textureStore.getTileTextureByName("red"));
+        aiPlayerModels.get(1).setTextures(textureStore.getTileTextureByName("blue"));
+        aiPlayerModels.get(2).setTextures(textureStore.getTileTextureByName("orange"));
     }
 
     @Override
     public void step() {
+        for(AIPlayerModel aiPlayerModel: aiPlayerModels){
+            aiPlayerModel.update();
+        }
     }
 
     @Override
@@ -39,20 +51,10 @@ public class PlayerController implements GenericController {
     }
 
     public void goTo(Base base){
-        //TODO: actually make sure the right army is selected
-        armies.get(selectedArmy).goTo(base, baseGraph);
+        humanPlayerModel.goTo(base);
     }
 
-    public void setSelectedArmy(int selectedArmy){
-        this.selectedArmy = selectedArmy;
+    public HumanPlayerModel getHumanPlayerModel(){
+        return humanPlayerModel;
     }
-
-    public void setUiArmySelect(UiArmySelect uiArmySelect) {
-        this.uiArmySelect = uiArmySelect;
-    }
-
-    public UiArmySelect getUiArmySelect() {
-        return uiArmySelect;
-    }
-
 }
