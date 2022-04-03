@@ -20,11 +20,11 @@ public class Army implements Ownable{
         this.destBase = startBase;
         if (owner.getId() == 2) {
             for (int i = 0; i < 100; i++) {
-                AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, startBase, owner);
+                AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, owner);
                 entity.setArmy(this);
             }
         }
-        AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, startBase, owner);
+        AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE,  owner);
         entity.setArmy(this);
     }
 

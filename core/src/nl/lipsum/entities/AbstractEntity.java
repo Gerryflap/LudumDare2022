@@ -130,9 +130,10 @@ public abstract class AbstractEntity implements Drawable, Ownable {
             return;
         }
 
-        if (target != null && target.isDead()) {
-            target = null;
-        }
+        // Skip this for now
+//        if (target != null && target.isDead()) {
+//            target = null;
+//        }
 
         if (bulletReloadProgress >= 0) {
             bulletReloadProgress -= 1;
