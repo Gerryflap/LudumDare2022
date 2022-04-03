@@ -1,10 +1,14 @@
 package nl.lipsum.entities;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Config;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
+import nl.lipsum.gameLogic.Base;
+import nl.lipsum.gameLogic.BaseGraph;
+import nl.lipsum.gameLogic.GameController;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -61,9 +65,11 @@ public class EntityController implements GenericController {
 
     @Override
     public void step() {
-
         if (--targetUpdateCounter == 0) {
             updateClosestEntities();
+            for (Base _base: GameController.baseGraph.getBases()) {
+                _base.updateInRangeUnits();
+            }
             targetUpdateCounter = UPDATE_TARGETS_EVERY_N_STEPS;
         }
 

@@ -4,6 +4,7 @@ import nl.lipsum.Coordinate;
 import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.buildings.Building;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.lang.annotation.Target;
 import java.util.*;
@@ -30,21 +31,30 @@ public class PositionalEntityResolver {
         this(20);
     }
 
-    public Set<Targetable> getTargetsInRange(Targetable entity, float range) {
+    public Set<Targetable> getTargetsInRange(float worldX, float worldY, float range) {
+        return getTargetsInRange(new DummyTarget(worldX, worldY), range);
+    }
+
+    private Set<Targetable> getTargetsInRange(Coordinate gridPos, float range) {
         if (!mapValid) {
             buildMap();
         }
 
         int gridRange = (int) Math.ceil(range/tileSize);
-        Coordinate currentCoordinates = getGridCoordinate(entity);
 
         Set<Targetable> targets = new HashSet<>();
         for (int dx = -gridRange; dx <= gridRange; dx++) {
             for (int dy = -gridRange; dy <= gridRange; dy++) {
-                targets.addAll(getTargetsAtGridPos(currentCoordinates.translate(dx, dy)));
+                targets.addAll(getTargetsAtGridPos(gridPos.translate(dx, dy)));
             }
         }
         return targets;
+    }
+
+    public Set<Targetable> getTargetsInRange(Targetable entity, float range) {
+        Coordinate currentCoordinates = getGridCoordinate(entity);
+        return getTargetsInRange(currentCoordinates, range);
+
     }
 
     public Targetable getClosestTargetMatchingPredicate(Targetable entity, float range,
@@ -69,6 +79,11 @@ public class PositionalEntityResolver {
             }
         }
         return closest;
+    }
+
+    public Targetable getClosestTargetMatchingPredicate(float worldX, float worldY, float range,
+                                                        Predicate<Targetable> predicate) {
+        return getClosestTargetMatchingPredicate(new DummyTarget(worldX, worldY), range, predicate);
     }
 
     public Targetable getClosestHostileTarget(Targetable entity, float range) {
@@ -124,5 +139,40 @@ public class PositionalEntityResolver {
             }
         }
         mapValid = true;
+    }
+
+    private class DummyTarget implements Targetable {
+        float x;
+        float y;
+
+        public DummyTarget(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        @Override
+        public float getxPosition() {
+            return x;
+        }
+
+        @Override
+        public float getyPosition() {
+            return y;
+        }
+
+        @Override
+        public PlayerModel getOwner() {
+            return null;
+        }
+
+        @Override
+        public boolean isDead() {
+            return false;
+        }
+
+        @Override
+        public void damage(float d) {
+
+        }
     }
 }
