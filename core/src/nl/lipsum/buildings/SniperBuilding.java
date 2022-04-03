@@ -11,8 +11,8 @@ import static nl.lipsum.Config.TILE_SIZE;
 public class SniperBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
-    public SniperBuilding(int x, int y, PlayerModel owner, int trainingTime, int unitCap) {
-        super(x, y, owner, trainingTime, unitCap);
+    public SniperBuilding(int x, int y, PlayerModel owner) {
+        super(x, y, owner, 70, 7);
         this.tileTexture = new Texture(String.format("player%s/sniper_building.png", owner.getId()));
     }
 

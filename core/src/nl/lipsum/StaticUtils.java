@@ -3,12 +3,15 @@ package nl.lipsum;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.buildings.BuildingType;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.Targetable;
 
 import javax.swing.text.TabableView;
+
+import static nl.lipsum.Config.*;
 
 public class StaticUtils {
 
@@ -54,4 +57,21 @@ public class StaticUtils {
     public static double distance(Targetable e1, Targetable e2) {
         return Math.sqrt(squareDistance(e1, e2));
     }
+
+    public static Integer getCost(BuildingType type) {
+        switch (type) {
+            case RESOURCE:
+                return RESOURCE_BUILDING_COST;
+            case INFANTRY:
+                return INFANTRY_BUILDING_COST;
+            case TANK:
+                return TANK_BUILDING_COST;
+            case SNIPER:
+                return SNIPER_BUILDING_COST;
+            default:
+                return null;
+        }
+    }
 }
+
+

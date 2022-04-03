@@ -6,6 +6,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.List;
 
@@ -14,13 +15,19 @@ import static nl.lipsum.Config.WIDTH_IN_TILES;
 
 public class BuildingController implements GenericController {
     BuildingGrid buildingGrid;
-    BuildingBuilder buildingBuilder;
+    BuildingBuilder[] buildingBuilders;
     HumanPlayerModel humanPlayer;
+    GameController gameController;
+    BuildingBuilder buildingBuilder;
+
 
     public BuildingController(CameraController cameraController, HumanPlayerModel humanPlayer){
         buildingGrid = new BuildingGrid(WIDTH_IN_TILES, HEIGHT_IN_TILES);
-        buildingBuilder = new BuildingBuilder(cameraController, humanPlayer);
+        buildingBuilders = new BuildingBuilder[4];
+        buildingBuilders[0] = new BuildingBuilder(LudumDare2022.humanPlayerModel);
         this.humanPlayer = humanPlayer;
+        // Voor support van alle legacy shit
+        buildingBuilder = buildingBuilders[0];
     }
 
     public void startBuilder(BuildingType b){
@@ -32,7 +39,7 @@ public class BuildingController implements GenericController {
     }
 
     public void onClick(int x, int y){
-        buildingBuilder.buildBuildingClick(x,y, buildingGrid, this.humanPlayer);
+        buildingBuilder.buildBuildingClick(x,y, buildingGrid);
     }
 
     @Override
@@ -44,6 +51,18 @@ public class BuildingController implements GenericController {
     public void render(SpriteBatch batch, CameraController cameraController) {
         buildingGrid.draw(batch, cameraController);
         buildingBuilder.draw(batch, cameraController);
+    }
+
+    public BuildingBuilder getBuildingBuilder() {
+        return buildingBuilder;
+    }
+
+
+    public BuildingBuilder getBuildingBuilder(PlayerModel player) {
+        if (buildingBuilders[player.getId()] == null) {
+            buildingBuilders[player.getId()] = new BuildingBuilder(player);
+        }
+        return buildingBuilders[player.getId()];
     }
 
     @Override
@@ -59,7 +78,7 @@ public class BuildingController implements GenericController {
         buildingBuilder.setType(buildingType);
     }
 
-    public BuildingBuilder getBuildingBuilder() {
+    public BuildingBuilder getHumanBuildingBuilder() {
         return buildingBuilder;
     }
 
@@ -69,5 +88,9 @@ public class BuildingController implements GenericController {
 
     public Building[][] getBuildings(){
         return buildingGrid.getBuildings();
+    }
+
+    public BuildingGrid getBuildingGrid() {
+        return buildingGrid;
     }
 }
