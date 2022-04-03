@@ -58,7 +58,7 @@ public class BarController {
                 }
             });
             infantryBuilding.setRequiredResources(INFANTRY_BUILDING_COST);
-            UiItem tankBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().tankTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem tankBuilding = new UiSelectedItem(LudumDare2022.buildingController.getHumanBuildingBuilder().tankTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
@@ -80,7 +80,7 @@ public class BarController {
                 }
             });
             sniperBuilding.setRequiredResources(SNIPER_BUILDING_COST);
-            UiItem resourceBuilding = new UiSelectedItem(LudumDare2022.buildingController.getBuildingBuilder().resourceTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
+            UiItem resourceBuilding = new UiSelectedItem(LudumDare2022.buildingController.getHumanBuildingBuilder().resourceTexture, orangeTile, ICON_WIDTH, ICON_HEIGHT, new Function<UiItem, Object>() {
                 @Override
                 public Object apply(UiItem uiItem) {
 //                    LudumDare2022.buildingController.setActive(true);
