@@ -18,7 +18,7 @@ import java.lang.Math;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public abstract class AbstractEntity implements Drawable, Ownable {
+public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 
     private final PlayerModel owner;
     private float xPosition;
@@ -53,7 +53,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     // Unit status
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
-    private AbstractEntity target = null;
+    private Targetable target = null;
     private boolean dead = false;
 
     public AbstractEntity(float xPosition, float yPosition, PlayerModel owner) {
@@ -245,7 +245,8 @@ public abstract class AbstractEntity implements Drawable, Ownable {
         }
     }
 
-    private boolean isDead() {
+    @Override
+    public boolean isDead() {
         return dead;
     }
 
@@ -333,7 +334,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
     }
 
 
-    public void setTarget(AbstractEntity target) {
+    public void setTarget(Targetable target) {
         this.target = target;
     }
 }

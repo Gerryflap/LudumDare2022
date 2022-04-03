@@ -1,12 +1,16 @@
 package nl.lipsum.buildings;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.Config;
 import nl.lipsum.Drawable;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.entities.Targetable;
 import nl.lipsum.gameLogic.Ownable;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
-public abstract class Building implements Drawable, Ownable {
+import static nl.lipsum.Config.TILE_SIZE;
+
+public abstract class Building implements Drawable, Ownable, Targetable {
     public final int x;
     public final int y;
     public final PlayerModel owner;
@@ -31,4 +35,14 @@ public abstract class Building implements Drawable, Ownable {
     public PlayerModel getOwner() {
         return owner;
     }
+
+    public float getxPosition(){
+        return x*TILE_SIZE;
+    };
+    public float getyPosition(){
+        return y*TILE_SIZE;
+    };
+    public boolean isDead(){
+        return false;
+    };
 }

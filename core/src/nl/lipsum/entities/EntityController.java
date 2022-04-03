@@ -54,7 +54,7 @@ public class EntityController implements GenericController {
      */
     private void updateClosestEntities() {
         for (AbstractEntity entity : entities) {
-            entity.setTarget(positionalEntityResolver.getClosestHostileEntity(entity, entity.getVisionRange()));
+            entity.setTarget(positionalEntityResolver.getClosestHostileTarget(entity, entity.getVisionRange()));
         }
     }
 
