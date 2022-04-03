@@ -12,7 +12,9 @@ public enum Tile {
     GRASS_2(new Texture("grass_2.png")),
     GRASS_3(new Texture("grass_3.png")),
     DIRT(new Texture("dirt_1.png")),
-    SAND(new Texture("sand_1.png"));
+    SAND(new Texture("sand_1.png")),
+    SNOW_1(new Texture("snow_1.png")),
+    ICE_1(new Texture("ice_1.png"));
 
     private final Texture tileTexture;
 
