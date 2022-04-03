@@ -1,11 +1,11 @@
 package nl.lipsum.controllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import nl.lipsum.Config;
+import nl.lipsum.Coordinate;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,8 @@ public class CameraController implements GenericController {
     private OrthographicCamera camera;
     public float zoomedAmount = 0;
 
+    private Coordinate cursorCoords;
+
     private static final float MIN_ZOOM = 0.1f;
     private static final float MAX_ZOOM = 6f;
 
@@ -24,14 +26,13 @@ public class CameraController implements GenericController {
     private static final float CAMERA_MAX_X = Config.TILE_SIZE * Config.WIDTH_IN_TILES;
     private static final float CAMERA_MAX_Y = Config.TILE_SIZE * Config.HEIGHT_IN_TILES;
 
-
-
     public int cameraMovementSpeed = 15;
     private ArrayList<Integer> activeKeys;
 
     public CameraController(OrthographicCamera camera) {
         this.camera = camera;
         this.activeKeys = new ArrayList<>();
+        this.cursorCoords = new Coordinate((int)camera.position.x, (int)camera.position.y);
     }
 
     public void setKeyActive(int keycode) {
@@ -40,10 +41,24 @@ public class CameraController implements GenericController {
         }
     }
 
+    public boolean isKeyActive(int keycode) {
+        return this.activeKeys.contains(keycode);
+    }
+
     public void setKeyInactive(int keycode) {
         if (this.activeKeys.contains(keycode)) {
             this.activeKeys.remove((Integer) keycode);
         }
+    }
+
+    public void updateCursor(int x, int y) {
+        this.cursorCoords.setX(x);
+        this.cursorCoords.setY(y);
+    }
+
+    public void pan(int x, int y) {
+        this.camera.translate(this.camera.zoom * (this.cursorCoords.x - x), this.camera.zoom * (y - this.cursorCoords.y));
+        this.updateCursor(x, y);
     }
 
     public OrthographicCamera getCamera() {

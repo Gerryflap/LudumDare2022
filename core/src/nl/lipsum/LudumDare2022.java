@@ -47,7 +47,7 @@ public class LudumDare2022 extends ApplicationAdapter {
 		cameraController = new CameraController(new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 		buildingController = new BuildingController(cameraController, humanPlayerModel);
 		inputController = new InputController(cameraController, buildingController);
-		gameController = new GameController();
+		gameController = new GameController(humanPlayerModel);
 
 		mainMenuController = new MainMenuController();
 		uiController = new UiController(gameController, humanPlayerModel);
