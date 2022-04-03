@@ -151,6 +151,10 @@ public class AIPlayerModel extends PlayerModel {
             }
 
             if (building != null) {
+                Integer cost = StaticUtils.getCost(type);
+                if (cost != null) {
+                    addResources(-cost);
+                }
                 LudumDare2022.buildingController.getBuildingGrid().setBuilding(gridX, gridY, building);
                 buildings.add(building);
                 return true;
