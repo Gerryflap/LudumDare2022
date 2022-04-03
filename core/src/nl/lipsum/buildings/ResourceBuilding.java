@@ -26,4 +26,6 @@ public class ResourceBuilding extends Building{
     public void dispose(){
 
     }
+
+    public void click(){}
 }

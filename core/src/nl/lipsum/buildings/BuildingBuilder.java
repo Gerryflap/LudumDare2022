@@ -47,17 +47,26 @@ public class BuildingBuilder implements Drawable {
             int tx = tileCoords[0];
             int ty = tileCoords[1];
             Building nb = null;
-            switch (this.type) {
-                case RESOURCE:
-                    nb = new ResourceBuilding(tx, ty, player, 10);
-                    break;
-                case UNIT:
-                    nb = new InfantryBuilding(tx, ty, player, 10, 100, 2);
-                    break;
-            }
             try {
-                bg.setBuilding(tx, ty, nb);
-            } catch (Exception e){
+                Building b = bg.getBuilding(tx, ty);
+                if (b != null){// check if building already exists
+                    b.click();
+                } else {
+                    switch (this.type) {
+                        case RESOURCE:
+                            nb = new ResourceBuilding(tx, ty, player, 10);
+                            break;
+                        case UNIT:
+                            nb = new InfantryBuilding(tx, ty, player, 10, 100, 2);
+                            break;
+                    }
+                    try {
+                        bg.setBuilding(tx, ty, nb);
+                    } catch (Exception e){
+                        System.out.println("wie dit leest trekt een tweede ad");
+                    }
+                }
+            } catch (Exception e) {
                 System.out.println("wie dit leest trekt een ad");
             }
         }

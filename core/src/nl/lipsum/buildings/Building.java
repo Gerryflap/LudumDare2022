@@ -31,4 +31,6 @@ public abstract class Building implements Drawable {
 //        batch.draw(this.tileTexture, TILE_SIZE * this.x - TILE_SIZE/2, TILE_SIZE * this.y- TILE_SIZE/2);
 
     public abstract void dispose();
+
+    public abstract void click();
 }
