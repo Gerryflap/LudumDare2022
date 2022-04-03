@@ -68,6 +68,10 @@ public class StaticUtils {
                 return TANK_BUILDING_COST;
             case SNIPER:
                 return SNIPER_BUILDING_COST;
+            case HEAT:
+                return HEAT_BUILDING_COST;
+            case TURRET:
+                return TURRET_BUILDING_COST;
             default:
                 return null;
         }

@@ -145,6 +145,12 @@ public class AIPlayerModel extends PlayerModel {
                 case SNIPER:
                     building = new SniperBuilding(gridX, gridY, this);
                     break;
+                case HEAT:
+                    building = new HeatBuilding(gridX, gridY, this);
+                    break;
+                case TURRET:
+                    building = new TurretBuilding(gridX, gridY, this);
+                    break;
                 default:
                     building = null;
                     break;
