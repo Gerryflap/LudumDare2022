@@ -47,7 +47,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
     private final float bulletDamage;
     private final int bulletReloadSpeed;
 
-    private int bulletReloadProgress;
+    private float bulletReloadProgress;
 
     public static final Random random = new Random();
 
@@ -136,7 +136,7 @@ public abstract class AbstractEntity implements Drawable, Ownable, Targetable {
 //        }
 
         if (bulletReloadProgress >= 0) {
-            bulletReloadProgress -= 1;
+            bulletReloadProgress -= Gdx.graphics.getDeltaTime();
         }
 
 
