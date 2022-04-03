@@ -88,7 +88,7 @@ public abstract class AbstractEntity implements Drawable, Ownable {
 
     @Override
     public void draw(SpriteBatch batch, CameraController cameraController) {
-        StaticUtils.smartDraw(batch, cameraController, texture, this.xPosition - (this.xSize/2), this.yPosition - (this.ySize/2), this.xSize, this.ySize);
+        StaticUtils.smartDraw(batch, cameraController, this.getTexture(), this.xPosition - (this.xSize/2), this.yPosition - (this.ySize/2), this.xSize, this.ySize);
 
         if (entityStatus == EntityStatus.COMBAT && attackType == AttackType.RANGED) {
             if (bulletReloadProgress <= 0) {
