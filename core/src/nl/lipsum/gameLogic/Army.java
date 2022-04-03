@@ -17,9 +17,9 @@ public class Army {
         entity.setArmy(this);
     }
 
-    public void goTo(Base b, BaseGraph baseGraph){
+    public void goTo(Base b){
         for(AbstractEntity e:entities){
-            e.goTo(b, baseGraph);
+            e.goTo(b);
         }
     }
 
@@ -29,5 +29,11 @@ public class Army {
 
     public void removeEntity(AbstractEntity entity) {
         entities.remove(entity);
+    }
+
+    public void setTextures(Texture texture){
+        for(AbstractEntity e:entities){
+            e.setTexture(texture);
+        }
     }
 }
