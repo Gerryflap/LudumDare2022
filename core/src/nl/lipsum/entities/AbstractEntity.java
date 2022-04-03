@@ -143,13 +143,13 @@ public class AbstractEntity implements Drawable {
         }
     }
 
-    public void goTo(Base b, BaseGraph baseGraph){
+    public void goTo(Base b){
         List<Base> startBases = new ArrayList<>();
         startBases.add(previousBase);
         if (nextBase != previousBase){
             startBases.add(nextBase);
         }
-        path = baseGraph.findPath(startBases, b);
+        path = LudumDare2022.gameController.getBaseGraph().findPath(startBases, b);
         nextBase = path.get(0);
         path.remove(0);
     }
@@ -168,5 +168,9 @@ public class AbstractEntity implements Drawable {
         Optional.ofNullable(this.army).ifPresent(a -> a.removeEntity(this));
         Optional.ofNullable(army).ifPresent(a -> a.addEntity(this));
         this.army = army;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }

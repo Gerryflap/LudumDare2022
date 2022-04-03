@@ -41,7 +41,11 @@ public class GameController implements GenericController {
 //        tileGrid.setTile(20, 10, new Tile(20, 10, "white", textureStore));
 
         baseGraph = new BaseGraph();
-        playerController = new PlayerController(baseGraph, humanPlayerModel);
+        try{
+            playerController = new PlayerController(baseGraph, humanPlayerModel, textureStore);
+        } catch (Exception e){
+            System.out.println("tried to use textures that don't exist");
+        }
 
     }
 

@@ -1,7 +1,9 @@
 package nl.lipsum.gameLogic.playermodel;
 
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
+import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.ui.UiArmySelect;
 
 public class HumanPlayerModel extends PlayerModel {
@@ -24,8 +26,8 @@ public class HumanPlayerModel extends PlayerModel {
         this.selectedArmy = selectedArmy;
     }
 
-    public void goTo(Base base, BaseGraph baseGraph){
+    public void goTo(Base base){
         //TODO: actually make sure the right army is selected
-        armies.get(selectedArmy).goTo(base, baseGraph);
+        armies.get(selectedArmy).goTo(base);
     }
 }
