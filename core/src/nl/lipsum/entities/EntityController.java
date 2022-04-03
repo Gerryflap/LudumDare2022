@@ -2,6 +2,7 @@ package nl.lipsum.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Config;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
@@ -18,13 +19,13 @@ public class EntityController implements GenericController {
     public static boolean[][] collisionGrid;
 
     private final Set<AbstractEntity> entities;
-    private PositionalEntityResolver positionalEntityResolver;
+//    private PositionalEntityResolver positionalEntityResolver;
     private int targetUpdateCounter = UPDATE_TARGETS_EVERY_N_STEPS;
 
     public EntityController() {
         this.entities = new HashSet<>();
         collisionGrid = new boolean[Config.COLLISION_GRID_HEIGHT][Config.COLLISION_GRID_WIDTH];
-        positionalEntityResolver = new PositionalEntityResolver();
+//        positionalEntityResolver = LudumDare2022.positionalEntityResolver;
     }
 
     /**
@@ -54,7 +55,7 @@ public class EntityController implements GenericController {
      */
     private void updateClosestEntities() {
         for (AbstractEntity entity : entities) {
-            entity.setTarget(positionalEntityResolver.getClosestHostileEntity(entity, entity.getVisionRange()));
+            entity.setTarget(LudumDare2022.positionalEntityResolver.getClosestHostileTarget(entity, entity.getVisionRange()));
         }
     }
 
@@ -71,8 +72,8 @@ public class EntityController implements GenericController {
         for (AbstractEntity entity :entitiesClone) {
             entity.step();
         }
-        if (positionalEntityResolver.isMapValid()){
-            positionalEntityResolver.invalidate();
+        if (LudumDare2022.positionalEntityResolver.isMapValid()){
+            LudumDare2022.positionalEntityResolver.invalidate();
         }
     }
 

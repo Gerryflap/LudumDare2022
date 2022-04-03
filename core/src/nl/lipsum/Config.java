@@ -14,6 +14,7 @@ public class Config {
     public static final int RESOURCE_BUILDING_COST = 50;
     public static final int INFANTRY_BUILDING_COST = 100;
     public static final int RESOURCES_PER_BUILDING_PER_SECOND = 25;
+    public static final int BUILDING_HEALTH = 100;
 
     public static final int PLAYER_COUNT = 4;
 }
