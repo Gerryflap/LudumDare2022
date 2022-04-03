@@ -1,23 +1,23 @@
 package nl.lipsum.gameLogic;
 
-import com.badlogic.gdx.graphics.Texture;
 import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.entities.AttackType;
-import nl.lipsum.entities.EntityType;
+import nl.lipsum.entities.combat_units.Infantry;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public class Army {
+public class Army implements Ownable{
     public Set<AbstractEntity> entities;
+    private final PlayerModel owner;
     private Base destBase;
 
-    public Army(Base startBase){
+    public Army(Base startBase, PlayerModel owner){
         entities = new HashSet<>();
-        AbstractEntity entity = new AbstractEntity(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, new Texture("greenTile.jpg"), startBase,
-                100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
+        this.owner = owner;
+        AbstractEntity entity = new Infantry(startBase.getX()*TILE_SIZE, startBase.getY()*TILE_SIZE, startBase, owner);
         entity.setArmy(this);
     }
 
@@ -36,9 +36,8 @@ public class Army {
         entities.remove(entity);
     }
 
-    public void setTextures(Texture texture){
-        for(AbstractEntity e:entities){
-            e.setTexture(texture);
-        }
+    @Override
+    public PlayerModel getOwner() {
+        return owner;
     }
 }

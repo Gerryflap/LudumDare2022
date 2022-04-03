@@ -42,7 +42,7 @@ public class GameController implements GenericController {
 
         baseGraph = new BaseGraph();
         try{
-            playerController = new PlayerController(baseGraph, humanPlayerModel, textureStore);
+            playerController = new PlayerController(baseGraph, humanPlayerModel);
         } catch (Exception e){
             System.out.println("tried to use textures that don't exist");
         }

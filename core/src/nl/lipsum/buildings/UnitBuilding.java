@@ -1,14 +1,11 @@
 package nl.lipsum.buildings;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.LudumDare2022;
 import nl.lipsum.StaticUtils;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
-import nl.lipsum.entities.AttackType;
-import nl.lipsum.entities.EntityType;
+import nl.lipsum.entities.combat_units.Infantry;
 import nl.lipsum.gameLogic.GameController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
@@ -42,8 +39,7 @@ public abstract class UnitBuilding extends Building {
 
             } else {
                 trainingProgress = 0;
-                AbstractEntity unit = new AbstractEntity(x*TILE_SIZE, y*TILE_SIZE, new Texture("greenTile.jpg"), GameController.playerController.getHumanPlayerModel().getBase(),
-                        100, 100, 300, 10, 25, 100, AttackType.RANGED, EntityType.INFANTRY);
+                AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, GameController.playerController.getHumanPlayerModel().getBase(), owner);
                 //TODO: make sure the right army is has the added entity
                 owner.armies.get(selectedArmy).entities.add(unit);
                 this.units[unitPointer] = unit;

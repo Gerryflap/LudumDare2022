@@ -1,6 +1,8 @@
 package nl.lipsum.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import nl.lipsum.Config;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 
@@ -11,11 +13,15 @@ import java.util.Set;
  * This class has supreme command of all entities
  */
 public class EntityController implements GenericController {
+
+    public static boolean[][] collisionGrid;
+
     private final Set<AbstractEntity> entities;
     private boolean chunkMapValid = false;
 
     public EntityController() {
         this.entities = new HashSet<>();
+        collisionGrid = new boolean[Config.COLLISION_GRID_HEIGHT][Config.COLLISION_GRID_WIDTH];
     }
 
     /**
@@ -24,6 +30,7 @@ public class EntityController implements GenericController {
      */
     public void addEntity(AbstractEntity entity) {
         entities.add(entity);
+        collisionGrid[(int) entity.getxPosition()][(int) entity.getyPosition()] = true;
     }
 
     /**
@@ -32,6 +39,7 @@ public class EntityController implements GenericController {
      */
     public void removeEntity(AbstractEntity entity) {
         entities.remove(entity);
+        collisionGrid[(int) entity.getxPosition()][(int) entity.getyPosition()] = false;
     }
 
     /**

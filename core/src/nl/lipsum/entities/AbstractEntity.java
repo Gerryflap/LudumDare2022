@@ -2,86 +2,81 @@ package nl.lipsum.entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import nl.lipsum.Drawable;
-import nl.lipsum.LudumDare2022;
-import nl.lipsum.StaticUtils;
+import nl.lipsum.*;
 import nl.lipsum.controllers.CameraController;
-import nl.lipsum.LudumDare2022;
 import nl.lipsum.gameLogic.Army;
 import nl.lipsum.gameLogic.Base;
 import nl.lipsum.gameLogic.BaseGraph;
+import nl.lipsum.gameLogic.Ownable;
+import nl.lipsum.gameLogic.playermodel.PlayerModel;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;
 import java.util.Optional;
+import java.util.Random;
 
 import static nl.lipsum.Config.TILE_SIZE;
 
-public class AbstractEntity implements Drawable {
+public abstract class AbstractEntity implements Drawable, Ownable {
 
+    private final PlayerModel owner;
     private float xPosition;
     private float yPosition;
-    private float xSize;
-    private float ySize;
-    private Texture texture;
+    private final float xSize;
+    private final float ySize;
+    private final Texture texture;
     private Base previousBase;
     private Base nextBase;
     private List<Base> path;
     private Army army;
 
+    private static final int ARRIVAL_RANGE = 10;
+
     private EntityType entityType;
 
     // Movement information
     private float speed;
-    private float maxSpeed;
+    private final float maxSpeed;
 
     // Defense information
     private int health;
-    private int maxHealth;
+    private final int maxHealth;
 
     // Offense information
-    private AttackType attackType;
-    private float bulletSpeed;
-    private float bulletDamage;
-    private int bulletReloadSpeed;
+    private final AttackType attackType;
+    private final float bulletDamage;
+    private final int bulletReloadSpeed;
 
     private int bulletReloadProgress;
 
-    private List<Bullet> bullets = new ArrayList<>();
+    public static final Random random = new Random();
 
     // Unit status
     private EntityStatus previousEntityStatus;
     private EntityStatus entityStatus;
 
-    public AbstractEntity(float xPosition, float yPosition, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
-        this(xPosition, yPosition, 75, 75, texture, base, health, maxHealth, bulletSpeed, bulletDamage, bulletReloadSpeed, maxSpeed, attackType, entityType);
-    }
-
-    public AbstractEntity(float xPosition, float yPosition, float xSize, float ySize, Texture texture, Base base, int health, int maxHealth, float bulletSpeed,
-                          float bulletDamage, int bulletReloadSpeed, float maxSpeed, AttackType attackType, EntityType entityType) {
+    public AbstractEntity(float xPosition, float yPosition, Base base, PlayerModel owner) {
         this.xPosition = xPosition;
         this.yPosition = yPosition;
-        this.xSize = xSize;
-        this.ySize = ySize;
-        this.texture = texture;
+        this.xSize = getXSize();
+        this.ySize = getYSize();
+        this.texture = getTexture();
         this.previousBase = base;
         this.nextBase = base;
         this.path = new ArrayList<>();
-        this.health = health;
-        this.maxHealth = maxHealth;
-        this.bulletSpeed = bulletSpeed;
-        this.bulletDamage = bulletDamage;
-        this.bulletReloadSpeed = bulletReloadSpeed;
+        this.health = getMaxHealth();
+        this.maxHealth = getMaxHealth();
+        this.bulletDamage = getBulletDamage();
+        this.bulletReloadSpeed =getBulletReloadSpeed();
         this.speed = 0;
-        this.maxSpeed = maxSpeed;
-        this.attackType = attackType;
+        this.maxSpeed = getMaxSpeed();
+        this.attackType = getAttackType();
+        this.owner = owner;
 
-        this.entityType = entityType;
+        this.entityType = getEntityType();
 
         // TODO: IDLE By default, currently testing
         this.entityStatus = EntityStatus.COMBAT;
@@ -99,15 +94,9 @@ public class AbstractEntity implements Drawable {
             if (bulletReloadProgress <= 0) {
                 // fire bullet
                 bulletReloadProgress = bulletReloadSpeed;
-                bullets.add(new Bullet(this.xPosition, this.yPosition, 100, 50, this.bulletSpeed));
-                emitSound(EntitySoundType.FIRE);
+                //TODO: Fire bullet ofzo
             }
             bulletReloadProgress -= 1;
-        }
-
-        for (Bullet _bullet :
-                bullets) {
-            _bullet.draw(batch);
         }
     }
 
@@ -143,17 +132,6 @@ public class AbstractEntity implements Drawable {
     }
 
     public void step() {
-        List<Bullet> bulletsToRemove = new ArrayList<>();
-
-        for (Bullet _bullet : bullets) {
-            if (_bullet.step()) {
-                bulletsToRemove.add(_bullet);
-            }
-        }
-
-        for (Bullet _bullet : bulletsToRemove) {
-            bullets.remove(_bullet);
-        }
         if (health <= 0) {
             setEntityStatus(EntityStatus.DEAD);
 
@@ -164,28 +142,79 @@ public class AbstractEntity implements Drawable {
             return;
         }
         if (nextBase != null){
-            if (nextBase.getX()*TILE_SIZE == xPosition && nextBase.getY()*TILE_SIZE == yPosition){
+//            System.out.printf("%s %s %s %s\n", nextBase.getX()*TILE_SIZE, nextBase.getY()*TILE_SIZE, xPosition, yPosition);
+            if ((nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE) && (nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) &&
+                    (nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE) && (nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)){
+//                System.out.println("Arrived!");
                 previousBase = nextBase;
                 if (!path.isEmpty()){
                     nextBase = path.get(0);
                     path.remove(0);
                 }
             }
-            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition){
+//            if (nextBase.getX()*TILE_SIZE != xPosition || nextBase.getY()*TILE_SIZE != yPosition) {
+            if (!(nextBase.getX()*TILE_SIZE <= xPosition + ARRIVAL_RANGE && nextBase.getX()*TILE_SIZE >= xPosition - ARRIVAL_RANGE) ||
+                    !(nextBase.getY()*TILE_SIZE <= yPosition + ARRIVAL_RANGE && nextBase.getY()*TILE_SIZE >= yPosition - ARRIVAL_RANGE)) {
                 float diffX = nextBase.getX()*TILE_SIZE - xPosition;
                 float diffY = nextBase.getY()*TILE_SIZE - yPosition;
                 double factor = Gdx.graphics.getDeltaTime()*maxSpeed/(Math.sqrt(diffX*diffX + diffY*diffY));
                 float updateX = (float) (diffX*factor);
                 float updateY = (float) (diffY*factor);
+
+                float newX;
+                float newY;
+
+                boolean allowedToMove = true;
+
                 if (Math.abs(updateX) < Math.abs(diffX)){
-                    this.xPosition += updateX;
+                    newX = this.xPosition + updateX;
                 } else {
-                    this.xPosition = nextBase.getX()*TILE_SIZE;
+                    newX = nextBase.getX()*TILE_SIZE;
                 }
                 if (Math.abs(updateY) < Math.abs(diffY)){
-                    this.yPosition += updateY;
+                    newY = this.yPosition + updateY;
                 } else {
-                    this.yPosition = nextBase.getY()*TILE_SIZE;
+                    newY = nextBase.getY()*TILE_SIZE;
+                }
+
+                if (EntityController.collisionGrid[(int) newY][(int) newX]) {
+                    int signX = -1;
+                    int signY = -1;
+                    if (random.nextFloat() > 0.5) {
+                        signX = 1;
+                    }
+                    if (random.nextFloat() > 0.5) {
+                        signY = 1;
+                    }
+                    newX += signX * random.nextInt(5);
+                    newY += signY * random.nextInt(5);
+
+                    if (0 > newX) {
+                        newX = 0;
+                    }
+                    // this will break if collision grid != movement grid
+                    if (newX > Config.COLLISION_GRID_WIDTH) {
+                        newX = Config.COLLISION_GRID_WIDTH;
+                    }
+
+                    if (0 > newY) {
+                        newY = 0;
+                    }
+                    // this will break if collision grid != movement grid
+                    if (newY > Config.COLLISION_GRID_HEIGHT) {
+                        newY = Config.COLLISION_GRID_HEIGHT;
+                    }
+
+                    if (EntityController.collisionGrid[(int) newY][(int) newX]) {
+                        allowedToMove = false;
+                    }
+                }
+
+                if (allowedToMove) {
+                    EntityController.collisionGrid[(int) this.yPosition][(int) this.xPosition] = false;
+                    EntityController.collisionGrid[(int) newY][(int) newX] = true;
+                    this.xPosition = newX;
+                    this.yPosition = newY;
                 }
             }
         }
@@ -218,7 +247,28 @@ public class AbstractEntity implements Drawable {
         this.army = army;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
+    /*
+     * These constants should be defined for every entity type
+     */
+    public abstract float getXSize();
+    public abstract float getYSize();
+    public abstract Texture getTexture();
+    public abstract EntityType getEntityType();
+    public abstract int getMaxHealth();
+    public abstract AttackType getAttackType();
+    public abstract float getBulletDamage();
+    public abstract int getBulletReloadSpeed();
+    public abstract float getMaxSpeed();
+
+    public float getxPosition() {
+        return xPosition;
+    }
+
+    public float getyPosition() {
+        return yPosition;
+    }
+
+    public PlayerModel getOwner() {
+        return owner;
     }
 }

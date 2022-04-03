@@ -20,9 +20,9 @@ public abstract class PlayerModel {
 
     public void initiateArmies(Base base){
         armies = new ArrayList<>();
-        armies.add(new Army(base));
-        armies.add(new Army(base));
-        armies.add(new Army(base));
+        armies.add(new Army(base, this));
+        armies.add(new Army(base, this));
+        armies.add(new Army(base, this));
         this.base = base;
     }
 
@@ -34,12 +34,6 @@ public abstract class PlayerModel {
         this.amountResources += amount;
     }
 
-    public void setTextures(Texture texture){
-        this.base.setTexture(texture);
-        for(Army a:armies){
-            a.setTextures(texture);
-        }
-    }
 
     public Base getBase() {
         return base;
