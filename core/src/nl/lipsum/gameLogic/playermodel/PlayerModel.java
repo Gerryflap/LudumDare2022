@@ -34,12 +34,6 @@ public abstract class PlayerModel {
         this.amountResources += amount;
     }
 
-    public void setTextures(Texture texture){
-        this.base.setTexture(texture);
-        for(Army a:armies){
-            a.setTextures(texture);
-        }
-    }
 
     public Base getBase() {
         return base;

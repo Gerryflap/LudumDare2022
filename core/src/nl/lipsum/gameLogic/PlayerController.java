@@ -28,10 +28,10 @@ public class PlayerController implements GenericController {
         aiPlayerModels.get(0).initiateArmies(baseGraph.getBases().get(2));
         aiPlayerModels.get(1).initiateArmies(baseGraph.getBases().get(6));
         aiPlayerModels.get(2).initiateArmies(baseGraph.getBases().get(8));
-        this.humanPlayerModel.setTextures(textureStore.getTileTextureByName("green"));
-        aiPlayerModels.get(0).setTextures(textureStore.getTileTextureByName("red"));
-        aiPlayerModels.get(1).setTextures(textureStore.getTileTextureByName("blue"));
-        aiPlayerModels.get(2).setTextures(textureStore.getTileTextureByName("orange"));
+//        this.humanPlayerModel.setTextures(textureStore.getTileTextureByName("green"));
+//        aiPlayerModels.get(0).setTextures(textureStore.getTileTextureByName("red"));
+//        aiPlayerModels.get(1).setTextures(textureStore.getTileTextureByName("blue"));
+//        aiPlayerModels.get(2).setTextures(textureStore.getTileTextureByName("orange"));
     }
 
     @Override

@@ -30,10 +30,4 @@ public class Army {
     public void removeEntity(AbstractEntity entity) {
         entities.remove(entity);
     }
-
-    public void setTextures(Texture texture){
-        for(AbstractEntity e:entities){
-            e.setTexture(texture);
-        }
-    }
 }
