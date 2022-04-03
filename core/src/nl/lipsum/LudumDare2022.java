@@ -18,6 +18,9 @@ import nl.lipsum.main_menu.MainMenuController;
 import nl.lipsum.controllers.InputController;
 import nl.lipsum.ui.UiController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class LudumDare2022 extends ApplicationAdapter {
 
 	SpriteBatch batch;
@@ -35,6 +38,8 @@ public class LudumDare2022 extends ApplicationAdapter {
 
 	private static GameState previousGameState;
 	private static GameState gameState;
+
+	private long startTime;
 
 	private static Music mainMenuMusic;
 	private static Music gameMusic;
@@ -68,6 +73,12 @@ public class LudumDare2022 extends ApplicationAdapter {
 	private void handleGameOver() {
 		resetGame();
 
+		long totalTime = startTime - System.currentTimeMillis();
+		System.out.println(totalTime);
+		SimpleDateFormat formatter= new SimpleDateFormat("mm:ss z");
+		Date date = new Date(totalTime);
+		System.out.println(formatter.format(date));
+
 		batch = new SpriteBatch();
 
 		entityController = new EntityController();
@@ -98,6 +109,10 @@ public class LudumDare2022 extends ApplicationAdapter {
 	public void render () {
 		// Manage music
 		manageMainMenuMusic();
+
+		if (gameState == GameState.PLAYING && previousGameState != GameState.PLAYING) {
+			startTime = System.currentTimeMillis();
+		}
 
 		if (gameState == GameState.GAME_OVER && previousGameState != GameState.GAME_OVER) {
 			handleGameOver();

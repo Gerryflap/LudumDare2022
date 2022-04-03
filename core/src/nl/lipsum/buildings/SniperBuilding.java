@@ -12,7 +12,7 @@ public class SniperBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
     public SniperBuilding(int x, int y, PlayerModel owner) {
-        super(x, y, owner, 70, 7);
+        super(x, y, owner, 350, 3);
         this.tileTexture = new Texture(String.format("player%s/sniper_building.png", owner.getId()));
     }
 
