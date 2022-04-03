@@ -3,6 +3,7 @@ package nl.lipsum;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.entities.AbstractEntity;
 import nl.lipsum.entities.Targetable;

@@ -20,7 +20,7 @@ public class GameController implements GenericController {
     TileGrid tileGrid;
     public static PlayerController playerController;
 //    AbstractEntity exampleEntity;
-    BaseGraph baseGraph;
+    public static BaseGraph baseGraph;
 
     private int currentTemperatureUpdateCount;
     private static final int globalTemperatureUpdateTime = 250;
