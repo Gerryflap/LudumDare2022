@@ -22,7 +22,7 @@ public class Base implements GenericController {
         this.x = x;
         this.y = y;
         this.connections = new ArrayList<>();
-        texture = new Texture("greenTile.jpg");
+        texture = new Texture("whiteTile.jpg");
     }
 
     public void addConnection(Base b){
@@ -58,5 +58,9 @@ public class Base implements GenericController {
     @Override
     public void dispose() {
         texture.dispose();
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
     }
 }
