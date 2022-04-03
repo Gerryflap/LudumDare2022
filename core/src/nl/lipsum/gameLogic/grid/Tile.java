@@ -26,6 +26,6 @@ public enum Tile {
     }
 
     public void dispose() {
-        this.tileTexture.dispose();
+        // literally the only place where you should NOT dispose
     }
 }

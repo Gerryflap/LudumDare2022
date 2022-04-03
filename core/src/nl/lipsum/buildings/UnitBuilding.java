@@ -22,11 +22,14 @@ public abstract class UnitBuilding extends Building {
     private final AbstractEntity[] units;
     private int unitPointer = 0;
 
-    public UnitBuilding(int x, int y, PlayerModel owner, int cost, int trainingTime, int unitCap) {
-        super(x, y, owner, cost);
+    private int selectedArmy;
+
+    public UnitBuilding(int x, int y, PlayerModel owner, int trainingTime, int unitCap) {
+        super(x, y, owner);
         this.trainingTime = trainingTime;
         this.unitCap = unitCap;
         this.units = new AbstractEntity[unitCap];
+        this.selectedArmy = owner.getSelectedArmy();
     }
 
     @Override
@@ -37,9 +40,10 @@ public abstract class UnitBuilding extends Building {
 
             } else {
                 trainingProgress = 0;
-                AbstractEntity unit = new Infantry(0, 0, GameController.playerController.getHumanPlayerModel().getBase(), owner);
+                AbstractEntity unit = new Infantry(x*TILE_SIZE, y*TILE_SIZE, GameController.playerController.getHumanPlayerModel().getBase(), owner);
                 //TODO: make sure the right army is has the added entity
-                GameController.playerController.getHumanPlayerModel().armies.get(0).entities.add(unit);
+                owner.armies.get(selectedArmy).entities.add(unit);
+                unit.goTo(owner.armies.get(selectedArmy).getDestBase());
                 this.units[unitPointer] = unit;
                 unitPointer += 1;
             }
@@ -54,5 +58,9 @@ public abstract class UnitBuilding extends Building {
     @Override
     public void dispose() {
 
+    }
+
+    public void click(){
+        selectedArmy = (selectedArmy+1)%3;
     }
 }

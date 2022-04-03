@@ -36,6 +36,7 @@ public class UiController implements GenericController {
 
     public void dispose() {
         shapeRenderer.dispose();
-
+        barController.dispose();
+        minimapController.dispose();
     }
 }

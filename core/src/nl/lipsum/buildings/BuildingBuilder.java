@@ -1,20 +1,19 @@
 package nl.lipsum.buildings;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import nl.lipsum.Drawable;
 import nl.lipsum.StaticUtils;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
+import nl.lipsum.gameLogic.Base;
+import nl.lipsum.gameLogic.PlayerController;
 import nl.lipsum.gameLogic.playermodel.PlayerModel;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static nl.lipsum.Config.TILE_SIZE;
+import static nl.lipsum.Config.*;
 import static nl.lipsum.ui.UiConstants.*;
 
 public class BuildingBuilder implements Drawable {
@@ -39,25 +38,57 @@ public class BuildingBuilder implements Drawable {
         this.active = false;
     }
 
-    public void buildBuilding(int x, int y, BuildingGrid bg, PlayerModel player){
+    public void buildBuildingClick(int x, int y, BuildingGrid bg, PlayerModel player){
         Gdx.graphics.getHeight();
         boolean notOnUi = y < Gdx.graphics.getHeight() - MINIMAP_HEIGHT || (x < Gdx.graphics.getWidth() - MINIMAP_WIDTH && y < Gdx.graphics.getHeight() - BAR_HEIGHT);
         if(active && notOnUi){
             int[] tileCoords = camCon.screenToTile(x, y);
             int tx = tileCoords[0];
             int ty = tileCoords[1];
+            try {
+                Building b = bg.getBuilding(tx, ty);
+                buildBuilding(b, tx, ty, bg, player);
+            } catch (Exception e){
+                System.out.println("Click outside of grid");
+            }
+        }
+    }
+
+    public void buildBuilding(Building b, int x, int y, BuildingGrid bg, PlayerModel player){
+        boolean canbuild = false;
+
+        for (Base base: LudumDare2022.gameController.getBaseGraph().getBases()) {
+            if(base.getOwner() == player && x < base.getX() + base.getBuildrange() && x > base.getX() - base.getBuildrange() && y < base.getY() + base.getBuildrange() && y > base.getY() - base.getBuildrange()){
+                canbuild = true;
+            }
+        }
+        if (b != null){
+            b.click();
+        } else {
             Building nb = null;
             switch (this.type) {
                 case RESOURCE:
-                    nb = new ResourceBuilding(tx, ty, player, 10);
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= RESOURCE_BUILDING_COST){
+                        LudumDare2022.humanPlayerModel.addResources(-RESOURCE_BUILDING_COST);
+                        nb = new ResourceBuilding(x, y, player);
+                    } else {
+                        canbuild = false;
+                    }
                     break;
                 case UNIT:
-                    nb = new InfantryBuilding(tx, ty, player, 10, 100, 2);
+                    if(LudumDare2022.humanPlayerModel.getAmountResources() >= INFANTRY_BUILDING_COST){
+                        LudumDare2022.humanPlayerModel.addResources(-INFANTRY_BUILDING_COST);
+                        nb = new InfantryBuilding(x, y, player, 10, 10);
+                    } else {
+                        canbuild = false;
+                    }
                     break;
             }
             try {
-                bg.setBuilding(tx, ty, nb);
-            } catch (Exception e){
+                if (canbuild) {
+                    bg.setBuilding(x, y, nb);
+                }
+            } catch (Exception e) {
                 System.out.println("wie dit leest trekt een ad");
             }
         }
@@ -88,5 +119,11 @@ public class BuildingBuilder implements Drawable {
 
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
+    public void setType(BuildingType type) {
+        this.type = type;
+    }
 }
