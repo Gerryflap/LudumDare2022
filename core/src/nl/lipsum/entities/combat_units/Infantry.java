@@ -21,7 +21,7 @@ public class Infantry extends AbstractEntity {
     public static int MAX_HEALTH = 100;
     public static AttackType ATTACK_TYPE = AttackType.RANGED;
     public static float BULLET_DAMAGE = 5;
-    public static int BULLET_RELOAD_SPEED = 10;
+    public static int BULLET_RELOAD_SPEED = 1;
     public static float MAX_SPEED = 250;
     public static float ATTACK_RANGE = 100;
     public static float VISION_RANGE = 250;
