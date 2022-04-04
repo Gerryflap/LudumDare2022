@@ -1,9 +1,12 @@
 package nl.lipsum.main_menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import nl.lipsum.LudumDare2022;
 import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.main_menu.buttons.ExitButton;
@@ -24,12 +27,16 @@ public class MainMenuController implements GenericController {
     private MainMenuState mainMenuState;
 
     private List<MainMenuButton> mainMenuButtons = new ArrayList<>();
+    BitmapFont font;
 
     public MainMenuController() {
         testTexture = new Texture("badlogic.jpg");
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         mainMenuState = MainMenuState.MAIN_SCREEN;
+
+        font = new BitmapFont();
+        font.setColor(Color.WHITE);
 
         mainMenuButtons.add(new PlayButton(
                 this, 200, 200, 20, 100, "Play"
@@ -59,14 +66,15 @@ public class MainMenuController implements GenericController {
                 }
 //            System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
         }
-
-
-
     }
 
     @Override
     public void render(SpriteBatch batch, CameraController camera) {
 //        this.batch.begin();
+
+        if (LudumDare2022.winTimeString != null) {
+            font.draw(batch, LudumDare2022.winTimeString, 50, 50);
+        }
 
         switch (mainMenuState) {
             case MAIN_SCREEN:

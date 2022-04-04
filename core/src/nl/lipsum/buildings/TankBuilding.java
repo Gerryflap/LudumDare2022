@@ -11,7 +11,7 @@ public class TankBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
     public TankBuilding(int x, int y, PlayerModel owner) {
-        super(x, y, owner, 100, 5);
+        super(x, y, owner, 500, 2);
         this.tileTexture = new Texture(String.format("player%s/tank_building.png", owner.getId()));
     }
 

@@ -18,7 +18,7 @@ import java.util.Set;
  * This class has supreme command of all entities
  */
 public class EntityController implements GenericController {
-    public static final int UPDATE_TARGETS_EVERY_N_STEPS = 5;
+    public static final int UPDATE_TARGETS_EVERY_N_STEPS = 1;
 
     public static boolean[][] collisionGrid;
 

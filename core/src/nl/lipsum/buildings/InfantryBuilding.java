@@ -11,7 +11,7 @@ public class InfantryBuilding extends UnitBuilding {
     private final Texture tileTexture;
 
     public InfantryBuilding(int x, int y, PlayerModel owner) {
-        super(x, y, owner, 50, 10);
+        super(x, y, owner, 250, 4);
         this.tileTexture = new Texture(String.format("player%s/infantry_building.png", owner.getId()));
     }
 

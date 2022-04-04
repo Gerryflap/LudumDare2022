@@ -16,7 +16,7 @@ public class PlayButton extends MainMenuButton {
 
     public PlayButton(MainMenuController mainMenuController, int x, int y, int height, int width, String buttonText) {
         super(mainMenuController, x, y, height, width, buttonText);
-         font = new BitmapFont(); //or use alex answer to use custom font
+        font = new BitmapFont(); //or use alex answer to use custom font
     }
 
     @Override
@@ -27,6 +27,7 @@ public class PlayButton extends MainMenuButton {
 
         // Check if button is pressed
         if (isCoordinateInButtonBox(locationCursor) && Gdx.input.isTouched()) {
+            LudumDare2022.gameStartFrame = true;
             LudumDare2022.setGameState(GameState.PLAYING);
             emitSound(MainMenuSound.GAME_START);
         }

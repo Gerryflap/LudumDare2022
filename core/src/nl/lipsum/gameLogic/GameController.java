@@ -6,6 +6,7 @@ import nl.lipsum.controllers.CameraController;
 import nl.lipsum.controllers.GenericController;
 import nl.lipsum.gameLogic.grid.TileGrid;
 import nl.lipsum.gameLogic.grid.WorldGen;
+import nl.lipsum.gameLogic.playermodel.AIPlayerModel;
 import nl.lipsum.gameLogic.playermodel.HumanPlayerModel;
 import nl.lipsum.gameLogic.playermodel.PlayerStatus;
 import nl.lipsum.ui.UiSelectedItem;
@@ -62,6 +63,16 @@ public class GameController implements GenericController {
     public void step() {
         if (playerController.humanPlayerModel.playerStatus == PlayerStatus.DEAD) {
             LudumDare2022.setGameState(GameState.GAME_OVER);
+        }
+
+        boolean win = true;
+
+        for (AIPlayerModel aiPlayerModel : PlayerController.aiPlayerModels) {
+            win = win && aiPlayerModel.playerStatus == PlayerStatus.DEAD;
+        }
+
+        if (win) {
+            LudumDare2022.setGameState(GameState.WIN);
         }
 
         baseGraph.step();
